@@ -1,0 +1,1533 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Laurent Cozic
+# This file is distributed under the same license as the Joplin-CLI package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Joplin-CLI 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: penguinsam <samliu@gmail.com>\n"
+"Language-Team: \n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#, fuzzy
+msgid "To delete a tag, untag the associated notes."
+msgstr "要刪除標籤，請取消關聯已標籤的記事。"
+
+msgid "Please select the note or notebook to be deleted first."
+msgstr "請先選擇要刪除的記事或記事本。"
+
+msgid "Press Ctrl+D or type \"exit\" to exit the application"
+msgstr "Press Ctrl+D or type \"exit\" to exit the application"
+
+#, javascript-format
+msgid "More than one item match \"%s\". Please narrow down your query."
+msgstr "找到多過一個項目與 \"%s\" 匹配。請縮窄查詢範圍。"
+
+msgid "No notebook selected."
+msgstr "未選擇記事本。"
+
+msgid "No notebook has been specified."
+msgstr "未指定記事本。"
+
+msgid "Y"
+msgstr "Y"
+
+msgid "n"
+msgstr "n"
+
+msgid "N"
+msgstr "N"
+
+msgid "y"
+msgstr "y"
+
+msgid "Cancelling background synchronisation... Please wait."
+msgstr "正在取消同步...請稍等。"
+
+#, javascript-format
+msgid "No such command: %s"
+msgstr "沒有該指令: %s"
+
+#, javascript-format
+msgid "The command \"%s\" is only available in GUI mode"
+msgstr ""
+
+msgid "Cannot change encrypted item"
+msgstr "無法更改已加密項目"
+
+#, javascript-format
+msgid "Missing required argument: %s"
+msgstr "缺少必需參數: %s"
+
+#, javascript-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+msgid "Your choice: "
+msgstr "您的選擇: "
+
+#, javascript-format
+msgid "Invalid answer: %s"
+msgstr "無效的答案: %s"
+
+msgid "Attaches the given file to the note."
+msgstr "將特定的檔案附加到記事。"
+
+#, javascript-format
+msgid "Cannot find \"%s\"."
+msgstr "找不到 \"%s\"。"
+
+msgid "Displays the given note."
+msgstr "顯示特定的記事。"
+
+msgid "Displays the complete information about note."
+msgstr "顯示有關記事的完整資訊。"
+
+msgid ""
+"Gets or sets a config value. If [value] is not provided, it will show the "
+"value of [name]. If neither [name] nor [value] is provided, it will list the "
+"current configuration."
+msgstr ""
+
+msgid "Also displays unset and hidden config variables."
+msgstr ""
+
+#, javascript-format
+msgid "%s = %s (%s)"
+msgstr "%s = %s (%s)"
+
+#, javascript-format
+msgid "%s = %s"
+msgstr "%s = %s"
+
+msgid ""
+"Duplicates the notes matching <note> to [notebook]. If no notebook is "
+"specified the note is duplicated in the current notebook."
+msgstr ""
+"將匹配 <note> 的記事複製到 [記事本]。如果未指定筆記本，則預設複製到當前記事本"
+"中。"
+
+msgid "Marks a to-do as done."
+msgstr "標記待辦事項為完成。"
+
+#, javascript-format
+msgid "Note is not a to-do: \"%s\""
+msgstr "記事不等於待辨事項: \"%s\""
+
+msgid ""
+"Manages E2EE configuration. Commands are `enable`, `disable`, `decrypt`, "
+"`status` and `target-status`."
+msgstr ""
+
+msgid "Enter master password:"
+msgstr "輸入主密碼:"
+
+msgid "Operation cancelled"
+msgstr "操作已取消"
+
+msgid ""
+"Starting decryption... Please wait as it may take several minutes depending "
+"on how much there is to decrypt."
+msgstr "正在開始解密...請稍候。這可能需要幾分鐘，取決於解密的程度。"
+
+msgid "Completed decryption."
+msgstr "解密完成。"
+
+msgid "Enabled"
+msgstr "已啟用"
+
+msgid "Disabled"
+msgstr "已停用"
+
+#, javascript-format
+msgid "Encryption is: %s"
+msgstr ""
+
+msgid "Edit note."
+msgstr "編輯記事。"
+
+msgid ""
+"No text editor is defined. Please set it using `config editor <editor-path>`"
+msgstr "未設置文字編輯器。請用 `config editor <editor-path>` 去設置。"
+
+msgid "No active notebook."
+msgstr "無使用中的筆記本。"
+
+#, javascript-format
+msgid "Note does not exist: \"%s\". Create it?"
+msgstr "記事不存在: \"%s\"。要建立嗎？"
+
+msgid "Starting to edit note. Close the editor to get back to the prompt."
+msgstr "開始編輯記事。如需返回命令行，請關閉編輯器。"
+
+#, javascript-format
+msgid "Error opening note in editor: %s"
+msgstr "在編輯器中開啟記事時出錯: %s"
+
+msgid "Note has been saved."
+msgstr "記事已被儲存。"
+
+msgid "Exits the application."
+msgstr "離開本程式。"
+
+msgid ""
+"Exports Joplin data to the given path. By default, it will export the "
+"complete database including notebooks, notes, tags and resources."
+msgstr ""
+"將 Joplin 資料匯出到特定路徑。程式將預設匯出完整的資料庫，包括記事本、記事、"
+"標籤以及資源。"
+
+#, javascript-format
+msgid "Destination format: %s"
+msgstr "目標格式: %s"
+
+msgid "Exports only the given note."
+msgstr "僅匯出特定的記事。"
+
+msgid "Exports only the given notebook."
+msgstr "僅匯出指定的記事本。"
+
+msgid "Displays a geolocation URL for the note."
+msgstr "顯示記事的地理位置定位網址。"
+
+msgid "Displays usage information."
+msgstr "顯示使用資訊。"
+
+#, javascript-format
+msgid "For information on how to customise the shortcuts please visit %s"
+msgstr ""
+
+msgid "Shortcuts are not available in CLI mode."
+msgstr ""
+
+msgid ""
+"Type `help [command]` for more information about a command; or type `help "
+"all` for the complete usage information."
+msgstr ""
+
+msgid "The possible commands are:"
+msgstr ""
+
+msgid ""
+"In any command, a note or notebook can be referred to by title or ID, or "
+"using the shortcuts `$n` or `$b` for, respectively, the currently selected "
+"note or notebook. `$c` can be used to refer to the currently selected item."
+msgstr ""
+
+msgid "To move from one pane to another, press Tab or Shift+Tab."
+msgstr ""
+
+msgid ""
+"Use the arrows and page up/down to scroll the lists and text areas "
+"(including this console)."
+msgstr ""
+
+msgid "To maximise/minimise the console, press \"tc\"."
+msgstr ""
+
+msgid "To enter command line mode, press \":\""
+msgstr ""
+
+msgid "To exit command line mode, press ESCAPE"
+msgstr ""
+
+msgid ""
+"For the list of keyboard shortcuts and config options, type `help keymap`"
+msgstr ""
+
+msgid "Imports data into Joplin."
+msgstr "匯入資料到 Joplin。"
+
+#, javascript-format
+msgid "Source format: %s"
+msgstr "來源格式: %s"
+
+msgid "Do not ask for confirmation."
+msgstr "不要要求確認。"
+
+#, javascript-format
+msgid "Found: %d."
+msgstr "找到: %d。"
+
+#, javascript-format
+msgid "Created: %d."
+msgstr "已建立: %d。"
+
+#, javascript-format
+msgid "Updated: %d."
+msgstr "已更新: %d。"
+
+#, javascript-format
+msgid "Skipped: %d."
+msgstr "已略過: %d。"
+
+#, javascript-format
+msgid "Resources: %d."
+msgstr "資源: %d。"
+
+#, javascript-format
+msgid "Tagged: %d."
+msgstr "已標籤: %d。"
+
+msgid "Importing notes..."
+msgstr "正在匯入記事..."
+
+#, javascript-format
+msgid "The notes have been imported: %s"
+msgstr "已匯入記事: %s"
+
+msgid ""
+"Displays the notes in the current notebook. Use `ls /` to display the list "
+"of notebooks."
+msgstr "顯示當前記事本中的記事。使用 \"ls/\" 顯示記事本的清單。"
+
+msgid "Displays only the first top <num> notes."
+msgstr "僅顯示頭 <num> 個記事。"
+
+msgid "Sorts the item by <field> (eg. title, updated_time, created_time)."
+msgstr "按 <field> 對項目進行排序 (例如: 標題、更新時間、建立時間等等)。"
+
+msgid "Reverses the sorting order."
+msgstr "顛倒排序順序。"
+
+msgid ""
+"Displays only the items of the specific type(s). Can be `n` for notes, `t` "
+"for to-dos, or `nt` for notes and to-dos (eg. `-tt` would display only the "
+"to-dos, while `-ttd` would display notes and to-dos."
+msgstr ""
+
+msgid "Either \"text\" or \"json\""
+msgstr ""
+
+msgid ""
+"Use long list format. Format is ID, NOTE_COUNT (for notebook), DATE, "
+"TODO_CHECKED (for to-dos), TITLE"
+msgstr ""
+
+msgid "Please select a notebook first."
+msgstr "請先選擇記事本。"
+
+msgid "Creates a new notebook."
+msgstr "新增記事本。"
+
+msgid "Creates a new note."
+msgstr "新增記事。"
+
+msgid "Notes can only be created within a notebook."
+msgstr "記事只能在記事本中創建。"
+
+msgid "Creates a new to-do."
+msgstr "新增待辦事項。"
+
+msgid "Moves the notes matching <note> to [notebook]."
+msgstr "將匹配 <note> 的記事移動到 [記事本]。"
+
+msgid "Renames the given <item> (note or notebook) to <name>."
+msgstr "將特定的 <item> (記事或記事本) 重新命名為 <name>。"
+
+msgid "Deletes the given notebook."
+msgstr "刪除特定的記事本。"
+
+msgid "Deletes the notebook without asking for confirmation."
+msgstr "刪除記事本時不要求確認。"
+
+msgid ""
+"Delete notebook? All notes and sub-notebooks within this notebook will also "
+"be deleted."
+msgstr "決定刪除記事本？此記事本中的所有記事和子記事本也將被刪除。"
+
+msgid "Deletes the notes matching <note-pattern>."
+msgstr "刪除匹配 <note-pattern> 的記事。"
+
+msgid "Deletes the notes without asking for confirmation."
+msgstr "刪除記事時不要求確認。"
+
+#, javascript-format
+msgid "%d notes match this pattern. Delete them?"
+msgstr "%d 個記事與此模式匹配。要刪除它們？"
+
+msgid "Delete note?"
+msgstr "刪除記事？"
+
+msgid "Searches for the given <pattern> in all the notes."
+msgstr "在所有記事中搜索特定的 <pattern>。"
+
+#, javascript-format
+msgid ""
+"Sets the property <name> of the given <note> to the given [value]. Possible "
+"properties are:\n"
+"\n"
+"%s"
+msgstr ""
+"將特定 <note> 的屬性 <name> 設置為特定的 [值]。可能的屬性有:\n"
+"\n"
+"%s"
+
+msgid "Displays summary about the notes and notebooks."
+msgstr "顯示有關記事和記事本的摘要。"
+
+msgid "Synchronises with remote storage."
+msgstr "與遠端儲存設備同步。"
+
+msgid "Sync to provided target (defaults to sync.target config value)"
+msgstr ""
+
+msgid ""
+"Authentication was not completed (did not receive an authentication token)."
+msgstr ""
+
+msgid ""
+"To allow Joplin to synchronise with Dropbox, please follow the steps below:"
+msgstr "請按照以下步驟，設置 Joplin 與 Dropbox 同步所需的選項。"
+
+msgid "Step 1: Open this URL in your browser to authorise the application:"
+msgstr "步驟 1: 在瀏覽器中打開此網址以授權應用程式:"
+
+msgid "Step 2: Enter the code provided by Dropbox:"
+msgstr "步驟 2: 輸入 Dropbox 提供給您的代碼:"
+
+#, javascript-format
+msgid "Not authentified with %s. Please provide any missing credentials."
+msgstr "與 %s 認證不成功。請提供任何缺少的身份驗證資訊。"
+
+msgid "Synchronisation is already in progress."
+msgstr "同步已在進行中。"
+
+#, javascript-format
+msgid ""
+"Lock file is already being hold. If you know that no synchronisation is "
+"taking place, you may delete the lock file at \"%s\" and resume the "
+"operation."
+msgstr ""
+
+#, javascript-format
+msgid "Synchronisation target: %s (%s)"
+msgstr "同步目標: %s (%s)"
+
+msgid "Cannot initialize synchroniser."
+msgstr "無法初始化同步器。"
+
+msgid "Starting synchronisation..."
+msgstr "正在啟動同步..."
+
+msgid "Cancelling... Please wait."
+msgstr "正在取消中...請稍候。"
+
+msgid ""
+"<tag-command> can be \"add\", \"remove\" or \"list\" to assign or remove "
+"[tag] from [note], or to list the notes associated with [tag]. The command "
+"`tag list` can be used to list all the tags."
+msgstr ""
+
+#, javascript-format
+msgid "Invalid command: \"%s\""
+msgstr "無效的指令: \"%s\""
+
+msgid ""
+"<todo-command> can either be \"toggle\" or \"clear\". Use \"toggle\" to "
+"toggle the given to-do between completed and uncompleted state (If the "
+"target is a regular note it will be converted to a to-do). Use \"clear\" to "
+"convert the to-do back to a regular note."
+msgstr ""
+
+msgid "Marks a to-do as non-completed."
+msgstr "標記待辦事項為未完成。"
+
+msgid ""
+"Switches to [notebook] - all further operations will happen within this "
+"notebook."
+msgstr ""
+
+msgid "Displays version information"
+msgstr "顯示版本資訊"
+
+#, javascript-format
+msgid "%s %s (%s)"
+msgstr ""
+
+msgid "Enum"
+msgstr ""
+
+#, javascript-format
+msgid "Type: %s."
+msgstr ""
+
+#, javascript-format
+msgid "Possible values: %s."
+msgstr "有可能的值: %s。"
+
+#, javascript-format
+msgid "Default: %s"
+msgstr "預設: %s"
+
+msgid "Possible keys/values:"
+msgstr ""
+
+msgid "Type `joplin help` for usage information."
+msgstr ""
+
+msgid "Fatal error:"
+msgstr ""
+
+msgid ""
+"The application has been authorised - you may now close this browser tab."
+msgstr ""
+
+msgid "The application has been successfully authorised."
+msgstr ""
+
+msgid ""
+"Please open the following URL in your browser to authenticate the "
+"application. The application will create a directory in \"Apps/Joplin\" and "
+"will only read and write files in this directory. It will have no access to "
+"any files outside this directory nor to any other personal data. No data "
+"will be shared with any third party."
+msgstr ""
+
+msgid "Search:"
+msgstr "搜尋:"
+
+msgid ""
+"Welcome to Joplin!\n"
+"\n"
+"Type `:help shortcuts` for the list of keyboard shortcuts, or just `:help` "
+"for usage information.\n"
+"\n"
+"For example, to create a notebook press `mb`; to create a note press `mn`."
+msgstr ""
+
+msgid ""
+"One or more items are currently encrypted and you may need to supply a "
+"master password. To do so please type `e2ee decrypt`. If you have already "
+"supplied the password, the encrypted items are being decrypted in the "
+"background and will be available soon."
+msgstr ""
+
+#, javascript-format
+msgid "Exporting to \"%s\" as \"%s\" format. Please wait..."
+msgstr ""
+
+#, javascript-format
+msgid "Importing from \"%s\" as \"%s\" format. Please wait..."
+msgstr ""
+
+msgid "PDF File"
+msgstr "PDF 檔案"
+
+msgid "File"
+msgstr "檔案"
+
+msgid "New note"
+msgstr "新增記事"
+
+msgid "New to-do"
+msgstr "新增待辦事項"
+
+msgid "New notebook"
+msgstr "新增記事本"
+
+msgid "Import"
+msgstr "匯入"
+
+msgid "Export"
+msgstr "匯出"
+
+msgid "Print"
+msgstr "列印"
+
+#, javascript-format
+msgid "Hide %s"
+msgstr "隱藏 %s"
+
+msgid "Quit"
+msgstr "結束"
+
+msgid "Edit"
+msgstr "編輯"
+
+msgid "Copy"
+msgstr "複製"
+
+msgid "Cut"
+msgstr "剪下"
+
+msgid "Paste"
+msgstr "貼上"
+
+msgid "Bold"
+msgstr ""
+
+msgid "Italic"
+msgstr ""
+
+msgid "Insert Date Time"
+msgstr ""
+
+msgid "Edit in external editor"
+msgstr ""
+
+msgid "Search in all the notes"
+msgstr "在所有記事中搜尋"
+
+msgid "View"
+msgstr "檢視"
+
+msgid "Toggle sidebar"
+msgstr "顯示 / 隱藏側邊欄"
+
+msgid "Toggle editor layout"
+msgstr "切換編輯器佈局"
+
+msgid "Tools"
+msgstr "工具"
+
+msgid "Synchronisation status"
+msgstr "顯示同步狀態"
+
+msgid "Web clipper options"
+msgstr "Web clipper 選項"
+
+msgid "Encryption options"
+msgstr "加密選項"
+
+msgid "General Options"
+msgstr "一般選項"
+
+msgid "Help"
+msgstr "說明"
+
+msgid "Website and documentation"
+msgstr "官方網站及線上說明"
+
+msgid "Make a donation"
+msgstr "捐助"
+
+msgid "Check for updates..."
+msgstr "檢查更新..."
+
+msgid "About Joplin"
+msgstr "關於 Joplin"
+
+#, javascript-format
+msgid "%s %s (%s, %s)"
+msgstr ""
+
+#, javascript-format
+msgid "Open %s"
+msgstr "開啟 %s"
+
+msgid "Exit"
+msgstr "離開"
+
+msgid "OK"
+msgstr "確定"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Current version is up-to-date."
+msgstr "此版本是最新的。"
+
+msgid "An update is available, do you want to download it now?"
+msgstr "有可用的更新，您需要立即下載嗎？"
+
+msgid "Yes"
+msgstr "是"
+
+msgid "No"
+msgstr "否"
+
+msgid "The web clipper service is enabled and set to auto-start."
+msgstr ""
+
+#, javascript-format
+msgid "Status: Started on port %d"
+msgstr ""
+
+#, javascript-format
+msgid "Status: %s"
+msgstr "狀態: %s"
+
+msgid "Disable Web Clipper Service"
+msgstr "停用 Web Clipper 服務"
+
+msgid "The web clipper service is not enabled."
+msgstr ""
+
+msgid "Enable Web Clipper Service"
+msgstr "啟用 Web Clipper 服務"
+
+msgid ""
+"Joplin Web Clipper allows saving web pages and screenshots from your browser "
+"to Joplin."
+msgstr ""
+
+msgid "In order to use the web clipper, you need to do the following:"
+msgstr ""
+
+msgid "Step 1: Enable the clipper service"
+msgstr ""
+
+msgid ""
+"This service allows the browser extension to communicate with Joplin. When "
+"enabling it your firewall may ask you to give permission to Joplin to listen "
+"to a particular port."
+msgstr ""
+
+msgid "Step 2: Install the extension"
+msgstr ""
+
+msgid "Download and install the relevant extension for your browser:"
+msgstr ""
+
+msgid "Check synchronisation configuration"
+msgstr "檢測同步設置"
+
+#, javascript-format
+msgid "Notes and settings are stored in: %s"
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+#, fuzzy
+msgid "Submit"
+msgstr "提交 / 送出"
+
+msgid "Save"
+msgstr "儲存"
+
+msgid ""
+"Disabling encryption means *all* your notes and attachments are going to be "
+"re-synchronised and sent unencrypted to the sync target. Do you wish to "
+"continue?"
+msgstr ""
+
+msgid ""
+"Enabling encryption means *all* your notes and attachments are going to be "
+"re-synchronised and sent encrypted to the sync target. Do not lose the "
+"password as, for security purposes, this will be the *only* way to decrypt "
+"the data! To enable encryption, please enter your password below."
+msgstr ""
+
+msgid "Disable encryption"
+msgstr "停用加密"
+
+msgid "Enable encryption"
+msgstr "啟用加密"
+
+msgid "Master Keys"
+msgstr "主密碼"
+
+msgid "Active"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Created"
+msgstr "已建立"
+
+msgid "Updated"
+msgstr "已更新"
+
+msgid "Password"
+msgstr "密碼"
+
+msgid "Password OK"
+msgstr "密碼 OK"
+
+msgid ""
+"Note: Only one master key is going to be used for encryption (the one marked "
+"as \"active\"). Any of the keys might be used for decryption, depending on "
+"how the notes or notebooks were originally encrypted."
+msgstr ""
+
+msgid "Missing Master Keys"
+msgstr "缺少主密碼"
+
+msgid ""
+"The master keys with these IDs are used to encrypt some of your items, "
+"however the application does not currently have access to them. It is likely "
+"they will eventually be downloaded via synchronisation."
+msgstr ""
+
+msgid ""
+"For more information about End-To-End Encryption (E2EE) and advices on how "
+"to enable it please check the documentation:"
+msgstr ""
+"有關端到端加密 (E2EE) 的詳細資訊以及該如何啟用它的建議，請參考線上文檔:"
+
+msgid "Status"
+msgstr "狀態"
+
+msgid "Encryption is:"
+msgstr ""
+
+msgid "Back"
+msgstr "返回"
+
+#, javascript-format
+msgid ""
+"New notebook \"%s\" will be created and file \"%s\" will be imported into it"
+msgstr ""
+
+msgid "Please create a notebook first."
+msgstr "請先新增記事本。"
+
+msgid "Please create a notebook first"
+msgstr "請先新增記事本。"
+
+msgid "Notebook title:"
+msgstr "記事本標題:"
+
+msgid "Add or remove tags:"
+msgstr "新增或移除標籤:"
+
+msgid "Separate each tag by a comma."
+msgstr "用逗號分隔每個標籤。"
+
+msgid "Rename notebook:"
+msgstr "重新命名記事本:"
+
+msgid "Rename tag:"
+msgstr "重新命名標籤:"
+
+msgid "Set alarm:"
+msgstr "設置提醒:"
+
+msgid "Layout"
+msgstr "頁面佈局"
+
+msgid "Search..."
+msgstr "搜尋..."
+
+msgid "Some items cannot be synchronised."
+msgstr "有些項目不能同步。"
+
+msgid "View them now"
+msgstr "立即檢視"
+
+msgid "Some items cannot be decrypted."
+msgstr ""
+
+msgid "Set the password"
+msgstr "設置密碼"
+
+msgid "Add or remove tags"
+msgstr "新增或移除標籤"
+
+msgid "Duplicate"
+msgstr ""
+
+#, fuzzy, javascript-format
+msgid "%s - Copy"
+msgstr "複製"
+
+msgid "Switch between note and to-do type"
+msgstr ""
+
+msgid "Copy Markdown link"
+msgstr "複製 Markdown 連結"
+
+msgid "Delete"
+msgstr "刪除"
+
+msgid "Delete notes?"
+msgstr "刪除此記事？"
+
+msgid "No notes in here. Create one by clicking on \"New note\"."
+msgstr ""
+
+msgid ""
+"There is currently no notebook. Create one by clicking on \"New notebook\"."
+msgstr ""
+
+msgid "Open..."
+msgstr "開啟..."
+
+#, fuzzy, javascript-format
+msgid "This file could not be opened: %s"
+msgstr "無法儲存記事本: %s"
+
+msgid "Save as..."
+msgstr "另存為..."
+
+msgid "Copy path to clipboard"
+msgstr "複製路徑到剪貼板"
+
+msgid "Copy Link Address"
+msgstr ""
+
+#, javascript-format
+msgid "Unsupported link or message: %s"
+msgstr ""
+
+#, javascript-format
+msgid ""
+"This note has no content. Click on \"%s\" to toggle the editor and edit the "
+"note."
+msgstr ""
+
+msgid "strong text"
+msgstr ""
+
+msgid "emphasized text"
+msgstr ""
+
+msgid "List item"
+msgstr ""
+
+msgid "Insert Hyperlink"
+msgstr ""
+
+msgid "Attach file"
+msgstr "附加檔案"
+
+msgid "Tags"
+msgstr "標籤"
+
+msgid "Set alarm"
+msgstr "設置提醒"
+
+#, fuzzy, javascript-format
+msgid "In: %s"
+msgstr "%s: %s"
+
+msgid "Hyperlink"
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+msgid "Numbered List"
+msgstr ""
+
+msgid "Bulleted List"
+msgstr ""
+
+msgid "Checkbox"
+msgstr ""
+
+msgid "Heading"
+msgstr ""
+
+msgid "Horizontal Rule"
+msgstr ""
+
+msgid "Click to stop external editing"
+msgstr ""
+
+#, fuzzy
+msgid "Watching..."
+msgstr "正在取消中..."
+
+msgid "to-do"
+msgstr "待辦事項"
+
+msgid "note"
+msgstr "記事"
+
+#, javascript-format
+msgid "Creating new %s..."
+msgstr "建立新 %s..."
+
+msgid "Refresh"
+msgstr "重新整理"
+
+msgid "Clear"
+msgstr "清除"
+
+msgid "OneDrive Login"
+msgstr "OneDrive 登入"
+
+msgid "Dropbox Login"
+msgstr "Dropbox 登入"
+
+msgid "Options"
+msgstr "選項"
+
+msgid "Synchronisation Status"
+msgstr "同步狀態"
+
+msgid "Encryption Options"
+msgstr "加密選項"
+
+msgid "Clipper Options"
+msgstr "Clipper 選項"
+
+msgid "Remove this tag from all the notes?"
+msgstr "是否從所有記事中刪除此標籤？"
+
+msgid "Remove this search from the sidebar?"
+msgstr "是否從側邊欄中刪除此搜索？"
+
+msgid "Rename"
+msgstr "重新命名"
+
+msgid "Synchronise"
+msgstr "進行同步"
+
+msgid "Notebooks"
+msgstr "記事本"
+
+msgid "Please select where the sync status should be exported to"
+msgstr ""
+
+#, javascript-format
+msgid "Usage: %s"
+msgstr ""
+
+#, javascript-format
+msgid "Unknown flag: %s"
+msgstr ""
+
+msgid "Dropbox"
+msgstr "Dropbox"
+
+msgid "File system"
+msgstr "檔案系統"
+
+msgid "Nextcloud"
+msgstr "Nextcloud"
+
+msgid "OneDrive"
+msgstr "OneDrive"
+
+msgid "OneDrive Dev (For testing only)"
+msgstr "OneDrive Dev (僅測試使用)"
+
+msgid "WebDAV"
+msgstr "WebDAV"
+
+#, javascript-format
+msgid "Unknown log level: %s"
+msgstr ""
+
+#, javascript-format
+msgid "Unknown level ID: %s"
+msgstr ""
+
+msgid ""
+"Cannot refresh token: authentication data is missing. Starting the "
+"synchronisation again may fix the problem."
+msgstr ""
+
+msgid ""
+"Could not synchronize with OneDrive.\n"
+"\n"
+"This error often happens when using OneDrive for Business, which "
+"unfortunately cannot be supported.\n"
+"\n"
+"Please consider using a regular OneDrive account."
+msgstr ""
+
+#, javascript-format
+msgid "Cannot access %s"
+msgstr ""
+
+#, javascript-format
+msgid "Created local items: %d."
+msgstr ""
+
+#, javascript-format
+msgid "Updated local items: %d."
+msgstr ""
+
+#, javascript-format
+msgid "Created remote items: %d."
+msgstr ""
+
+#, javascript-format
+msgid "Updated remote items: %d."
+msgstr ""
+
+#, javascript-format
+msgid "Deleted local items: %d."
+msgstr ""
+
+#, javascript-format
+msgid "Deleted remote items: %d."
+msgstr ""
+
+#, javascript-format
+msgid "Fetched items: %d/%d."
+msgstr ""
+
+#, javascript-format
+msgid "State: %s."
+msgstr ""
+
+msgid "Cancelling..."
+msgstr "正在取消中..."
+
+#, javascript-format
+msgid "Completed: %s"
+msgstr "已完成: %s"
+
+#, javascript-format
+msgid "Last error: %s"
+msgstr "上次錯誤: %s"
+
+msgid "Idle"
+msgstr "閒置"
+
+msgid "In progress"
+msgstr "進行中"
+
+#, javascript-format
+msgid "Synchronisation is already in progress. State: %s"
+msgstr ""
+
+msgid "Encrypted"
+msgstr "已加密"
+
+msgid "Encrypted items cannot be modified"
+msgstr "無法修改已加密項目"
+
+msgid "Conflicts"
+msgstr ""
+
+msgid "Cannot move notebook to this location"
+msgstr ""
+
+#, javascript-format
+msgid "A notebook with this title already exists: \"%s\""
+msgstr ""
+
+#, javascript-format
+msgid "Notebooks cannot be named \"%s\", which is a reserved title."
+msgstr ""
+
+#, fuzzy
+msgid "title"
+msgstr "未命名"
+
+#, fuzzy
+msgid "updated date"
+msgstr "已更新: %d。"
+
+#, fuzzy
+msgid "created date"
+msgstr "已建立: %d。"
+
+msgid "Untitled"
+msgstr "未命名"
+
+msgid "This note does not have geolocation information."
+msgstr "此記事沒有地理位置定位資訊。"
+
+#, javascript-format
+msgid "Cannot copy note to \"%s\" notebook"
+msgstr "無法複製此記事到 \"%s\" 記事本"
+
+#, javascript-format
+msgid "Cannot move note to \"%s\" notebook"
+msgstr "無法移動此記事到 \"%s\" 記事本"
+
+msgid "Language"
+msgstr "語言"
+
+msgid "Date format"
+msgstr "日期格式"
+
+msgid "Time format"
+msgstr "時間格式"
+
+msgid "Theme"
+msgstr "界面主題"
+
+msgid "Light"
+msgstr "光亮"
+
+msgid "Dark"
+msgstr "暗黑"
+
+msgid "Uncompleted to-dos on top"
+msgstr "最上方顯示未完成的待辦事項"
+
+msgid "Show completed to-dos"
+msgstr "顯示已完成的待辦事項"
+
+msgid "Sort notes by"
+msgstr "排序記事"
+
+msgid "Reverse sort order"
+msgstr "顛倒排序順序"
+
+msgid "Save geo-location with notes"
+msgstr "在記事中保存地理位置資訊"
+
+msgid "When creating a new to-do:"
+msgstr "當新增待辦事項時:"
+
+msgid "Focus title"
+msgstr "游標放置在標題"
+
+msgid "Focus body"
+msgstr "游標放置在內文"
+
+msgid "When creating a new note:"
+msgstr "當新增記事時:"
+
+msgid "Show tray icon"
+msgstr "顯示系統匣圖示"
+
+msgid "Note: Does not work in all desktop environments."
+msgstr "注意: 不是在全部桌面環境中都能發揮作用。"
+
+msgid "Global zoom percentage"
+msgstr "整體縮放比例"
+
+msgid "Editor font family"
+msgstr "編輯器字型系列"
+
+msgid ""
+"This must be *monospace* font or it will not work properly. If the font is "
+"incorrect or empty, it will default to a generic monospace font."
+msgstr ""
+"必須是 *等距 (monospace)* 字體，否則程式將無法正常工作。如果字體不正確或為"
+"空, 則預設為通用等距字體。"
+
+msgid "Automatically update the application"
+msgstr "自動更新應用程式"
+
+msgid "Synchronisation interval"
+msgstr "同步時間間隔"
+
+#, javascript-format
+msgid "%d minutes"
+msgstr "%d 分鐘"
+
+#, javascript-format
+msgid "%d hour"
+msgstr "%d 小時"
+
+#, javascript-format
+msgid "%d hours"
+msgstr "%d 小時"
+
+#, fuzzy
+msgid "Text editor command"
+msgstr "文字編輯器"
+
+msgid ""
+"The editor command (may include arguments) that will be used to open a note. "
+"If none is provided it will try to auto-detect the default editor."
+msgstr ""
+
+msgid "Show advanced options"
+msgstr "顯示進階選項"
+
+msgid "Synchronisation target"
+msgstr "同步目標"
+
+msgid ""
+"The target to synchonise to. Each sync target may have additional parameters "
+"which are named as `sync.NUM.NAME` (all documented below)."
+msgstr ""
+"要同步的目標。每個同步目標可能有附加的參數，它們被命名為 `sync.NUM.NAME` (全"
+"部記錄如下)。"
+
+msgid "Directory to synchronise with (absolute path)"
+msgstr "要同步的目錄 (絕對路徑)"
+
+msgid ""
+"The path to synchronise with when file system synchronisation is enabled. "
+"See `sync.target`."
+msgstr "啟用檔案系統同步時要同步的路徑。請參閱 `sync.target`。"
+
+msgid "Nextcloud WebDAV URL"
+msgstr "Nextcloud WebDAV 網址"
+
+msgid "Nextcloud username"
+msgstr "Nextcloud 用戶名稱"
+
+msgid "Nextcloud password"
+msgstr "Nextcloud 密碼"
+
+msgid "WebDAV URL"
+msgstr "WebDAV 網址"
+
+msgid "WebDAV username"
+msgstr "WebDAV 用戶名稱"
+
+msgid "WebDAV password"
+msgstr "WebDAV 密碼"
+
+msgid "Custom TLS certificates"
+msgstr ""
+
+msgid ""
+"Comma-separated list of paths to directories to load the certificates from, "
+"or path to individual cert files. For example: /my/cert_dir, /other/custom."
+"pem. Note that if you make changes to the TLS settings, you must save your "
+"changes before clicking on \"Check synchronisation configuration\"."
+msgstr ""
+
+msgid "Ignore TLS certificate errors"
+msgstr ""
+
+#, javascript-format
+msgid "Invalid option value: \"%s\". Possible values are: %s."
+msgstr "不正確選項值: \"%s\"。可能的值為: %s。"
+
+msgid "Joplin Export File"
+msgstr "Joplin 匯出檔"
+
+msgid "Markdown"
+msgstr "Markdown"
+
+msgid "Joplin Export Directory"
+msgstr "Joplin 匯出目錄"
+
+msgid "Evernote Export File"
+msgstr "Evernote 匯出檔"
+
+msgid "Directory"
+msgstr "目錄"
+
+#, javascript-format
+msgid "Cannot load \"%s\" module for format \"%s\""
+msgstr "無法載入格式為 \"%s\" 的 \"%s\" 模組"
+
+#, javascript-format
+msgid "Please specify import format for %s"
+msgstr "請為 %s 指定匯入格式"
+
+#, javascript-format
+msgid ""
+"This item is currently encrypted: %s \"%s\". Please wait for all items to be "
+"decrypted and try again."
+msgstr "此項目當前已加密: %s \"%s\"。請等待所有專案被解密後重試。"
+
+msgid "There is no data to export."
+msgstr "沒有資料可匯出。"
+
+msgid "Please specify the notebook where the notes should be imported to."
+msgstr "請指定將記事匯入到的筆記本。"
+
+msgid "Items that cannot be synchronised"
+msgstr "無法同步的項目"
+
+#, javascript-format
+msgid "%s (%s): %s"
+msgstr "%s (%s): %s"
+
+msgid ""
+"These items will remain on the device but will not be uploaded to the sync "
+"target. In order to find these items, either search for the title or the ID "
+"(which is displayed in brackets above)."
+msgstr ""
+"這些頊目將保留在設備上，但不會上載到同步目標。要尋找這些項目，請以標題或 ID "
+"(在上面的括弧中顯示) 搜索。"
+
+msgid "Sync status (synced items / total items)"
+msgstr "同步狀態 (已同步項目 / 項目總數)"
+
+#, javascript-format
+msgid "%s: %d/%d"
+msgstr "%s: %d/%d"
+
+#, javascript-format
+msgid "Total: %d/%d"
+msgstr "總數: %d/%d"
+
+#, javascript-format
+msgid "Conflicted: %d"
+msgstr "有衝突: %d"
+
+#, javascript-format
+msgid "To delete: %d"
+msgstr "標示刪除: %d"
+
+msgid "Folders"
+msgstr "資料夾"
+
+#, javascript-format
+msgid "%s: %d notes"
+msgstr "%s:%d 個記事"
+
+msgid "Coming alarms"
+msgstr "將會發生的提醒事項"
+
+#, javascript-format
+msgid "On %s: %s"
+msgstr "在 %s: %s"
+
+msgid "There are currently no notes. Create one by clicking on the (+) button."
+msgstr "您當前沒有任何筆記。通過按一下 (+) 鍵去新增一則筆記。"
+
+msgid "Delete these notes?"
+msgstr "刪除這些記事？"
+
+msgid "Log"
+msgstr "日誌"
+
+msgid "Export Debug Report"
+msgstr "匯出除錯報告"
+
+msgid "Encryption Config"
+msgstr "加密設置"
+
+msgid "Configuration"
+msgstr "設置"
+
+msgid "Move to notebook..."
+msgstr "移動至記事本..."
+
+#, javascript-format
+msgid "Move %d notes to notebook \"%s\"?"
+msgstr "移動 %d 記事到記事本 \"%s\"？"
+
+msgid "Press to set the decryption password."
+msgstr "按下以設置解密密碼。"
+
+msgid "Save alarm"
+msgstr "儲存提醒事項"
+
+msgid "Select date"
+msgstr "選擇日期"
+
+msgid "Confirm"
+msgstr "確認"
+
+msgid "Cancel synchronisation"
+msgstr "取消同步"
+
+#, javascript-format
+msgid "Decrypting items: %d/%d"
+msgstr ""
+
+msgid "New tags:"
+msgstr "新增標籤:"
+
+msgid "Type new tags or select from list"
+msgstr ""
+
+msgid ""
+"To work correctly, the app needs the following permissions. Please enable "
+"them in your phone settings, in Apps > Joplin > Permissions"
+msgstr ""
+
+msgid ""
+"- Storage: to allow attaching files to notes and to enable filesystem "
+"synchronisation."
+msgstr ""
+
+msgid "- Camera: to allow taking a picture and attaching it to a note."
+msgstr ""
+
+msgid "- Location: to allow attaching geo-location information to a note."
+msgstr ""
+
+msgid "Joplin website"
+msgstr "Joplin 官方網站"
+
+msgid "Login with Dropbox"
+msgstr "以 Dropbox 登錄"
+
+#, javascript-format
+msgid "Master Key %s"
+msgstr "主密碼 %s"
+
+#, javascript-format
+msgid "Created: %s"
+msgstr "已建立: %s"
+
+msgid "Password:"
+msgstr "密碼:"
+
+msgid "Password cannot be empty"
+msgstr "密碼不能空白"
+
+msgid "Enable"
+msgstr "啟用"
+
+#, javascript-format
+msgid "The notebook could not be saved: %s"
+msgstr "無法儲存記事本: %s"
+
+msgid "Edit notebook"
+msgstr "編輯記事本"
+
+msgid "Show all"
+msgstr "顯示全部"
+
+msgid "Errors only"
+msgstr "僅出錯時"
+
+msgid "This note has been modified:"
+msgstr "此記事已被修改:"
+
+msgid "Save changes"
+msgstr "保存變更"
+
+msgid "Discard changes"
+msgstr "放棄變更"
+
+#, javascript-format
+msgid "No item with ID %s"
+msgstr "沒有 ID 為 %s 的項目"
+
+#, javascript-format
+msgid "The Joplin mobile app does not currently support this type of link: %s"
+msgstr "Joplin 移動應用程式暫時不支援此類型的連結: %s"
+
+#, javascript-format
+msgid "Unsupported image type: %s"
+msgstr "不支援的圖像類型: %s"
+
+msgid "Attach photo"
+msgstr "附加相片"
+
+msgid "Attach any file"
+msgstr "附加檔案"
+
+msgid "Share"
+msgstr "分享"
+
+msgid "Convert to note"
+msgstr "轉換為記事"
+
+msgid "Convert to todo"
+msgstr "轉換為待辦事項"
+
+msgid "Hide metadata"
+msgstr "隱藏後設資料 (metadata)"
+
+msgid "Show metadata"
+msgstr "顯示後設資料 (metadata)"
+
+msgid "View on map"
+msgstr "在地圖上顯示"
+
+msgid "Delete notebook"
+msgstr "刪除記事本"
+
+msgid "Login with OneDrive"
+msgstr "以 OneDrive 登錄"
+
+msgid "Search"
+msgstr "搜尋"
+
+msgid ""
+"Click on the (+) button to create a new note or notebook. Click on the side "
+"menu to access your existing notebooks."
+msgstr "你可以點撃 (+) 鍵去新增記事或記事本。點撃側邊欄去檢視現有的記事本。"
+
+msgid "You currently have no notebook. Create one by clicking on (+) button."
+msgstr "您當前沒有任何筆記本。通過按一下 (+) 鍵去建立一本筆記。"
+
+msgid "Welcome"
+msgstr "歡迎"
