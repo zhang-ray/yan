@@ -20,4 +20,10 @@ build_script:
   - npm install
   - yarn dist
 
+after_build:
+  - 7z a ElectronClient.Src.7z ElectronClient/app
+  
 test: off
+
+artifacts:
+- path: ElectronClient.Src.7z
