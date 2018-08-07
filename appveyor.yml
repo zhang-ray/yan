@@ -19,9 +19,10 @@ build_script:
   - ps: xcopy /C /I /H /R /Y /S ..\..\ReactNativeClient\lib lib
   - npm install
   - yarn dist
+  - ps: cd ..\..\
 
 after_build:
-  - 7z a ElectronClient.Src.7z ElectronClient/app
+  - 7z a ElectronClient.Src.7z .\ElectronClient\app
   
 test: off
 
