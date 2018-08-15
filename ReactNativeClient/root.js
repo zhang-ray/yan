@@ -42,7 +42,7 @@ const { SideMenu } = require('lib/components/side-menu.js');
 const { SideMenuContent } = require('lib/components/side-menu-content.js');
 const { DatabaseDriverReactNative } = require('lib/database-driver-react-native');
 const { reg } = require('lib/registry.js');
-const { _, setLocale, closestSupportedLocale, defaultLocale } = require('lib/locale.js');
+const { _ } = require('lib/locale.js');
 const RNFetchBlob = require('react-native-fetch-blob').default;
 const { PoorManIntervals } = require('lib/poor-man-intervals.js');
 const { reducer, defaultState } = require('lib/reducer.js');
@@ -390,8 +390,6 @@ async function initialize(dispatch) {
 
 		if (Setting.value('firstStart')) {
 			let locale = NativeModules.I18nManager.localeIdentifier
-			if (!locale) locale = defaultLocale();
-			Setting.setValue('locale', closestSupportedLocale(locale));
 			Setting.setValue('firstStart', 0)
 		}
 
