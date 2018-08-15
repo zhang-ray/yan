@@ -393,27 +393,6 @@ class SideBarComponent extends React.Component {
 		);
 	}
 
-	synchronizeButton(type) {
-		const style = this.style().button;
-		const iconName = type === "sync" ? "fa-refresh" : "fa-times";
-		const label = type === "sync" ? _("Synchronise") : _("Cancel");
-		const icon = <i style={{ fontSize: style.fontSize, marginRight: 5 }} className={"fa " + iconName} />;
-		return (
-			<a
-				className="synchronize-button"
-				style={style}
-				href="#"
-				key="sync_button"
-				onClick={() => {
-					this.sync_click();
-				}}
-			>
-				{icon}
-				{label}
-			</a>
-		);
-	}
-
 	render() {
 		const theme = themeStyle(this.props.theme);
 		const style = Object.assign({}, this.style().root, this.props.style, {
@@ -454,9 +433,7 @@ class SideBarComponent extends React.Component {
 				</div>
 			);
 		}
-
-		items.push(this.synchronizeButton(this.props.syncStarted ? "cancel" : "sync"));
-
+		
 		items.push(
 			<div style={this.style().syncReport} key="sync_report">
 				{syncReportText}

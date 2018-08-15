@@ -169,23 +169,7 @@ class SideMenuContentComponent extends Component {
 			</TouchableOpacity>
 		);
 	}
-
-	synchronizeButton(state) {
-		const theme = themeStyle(this.props.theme);
-		
-		const title = state == 'sync' ? _('Synchronise') : _('Cancel synchronisation');
-		const iconComp = state == 'sync' ? <Icon name='md-sync' style={theme.icon} /> : <Icon name='md-close' style={theme.icon} />;
-
-		return (
-			<TouchableOpacity key={'synchronize_button'} onPress={() => { this.synchronize_press() }}>
-				<View style={this.styles().syncButton}>
-					{ iconComp }
-					<Text style={this.styles().syncButtonText}>{title}</Text>
-				</View>
-			</TouchableOpacity>
-		);
-	}
-
+	
 	makeDivider(key) {
 		return <View style={{ marginTop: 15, marginBottom: 15, flex: -1, borderBottomWidth: 1, borderBottomColor: globalStyle.dividerColor }} key={key}></View>
 	}
@@ -231,8 +215,6 @@ class SideMenuContentComponent extends Component {
 		if (decryptionReportText) fullReport.push(decryptionReportText);
 
 		while (fullReport.length < 12) fullReport.push(''); // Add blank lines so that height of report text is fixed and doesn't affect scrolling
-
-		items.push(this.synchronizeButton(this.props.syncStarted ? 'cancel' : 'sync'));
 
 		items.push(<Text key='sync_report' style={this.styles().syncStatus}>{fullReport.join('\n')}</Text>);
 
