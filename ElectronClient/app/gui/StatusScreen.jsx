@@ -24,7 +24,6 @@ class StatusScreenComponent extends React.Component {
 
 	async resfreshScreen() {
 		const service = new ReportService();
-		const report = await service.status(Setting.value('sync.target'));
 		this.setState({ report: report });
 	}
 

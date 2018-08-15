@@ -182,24 +182,6 @@ class ConfigScreenComponent extends React.Component {
 
 		const settingComps = shared.settingsToComponents(this, 'desktop', settings);
 
-		const syncTargetMd = SyncTargetRegistry.idToMetadata(settings['sync.target']);
-
-		if (syncTargetMd.supportsConfigCheck) {
-			const messages = shared.checkSyncConfigMessages(this);
-			const statusStyle = Object.assign({}, theme.textStyle, { marginTop: 10 });
-			const statusComp = !messages.length ? null : (
-				<div style={statusStyle}>
-					{messages[0]}
-					{messages.length >= 1 ? (<p>{messages[1]}</p>) : null}
-				</div>);
-
-			settingComps.push(
-				<div key="check_sync_config_button" style={this.rowStyle_}>
-					<button disabled={this.state.checkSyncConfigResult === 'checking'} onClick={this.checkSyncConfig_}>{_('Check synchronisation configuration')}</button>
-					{ statusComp }
-				</div>);
-		}
-
 		return (
 			<div style={style}>
 				<Header style={headerStyle} />
