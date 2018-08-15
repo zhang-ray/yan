@@ -35,9 +35,7 @@ const { LogScreen } = require('lib/components/screens/log.js');
 const { StatusScreen } = require('lib/components/screens/status.js');
 const { WelcomeScreen } = require('lib/components/screens/welcome.js');
 const { SearchScreen } = require('lib/components/screens/search.js');
-const { OneDriveLoginScreen } = require('lib/components/screens/onedrive-login.js');
 const { EncryptionConfigScreen } = require('lib/components/screens/encryption-config.js');
-const { DropboxLoginScreen } = require('lib/components/screens/dropbox-login.js');
 const Setting = require('lib/models/Setting.js');
 const { MenuContext } = require('react-native-popup-menu');
 const { SideMenu } = require('lib/components/side-menu.js');
@@ -52,17 +50,11 @@ const { FileApiDriverLocal } = require('lib/file-api-driver-local.js');
 const DropdownAlert = require('react-native-dropdownalert').default;
 
 const SyncTargetRegistry = require('lib/SyncTargetRegistry.js');
-const SyncTargetOneDrive = require('lib/SyncTargetOneDrive.js');
 const SyncTargetFilesystem = require('lib/SyncTargetFilesystem.js');
-const SyncTargetOneDriveDev = require('lib/SyncTargetOneDriveDev.js');
 const SyncTargetNextcloud = require('lib/SyncTargetNextcloud.js');
 const SyncTargetWebDAV = require('lib/SyncTargetWebDAV.js');
-const SyncTargetDropbox = require('lib/SyncTargetDropbox.js');
-SyncTargetRegistry.addClass(SyncTargetOneDrive);
-SyncTargetRegistry.addClass(SyncTargetOneDriveDev);
 SyncTargetRegistry.addClass(SyncTargetNextcloud);
 SyncTargetRegistry.addClass(SyncTargetWebDAV);
-SyncTargetRegistry.addClass(SyncTargetDropbox);
 
 // Disabled because not fully working
 SyncTargetRegistry.addClass(SyncTargetFilesystem);
@@ -400,7 +392,6 @@ async function initialize(dispatch) {
 			let locale = NativeModules.I18nManager.localeIdentifier
 			if (!locale) locale = defaultLocale();
 			Setting.setValue('locale', closestSupportedLocale(locale));
-			if (Setting.value('env') === 'dev') Setting.setValue('sync.target', SyncTargetRegistry.nameToId('onedrive_dev'));
 			Setting.setValue('firstStart', 0)
 		}
 
@@ -578,8 +569,6 @@ class AppComponent extends React.Component {
 			Notes: { screen: NotesScreen },
 			Note: { screen: NoteScreen },
 			Folder: { screen: FolderScreen },
-			OneDriveLogin: { screen: OneDriveLoginScreen },
-			DropboxLogin: { screen: DropboxLoginScreen },
 			EncryptionConfig: { screen: EncryptionConfigScreen },
 			Log: { screen: LogScreen },
 			Status: { screen: StatusScreen },

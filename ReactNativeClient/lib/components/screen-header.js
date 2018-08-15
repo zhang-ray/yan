@@ -11,7 +11,6 @@ const Setting = require('lib/models/Setting.js');
 const Note = require('lib/models/Note.js');
 const Folder = require('lib/models/Folder.js');
 const { FileApi } = require('lib/file-api.js');
-const { FileApiDriverOneDrive } = require('lib/file-api-driver-onedrive.js');
 const { reg } = require('lib/registry.js');
 const { themeStyle } = require('lib/components/global-style.js');
 const { ItemList } = require('lib/components/ItemList.js');

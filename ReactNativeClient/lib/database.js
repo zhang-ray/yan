@@ -147,7 +147,6 @@ class Database {
 		if (type == 'syncTarget') {
 			if (s == 'memory') return 1;
 			if (s == 'filesystem') return 2;
-			if (s == 'onedrive') return 3;
 		}
 		throw new Error('Unknown enum type or value: ' + type + ', ' + s);
 	}
