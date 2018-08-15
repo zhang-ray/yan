@@ -7,7 +7,7 @@ const { sprintf } = require('sprintf-js');
 const ObjectUtils = require('lib/ObjectUtils');
 const { toTitleCase } = require('lib/string-utils.js');
 const { rtrimSlashes } = require('lib/path-utils.js');
-const { _, supportedLocalesToLanguages, defaultLocale } = require('lib/locale.js');
+const { _ } = require('lib/locale.js');
 const { shim } = require('lib/shim');
 
 class Setting extends BaseModel {
@@ -32,9 +32,6 @@ class Setting extends BaseModel {
 		this.metadata_ = {
 			'activeFolderId': { value: '', type: Setting.TYPE_STRING, public: false },
 			'firstStart': { value: true, type: Setting.TYPE_BOOL, public: false },
-			'locale': { value: defaultLocale(), type: Setting.TYPE_STRING, isEnum: true, public: true, label: () => _('Language'), options: () => {
-				return ObjectUtils.sortByValue(supportedLocalesToLanguages());
-			}},
 			'dateFormat': { value: Setting.DATE_FORMAT_1, type: Setting.TYPE_STRING, isEnum: true, public: true, label: () => _('Date format'), options: () => {
 				let options = {}
 				const now = (new Date('2017-01-30T12:00:00')).getTime();

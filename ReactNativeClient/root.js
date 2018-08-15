@@ -102,10 +102,6 @@ const generalMiddleware = store => next => async (action) => {
 		time.setTimeFormat(Setting.value('timeFormat'));
 	}
 
-	if (action.type == 'SETTING_UPDATE_ONE' && action.key == 'locale' || action.type == 'SETTING_UPDATE_ALL') {
-		setLocale(Setting.value('locale'));
-	}
-
 	if ((action.type == 'SETTING_UPDATE_ONE' && (action.key.indexOf('encryption.') === 0)) || (action.type == 'SETTING_UPDATE_ALL')) {
 		await EncryptionService.instance().loadMasterKeysFromSettings();
 		DecryptionWorker.instance().scheduleStart();
@@ -387,11 +383,6 @@ async function initialize(dispatch) {
 		reg.logger().info('Database is ready.');
 		reg.logger().info('Loading settings...');
 		await Setting.load();
-
-		if (Setting.value('firstStart')) {
-			let locale = NativeModules.I18nManager.localeIdentifier
-			Setting.setValue('firstStart', 0)
-		}
 
 		reg.logger().info('Sync target: ' + Setting.value('sync.target'));
 
