@@ -191,10 +191,6 @@ class Application extends BaseApplication {
 			this.updateTray();
 		}
 
-		if (action.type == 'SETTING_UPDATE_ONE' && action.key == 'style.editor.fontFamily' || action.type == 'SETTING_UPDATE_ALL') {
-			this.updateEditorFont();
-		}
-
 		if (['EVENT_NOTE_ALARM_FIELD_CHANGE', 'NOTE_DELETE'].indexOf(action.type) >= 0) {
 			await AlarmService.updateNoteNotification(action.id, action.type === 'NOTE_DELETE');
 		}
@@ -546,7 +542,6 @@ class Application extends BaseApplication {
 
 	updateEditorFont() {
 		const fontFamilies = [];
-		if (Setting.value('style.editor.fontFamily')) fontFamilies.push('"' + Setting.value('style.editor.fontFamily') + '"');
 		fontFamilies.push('monospace');
 
 		// The '*' and '!important' parts are necessary to make sure Russian text is displayed properly

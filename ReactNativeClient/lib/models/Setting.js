@@ -97,10 +97,8 @@ class Setting extends BaseModel {
 			'encryption.activeMasterKeyId': { value: '', type: Setting.TYPE_STRING, public: false },
 			'encryption.passwordCache': { value: {}, type: Setting.TYPE_OBJECT, public: false },
 			'style.zoom': {value: "100", type: Setting.TYPE_INT, public: true, appTypes: ['desktop'], label: () => _('Global zoom percentage'), minimum: "50", maximum: "500", step: "10"},
-			'style.editor.fontFamily': {value: "", type: Setting.TYPE_STRING, public: true, appTypes: ['desktop'], label: () => _('Editor font family'), description: () => _('This must be *monospace* font or it will not work properly. If the font is incorrect or empty, it will default to a generic monospace font.')},
 			'noteVisiblePanes': { value: ['editor', 'viewer'], type: Setting.TYPE_ARRAY, public: false, appTypes: ['desktop'] },
 			'sidebarVisibility': { value: true, type: Setting.TYPE_BOOL, public: false, appTypes: ['desktop'] },
-			'editor': { value: '', type: Setting.TYPE_STRING, public: true, appTypes: ['cli', 'desktop'], label: () => _('Text editor command'), description: () => _('The editor command (may include arguments) that will be used to open a note. If none is provided it will try to auto-detect the default editor.') },
 			'showAdvancedOptions': { value: false, type: Setting.TYPE_BOOL, public: true, appTypes: ['mobile' ], label: () => _('Show advanced options') },
 
 			'sync.2.path': { value: '', type: Setting.TYPE_STRING, show: (settings) => {
