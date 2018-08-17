@@ -340,8 +340,7 @@ const reducer = (state = defaultState, action) => {
 					}
 				}
 
-				//newNotes = Note.sortNotes(newNotes, state.notesOrder, newState.settings.uncompletedTodosOnTop);
-				newNotes = Note.sortNotes(newNotes, stateUtils.notesOrder(state.settings), newState.settings.uncompletedTodosOnTop);
+				newNotes = Note.sortNotes(newNotes, stateUtils.notesOrder(state.settings));
 				newState = Object.assign({}, state);
 				newState.notes = newNotes;
 

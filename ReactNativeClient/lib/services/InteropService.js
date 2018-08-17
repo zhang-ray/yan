@@ -26,35 +26,14 @@ class InteropService {
 
 		let importModules = [
 			{
-				format: 'jex',
-				fileExtensions: ['jex'],
-				sources: ['file'],
-				description: _('Joplin Export File'),
-			}, {
-				format: 'md',
-				fileExtensions: ['md', 'markdown'],
-				sources: ['file', 'directory'],
-				isNoteArchive: false, // Tells whether the file can contain multiple notes (eg. Enex or Jex format)
-				description: _('Markdown'),
-			}, {
 				format: 'raw',
 				sources: ['directory'],
 				description: _('Joplin Export Directory'),
-			}, {
-				format: 'enex',
-				fileExtensions: ['enex'],
-				sources: ['file'],
-				description: _('Evernote Export File'),
 			},
 		];
 
 		let exportModules = [
 			{
-				format: 'jex',
-				fileExtensions: ['jex'],
-				target: 'file',
-				description: _('Joplin Export File'),
-			}, {
 				format: 'raw',
 				target: 'directory',
 				description: _('Joplin Export Directory'),

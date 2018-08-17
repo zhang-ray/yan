@@ -151,11 +151,7 @@ class Note extends BaseItem {
 	}
 
 	// Note: sort logic must be duplicated in previews();
-	static sortNotes(notes, orders, uncompletedTodosOnTop) {
-		const noteOnTop = (note) => {
-			return uncompletedTodosOnTop && note.is_todo && !note.todo_completed;
-		}
-
+	static sortNotes(notes, orders) {
 		const noteFieldComp = (f1, f2) => {
 			if (f1 === f2) return 0;
 			return f1 < f2 ? -1 : +1;
@@ -176,9 +172,6 @@ class Note extends BaseItem {
 		}
 
 		return notes.sort((a, b) => {
-			if (noteOnTop(a) && !noteOnTop(b)) return -1;
-			if (!noteOnTop(a) && noteOnTop(b)) return +1;
-
 			let r = 0;
 
 			for (let i = 0; i < orders.length; i++) {
@@ -230,8 +223,6 @@ class Note extends BaseItem {
 		if (!options.conditions) options.conditions = [];
 		if (!options.conditionsParams) options.conditionsParams = [];
 		if (!options.fields) options.fields = this.previewFields();
-		if (!options.uncompletedTodosOnTop) options.uncompletedTodosOnTop = false;
-		if (!('showCompletedTodos' in options)) options.showCompletedTodos = true;
 
 		if (parentId == BaseItem.getClass('Folder').conflictFolderId()) {
 			options.conditions.push('is_conflict = 1');
@@ -258,42 +249,6 @@ class Note extends BaseItem {
 			} else if (options.itemTypes.indexOf('todo') < 0) {
 				hasTodos = false;
 			}
-		}
-
-		if (!options.showCompletedTodos) {
-			options.conditions.push('todo_completed <= 0');
-		}
-
-		if (options.uncompletedTodosOnTop && hasTodos) {
-			let cond = options.conditions.slice();
-			cond.push('is_todo = 1');
-			cond.push('(todo_completed <= 0 OR todo_completed IS NULL)');
-			let tempOptions = Object.assign({}, options);
-			tempOptions.conditions = cond;
-
-			let uncompletedTodos = await this.search(tempOptions);
-
-			cond = options.conditions.slice();
-			if (hasNotes && hasTodos) {
-				cond.push('(is_todo = 0 OR (is_todo = 1 AND todo_completed > 0))');
-			} else {
-				cond.push('(is_todo = 1 AND todo_completed > 0)');
-			}
-
-			tempOptions = Object.assign({}, options);
-			tempOptions.conditions = cond;
-			if ('limit' in tempOptions) tempOptions.limit -= uncompletedTodos.length;
-			let theRest = await this.search(tempOptions);
-
-			return uncompletedTodos.concat(theRest);
-		}
-
-		if (hasNotes && hasTodos) {
-
-		} else if (hasNotes) {
-			options.conditions.push('is_todo = 0');
-		} else if (hasTodos) {
-			options.conditions.push('is_todo = 1');
 		}
 
 		return this.search(options);

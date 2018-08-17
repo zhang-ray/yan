@@ -47,17 +47,7 @@ class NotesScreenComponent extends BaseScreenComponent {
 				text: makeCheckboxText(Setting.value('notes.sortOrder.reverse'), 'tick', '[ ' + Setting.settingMetadata('notes.sortOrder.reverse').label() + ' ]'),
 				id: { name: 'notes.sortOrder.reverse', value: !Setting.value('notes.sortOrder.reverse') },
 			});
-
-			buttons.push({
-				text: makeCheckboxText(Setting.value('uncompletedTodosOnTop'), 'tick', '[ ' + Setting.settingMetadata('uncompletedTodosOnTop').label() + ' ]'),
-				id: { name: 'uncompletedTodosOnTop', value: !Setting.value('uncompletedTodosOnTop') },
-			});
-
-			buttons.push({
-				text: makeCheckboxText(Setting.value('showCompletedTodos'), 'tick', '[ ' + Setting.settingMetadata('showCompletedTodos').label() + ' ]'),
-				id: { name: 'showCompletedTodos', value: !Setting.value('showCompletedTodos') },
-			});
-
+			
 			const r = await dialogs.pop(this, Setting.settingMetadata('notes.sortOrder.field').label(), buttons);
 			if (!r) return;
 
@@ -83,8 +73,6 @@ class NotesScreenComponent extends BaseScreenComponent {
 
 		let options = {
 			order: props.notesOrder,
-			uncompletedTodosOnTop: props.uncompletedTodosOnTop,
-			showCompletedTodos: props.showCompletedTodos,
 			caseInsensitive: true,
 		};
 
@@ -224,8 +212,6 @@ const NotesScreen = connect(
 			notesParentType: state.notesParentType,
 			notes: state.notes,
 			notesSource: state.notesSource,
-			uncompletedTodosOnTop: state.settings.uncompletedTodosOnTop,
-			showCompletedTodos: state.settings.showCompletedTodos,
 			theme: state.settings.theme,
 			noteSelectionEnabled: state.noteSelectionEnabled,
 			notesOrder: stateUtils.notesOrder(state.settings),

@@ -321,17 +321,6 @@ class Application extends BaseApplication {
 			}
 		}
 
-		exportItems.push({
-			label: 'PDF - ' + _('PDF File'),
-			screens: ['Main'],
-			click: async () => {
-				this.dispatch({
-					type: 'WINDOW_COMMAND',
-					name: 'exportPdf',
-				});
-			}
-		});
-
 		const template = [
 			{
 				label: _('File'),
@@ -343,16 +332,6 @@ class Application extends BaseApplication {
 						this.dispatch({
 							type: 'WINDOW_COMMAND',
 							name: 'newNote',
-						});
-					}
-				}, {
-					label: _('New to-do'),
-					accelerator: 'CommandOrControl+T',
-					screens: ['Main'],
-					click: () => {
-						this.dispatch({
-							type: 'WINDOW_COMMAND',
-							name: 'newTodo',
 						});
 					}
 				}, {
@@ -372,18 +351,6 @@ class Application extends BaseApplication {
 				}, {
 					label: _('Export'),
 					submenu: exportItems,
-				}, {
-					type: 'separator',
-				}, {
-					label: _('Print'),
-					accelerator: 'CommandOrControl+P',
-					screens: ['Main'],
-					click: () => {
-						this.dispatch({
-							type: 'WINDOW_COMMAND',
-							name: 'print',
-						});
-					}
 				}, {
 					type: 'separator',
 					platforms: ['darwin'],
@@ -451,16 +418,6 @@ class Application extends BaseApplication {
 					type: 'separator',
 					screens: ['Main'],
 				}, {
-					label: _('Edit in external editor'),
-					screens: ['Main'],
-					accelerator: 'CommandOrControl+E',
-					click: () => {
-						this.dispatch({
-							type: 'WINDOW_COMMAND',
-							name: 'commandStartExternalEditing',
-						});
-					},
-				}, {
 					label: _('Search in all the notes'),
 					screens: ['Main'],
 					accelerator: 'CommandOrControl+F',
@@ -507,22 +464,6 @@ class Application extends BaseApplication {
 					screens: ['Main'],
 					click: () => {
 						Setting.setValue('notes.sortOrder.reverse', !Setting.value('notes.sortOrder.reverse'));
-					},
-				}, {
-					label: Setting.settingMetadata('uncompletedTodosOnTop').label(),
-					type: 'checkbox',
-					checked: Setting.value('uncompletedTodosOnTop'),
-					screens: ['Main'],
-					click: () => {
-						Setting.setValue('uncompletedTodosOnTop', !Setting.value('uncompletedTodosOnTop'));
-					},
-				}, {
-					label: Setting.settingMetadata('showCompletedTodos').label(),
-					type: 'checkbox',
-					checked: Setting.value('showCompletedTodos'),
-					screens: ['Main'],
-					click: () => {
-						Setting.setValue('showCompletedTodos', !Setting.value('showCompletedTodos'));
 					},
 				}],
 			}, {

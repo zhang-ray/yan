@@ -193,8 +193,6 @@ class BaseApplication {
 
 		let options = {
 			order: stateUtils.notesOrder(state.settings),
-			uncompletedTodosOnTop: Setting.value('uncompletedTodosOnTop'),
-			showCompletedTodos: Setting.value('showCompletedTodos'),
 			caseInsensitive: true,
 		};
 
@@ -275,11 +273,11 @@ class BaseApplication {
 			refreshNotes = true;
 		}
 
-		if (this.hasGui() && ((action.type == 'SETTING_UPDATE_ONE' && action.key == 'uncompletedTodosOnTop') || action.type == 'SETTING_UPDATE_ALL')) {
+		if (this.hasGui() && ((action.type == 'SETTING_UPDATE_ONE') || action.type == 'SETTING_UPDATE_ALL')) {
 			refreshNotes = true;
 		}
 
-		if (this.hasGui() && ((action.type == 'SETTING_UPDATE_ONE' && action.key == 'showCompletedTodos') || action.type == 'SETTING_UPDATE_ALL')) {
+		if (this.hasGui() && ((action.type == 'SETTING_UPDATE_ONE') || action.type == 'SETTING_UPDATE_ALL')) {
 			refreshNotes = true;
 		}
 
@@ -479,6 +477,7 @@ class BaseApplication {
 
 			if (Setting.value('env') === 'dev') {
 				Setting.setValue('showTrayIcon', 0);
+				Setting.setValue('autoUpdateEnabled', 0);
 			}
 
 			Setting.setValue('firstStart', 0);

@@ -1116,35 +1116,6 @@ class NoteTextComponent extends React.Component {
 			type: 'separator',
 		});
 
-		if (note && this.props.watchedNoteFiles.indexOf(note.id) >= 0) {
-			toolbarItems.push({
-				tooltip: _('Click to stop external editing'),
-				title: _('Watching...'),
-				iconName: 'fa-external-link',
-				onClick: () => { return this.commandStopExternalEditing(); },
-			});
-		} else {
-			toolbarItems.push({
-				tooltip: _('Edit in external editor'),
-				iconName: 'fa-external-link',
-				onClick: () => { return this.commandStartExternalEditing(); },
-			});
-		}
-
-		if (note.is_todo) {
-			const item = {
-				iconName: 'fa-clock-o',
-				enabled: !note.todo_completed,
-				onClick: () => { return this.commandSetAlarm(); },
-			}
-			if (Note.needAlarm(note)) {
-				item.title = time.formatMsToLocal(note.todo_due);
-			} else {
-				item.tooltip = _('Set alarm');
-			}
-			toolbarItems.push(item);
-		}
-
 		return toolbarItems;
 	}
 

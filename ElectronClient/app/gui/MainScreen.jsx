@@ -324,13 +324,6 @@ class MainScreenComponent extends React.Component {
 		const headerItems = [];
 
 		headerItems.push({
-			title: _('Toggle sidebar'),
-			iconName: 'fa-bars',
-			iconRotation: this.props.sidebarVisibility ? 0 : 90,
-			onClick: () => { this.doCommand({ name: 'toggleSidebar'}) }
-		});
-
-		headerItems.push({
 			title: _('New note'),
 			iconName: 'fa-file-o',
 			enabled: !!folders.length && !onConflictFolder,
