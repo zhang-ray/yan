@@ -3,6 +3,7 @@ const { shim } = require('lib/shim.js');
 const { GeolocationNode } = require('lib/geolocation-node.js');
 const { FileApiDriverLocal } = require('lib/file-api-driver-local.js');
 const { time } = require('lib/time-utils.js');
+const { setLocale, defaultLocale, closestSupportedLocale } = require('lib/locale.js');
 const { FsDriverNode } = require('lib/fs-driver-node.js');
 const mimeUtils = require('lib/mime-utils.js').mime;
 const Note = require('lib/models/Note.js');
@@ -24,6 +25,17 @@ function shimInit() {
 	shim.randomBytes = async (count) => {
 		const buffer = require('crypto').randomBytes(count);
 		return Array.from(buffer);
+	}
+
+	shim.detectAndSetLocale = function (Setting) {
+		let locale = process.env.LANG;
+		if (!locale) locale = defaultLocale();
+		locale = locale.split('.');
+		locale = locale[0];
+		locale = closestSupportedLocale(locale);
+		Setting.setValue('locale', locale);
+		setLocale(locale);
+		return locale;
 	}
 
 	shim.writeImageToFile = async function(nativeImage, mime, targetPath) {

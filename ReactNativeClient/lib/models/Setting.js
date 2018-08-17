@@ -7,7 +7,7 @@ const { sprintf } = require('sprintf-js');
 const ObjectUtils = require('lib/ObjectUtils');
 const { toTitleCase } = require('lib/string-utils.js');
 const { rtrimSlashes } = require('lib/path-utils.js');
-const { _ } = require('lib/locale.js');
+const { _, supportedLocalesToLanguages, defaultLocale } = require('lib/locale.js');
 const { shim } = require('lib/shim');
 
 class Setting extends BaseModel {
@@ -32,6 +32,9 @@ class Setting extends BaseModel {
 		this.metadata_ = {
 			'activeFolderId': { value: '', type: Setting.TYPE_STRING, public: false },
 			'firstStart': { value: true, type: Setting.TYPE_BOOL, public: false },
+			'locale': { value: defaultLocale(), type: Setting.TYPE_STRING, isEnum: true, public: true, label: () => _('Language'), options: () => {
+				return ObjectUtils.sortByValue(supportedLocalesToLanguages());
+			}},
 			'dateFormat': { value: Setting.DATE_FORMAT_1, type: Setting.TYPE_STRING, isEnum: true, public: true, label: () => _('Date format'), options: () => {
 				let options = {}
 				const now = (new Date('2017-01-30T12:00:00')).getTime();
@@ -99,17 +102,6 @@ class Setting extends BaseModel {
 			'style.editor.fontFamily': {value: "", type: Setting.TYPE_STRING, public: true, appTypes: ['desktop'], label: () => _('Editor font family'), description: () => _('This must be *monospace* font or it will not work properly. If the font is incorrect or empty, it will default to a generic monospace font.')},
 			'autoUpdateEnabled': { value: true, type: Setting.TYPE_BOOL, public: true, appTypes: ['desktop'], label: () => _('Automatically update the application') },
 			'clipperServer.autoStart': { value: false, type: Setting.TYPE_BOOL, public: false },
-			'sync.interval': { value: 300, type: Setting.TYPE_INT, isEnum: true, public: true, label: () => _('Synchronisation interval'), options: () => {
-				return {
-					0: _('Disabled'),
-					300: _('%d minutes', 5),
-					600: _('%d minutes', 10),
-					1800: _('%d minutes', 30),
-					3600: _('%d hour', 1),
-					43200: _('%d hours', 12),
-					86400: _('%d hours', 24),
-				};
-			}},
 			'noteVisiblePanes': { value: ['editor', 'viewer'], type: Setting.TYPE_ARRAY, public: false, appTypes: ['desktop'] },
 			'sidebarVisibility': { value: true, type: Setting.TYPE_BOOL, public: false, appTypes: ['desktop'] },
 			'editor': { value: '', type: Setting.TYPE_STRING, public: true, appTypes: ['cli', 'desktop'], label: () => _('Text editor command'), description: () => _('The editor command (may include arguments) that will be used to open a note. If none is provided it will try to auto-detect the default editor.') },

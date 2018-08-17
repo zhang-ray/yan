@@ -175,12 +175,120 @@ codeToCountry_["BR"] = "Brasil";
 codeToCountry_["CR"] = "Costa Rica";
 codeToCountry_["CN"] = "中国";
 
+let supportedLocales_ = null;
 
 let loadedLocales_ = {};
 
 const defaultLocale_ = 'en_GB';
 
 let currentLocale_ = defaultLocale_;
+
+function defaultLocale() {
+	return defaultLocale_;
+}
+
+function supportedLocales() {
+	if (!supportedLocales_) supportedLocales_ = require('../locales/index.js').locales;
+
+	let output = [];
+	for (let n in supportedLocales_) {
+		if (!supportedLocales_.hasOwnProperty(n)) continue;
+		output.push(n);
+	}
+	return output;
+}
+
+function supportedLocalesToLanguages() {
+	const locales = supportedLocales();
+	let output = {};
+	for (let i = 0; i < locales.length; i++) {
+		const locale = locales[i];
+		output[locale] = countryDisplayName(locale);
+	}
+	return output;
+}
+
+function closestSupportedLocale(canonicalName, defaultToEnglish = true) {
+	const locales = supportedLocales();
+	if (locales.indexOf(canonicalName) >= 0) return canonicalName;
+
+	const requiredLanguage = languageCodeOnly(canonicalName).toLowerCase();
+
+	for (let i = 0; i < locales.length; i++) {
+		const locale = locales[i];
+		const language = locale.split('_')[0];
+		if (requiredLanguage == language) return locale;
+	}
+
+	return defaultToEnglish ? 'en_GB' : null;
+}
+
+function countryName(countryCode) {
+	return codeToCountry_[countryCode] ? codeToCountry_[countryCode] : '';
+}
+
+function languageNameInEnglish(languageCode) {
+	return codeToLanguageE_[languageCode] ? codeToLanguageE_[languageCode] : '';
+}
+
+function languageName(languageCode, defaultToEnglish = true) {
+	if (codeToLanguage_[languageCode]) return codeToLanguage_[languageCode];
+	if (defaultToEnglish) return languageNameInEnglish(languageCode)
+	return '';
+}
+
+function languageCodeOnly(canonicalName) {
+	if (canonicalName.length < 2) return canonicalName;
+	return canonicalName.substr(0, 2);
+}
+
+
+function countryCodeOnly(canonicalName) {
+	if (canonicalName.length <= 2) return "";
+	return canonicalName.substr(3);
+}
+
+function countryDisplayName(canonicalName) {
+	const languageCode = languageCodeOnly(canonicalName);
+	const countryCode = countryCodeOnly(canonicalName);
+
+	let output = languageName(languageCode);
+
+	let extraString;
+
+	if (countryCode) {
+		if (languageCode == "zh" && countryCode == "CN") {
+			extraString = "简体"; // "Simplified" in "Simplified Chinese"
+		} else {
+			extraString = countryName(countryCode);
+		}
+	}
+
+	if (languageCode == "zh" && (countryCode == "" || countryCode == "TW")) extraString = "繁體"; // "Traditional" in "Traditional Chinese"
+
+	if (extraString) output += " (" + extraString + ")";
+
+	return output;
+}
+
+function localeStrings(canonicalName) {
+	const locale = closestSupportedLocale(canonicalName);
+	
+	if (loadedLocales_[locale]) return loadedLocales_[locale];
+
+	loadedLocales_[locale] = Object.assign({}, supportedLocales_[locale]); 
+
+	return loadedLocales_[locale];
+}
+
+function setLocale(canonicalName) {
+	if (currentLocale_ == canonicalName) return;
+	currentLocale_ = closestSupportedLocale(canonicalName);
+}
+
+function languageCode() {
+	return languageCodeOnly(currentLocale_);
+}
 
 function _(s, ...args) {
 	let strings = localeStrings(currentLocale_);
@@ -193,4 +301,4 @@ function _(s, ...args) {
 	}
 }
 
-module.exports = { _ };
+module.exports = { _, supportedLocales, countryDisplayName, localeStrings, setLocale, supportedLocalesToLanguages, defaultLocale, closestSupportedLocale, languageCode, countryCodeOnly };

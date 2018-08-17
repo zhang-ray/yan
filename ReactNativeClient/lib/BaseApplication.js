@@ -18,7 +18,7 @@ const { time } = require('lib/time-utils.js');
 const BaseSyncTarget = require('lib/BaseSyncTarget.js');
 const { fileExtension } = require('lib/path-utils.js');
 const { shim } = require('lib/shim.js');
-const { _, setLocale} = require('lib/locale.js');
+const { _, setLocale, defaultLocale, closestSupportedLocale } = require('lib/locale.js');
 const reduxSharedMiddleware = require('lib/components/shared/reduxSharedMiddleware');
 const os = require('os');
 const fs = require('fs-extra');
@@ -480,7 +480,6 @@ class BaseApplication {
 			if (Setting.value('env') === 'dev') {
 				Setting.setValue('showTrayIcon', 0);
 				Setting.setValue('autoUpdateEnabled', 0);
-				Setting.setValue('sync.interval', 3600);
 			}
 
 			Setting.setValue('firstStart', 0);

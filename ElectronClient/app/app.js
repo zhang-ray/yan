@@ -6,7 +6,7 @@ const Setting = require('lib/models/Setting.js');
 const { shim } = require('lib/shim.js');
 const BaseModel = require('lib/BaseModel.js');
 const MasterKey = require('lib/models/MasterKey');
-const { _ } = require('lib/locale.js');
+const { _, setLocale } = require('lib/locale.js');
 const os = require('os');
 const fs = require('fs-extra');
 const Tag = require('lib/models/Tag.js');
@@ -180,6 +180,14 @@ class Application extends BaseApplication {
 	}
 
 	async generalMiddleware(store, next, action) {
+		if (action.type == 'SETTING_UPDATE_ONE' && action.key == 'locale' || action.type == 'SETTING_UPDATE_ALL') {
+			setLocale(Setting.value('locale'));
+			// The bridge runs within the main process, with its own instance of locale.js
+			// so it needs to be set too here.
+			bridge().setLocale(Setting.value('locale'));
+			this.refreshMenu();
+		}
+
 		if (action.type == 'SETTING_UPDATE_ONE' && action.key == 'showTrayIcon' || action.type == 'SETTING_UPDATE_ALL') {
 			this.updateTray();
 		}
@@ -521,33 +529,6 @@ class Application extends BaseApplication {
 			}, {
 				label: _('Tools'),
 				submenu: [{
-					label: _('Synchronisation status'),
-					click: () => {
-						this.dispatch({
-							type: 'NAV_GO',
-							routeName: 'Status',
-						});
-					}
-				}, {
-					type: 'separator',
-					screens: ['Main'],
-				},{
-					label: _('Web clipper options'),
-					click: () => {
-						this.dispatch({
-							type: 'NAV_GO',
-							routeName: 'ClipperConfig',
-						});
-					}
-				},{
-					label: _('Encryption options'),
-					click: () => {
-						this.dispatch({
-							type: 'NAV_GO',
-							routeName: 'EncryptionConfig',
-						});
-					}
-				},{
 					label: _('General Options'),
 					accelerator: 'CommandOrControl+,',
 					click: () => {
