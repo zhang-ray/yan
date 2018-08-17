@@ -538,38 +538,6 @@ class Application extends BaseApplication {
 						});
 					}
 				}],
-			}, {
-				label: _('Help'),
-				submenu: [{
-					label: _('Website and documentation'),
-					accelerator: 'F1',
-					click () { bridge().openExternal('https://joplin.cozic.net') }
-				}, {
-					label: _('Make a donation'),
-					click () { bridge().openExternal('https://joplin.cozic.net/donate') }
-				}, {
-					label: _('Check for updates...'),
-					click: () => {
-						bridge().checkForUpdates(false, bridge().window(), this.checkForUpdateLoggerPath());
-					}
-				}, {
-					type: 'separator',
-					screens: ['Main'],
-				}, {
-					label: _('About Joplin'),
-					click: () => {
-						const p = packageInfo;
-						let message = [
-							p.description,
-							'',
-							'Copyright © 2016-2018 Laurent Cozic',
-							_('%s %s (%s, %s)', p.name, p.version, Setting.value('env'), process.platform),
-						];
-						bridge().showInfoMessageBox(message.join('\n'), {
-							icon: bridge().electronApp().buildDir() + '/icons/32x32.png',
-						});
-					}
-				}]
 			},
 		];
 
