@@ -150,12 +150,6 @@ class Note extends BaseItem {
 		return output;
 	}
 
-	static newTodo(parentId = '') {
-		let output = this.new(parentId);
-		output.is_todo = true;
-		return output;
-	}
-
 	// Note: sort logic must be duplicated in previews();
 	static sortNotes(notes, orders, uncompletedTodosOnTop) {
 		const noteOnTop = (note) => {

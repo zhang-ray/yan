@@ -74,13 +74,6 @@ class MainScreenComponent extends React.Component {
 			}
 
 			await createNewNote(null, false);
-		} else if (command.name === 'newTodo') {
-			if (!this.props.folders.length) {
-				bridge().showErrorMessageBox(_('Please create a notebook first'));
-				return;
-			}
-
-			await createNewNote(null, true);
 		} else if (command.name === 'newNotebook') {
 			this.setState({
 				promptOptions: {
@@ -342,13 +335,6 @@ class MainScreenComponent extends React.Component {
 			iconName: 'fa-file-o',
 			enabled: !!folders.length && !onConflictFolder,
 			onClick: () => { this.doCommand({ name: 'newNote' }) },
-		});
-
-		headerItems.push({
-			title: _('New to-do'),
-			iconName: 'fa-check-square-o',
-			enabled: !!folders.length && !onConflictFolder,
-			onClick: () => { this.doCommand({ name: 'newTodo' }) },
 		});
 
 		headerItems.push({
