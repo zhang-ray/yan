@@ -1019,10 +1019,6 @@ class NoteTextComponent extends React.Component {
 			return this.commandAttachFile();
 		}}));
 
-		menu.append(new MenuItem({label: _('Tags'), click: async () => {
-			return this.commandSetTags();
-		}}));
-
 		if (!!note.is_todo) {
 			menu.append(new MenuItem({label: _('Set alarm'), click: async () => {
 				return this.commandSetAlarm();
@@ -1134,12 +1130,6 @@ class NoteTextComponent extends React.Component {
 				onClick: () => { return this.commandStartExternalEditing(); },
 			});
 		}
-
-		toolbarItems.push({
-			tooltip: _('Tags'),
-			iconName: 'fa-tags',
-			onClick: () => { return this.commandSetTags(); },
-		});
 
 		if (note.is_todo) {
 			const item = {

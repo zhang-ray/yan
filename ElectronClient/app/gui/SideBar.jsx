@@ -411,9 +411,7 @@ class SideBarComponent extends React.Component {
 			const folderItems = shared.renderFolders(this.props, this.folderItem.bind(this));
 			items = items.concat(folderItems);
 		}
-
-		items.push(this.makeHeader("tagHeader", _("Tags"), "fa-tags"));
-
+		
 		if (this.props.tags.length) {
 			const tagItems = shared.renderTags(this.props, this.tagItem.bind(this));
 
