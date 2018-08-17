@@ -476,7 +476,6 @@ class NoteScreenComponent extends BaseScreenComponent {
 		}
 
 		output.push({ title: _('Share'), onPress: () => { this.share_onPress(); } });
-		if (isSaved) output.push({ title: _('Tags'), onPress: () => { this.tags_onPress(); } });
 		output.push({ title: isTodo ? _('Convert to note') : _('Convert to todo'), onPress: () => { this.toggleIsTodo_onPress(); } });
 		if (isSaved) output.push({ title: _('Copy Markdown link'), onPress: () => { this.copyMarkdownLink_onPress(); } });
 		output.push({ isDivider: true });

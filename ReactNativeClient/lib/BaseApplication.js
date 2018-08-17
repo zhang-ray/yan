@@ -479,7 +479,6 @@ class BaseApplication {
 
 			if (Setting.value('env') === 'dev') {
 				Setting.setValue('showTrayIcon', 0);
-				Setting.setValue('autoUpdateEnabled', 0);
 			}
 
 			Setting.setValue('firstStart', 0);

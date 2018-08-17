@@ -673,21 +673,6 @@ class Application extends BaseApplication {
 
 		if (shim.isLinux()) bridge().setAllowPowerSaveBlockerToggle(true);
 
-		// Note: Auto-update currently doesn't work in Linux: it downloads the update
-		// but then doesn't install it on exit.
-		if (shim.isWindows() || shim.isMac()) {
-			const runAutoUpdateCheck = () => {
-				if (Setting.value('autoUpdateEnabled')) {
-					bridge().checkForUpdates(true, bridge().window(), this.checkForUpdateLoggerPath());
-				}
-			}
-
-			// Initial check on startup
-			setTimeout(() => { runAutoUpdateCheck() }, 5000);
-			// Then every x hours
-			setInterval(() => { runAutoUpdateCheck() }, 12 * 60 * 60 * 1000);
-		}
-
 		this.updateTray();
 
 		setTimeout(() => {
