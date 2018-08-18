@@ -72,10 +72,6 @@ class FileApi {
 		return this.driver_;
 	}
 
-	setSyncTargetId(v) {
-		this.syncTargetId_ = v;
-	}
-
 	syncTargetId() {
 		if (this.syncTargetId_ === null) throw new Error('syncTargetId has not been set!!');
 		return this.syncTargetId_;

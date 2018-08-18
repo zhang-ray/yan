@@ -1,7 +1,6 @@
 const React = require("react");
 const { connect } = require("react-redux");
 const shared = require("lib/components/shared/side-menu-shared.js");
-const { Synchronizer } = require("lib/synchronizer.js");
 const BaseModel = require("lib/BaseModel.js");
 const Folder = require("lib/models/Folder.js");
 const Note = require("lib/models/Note.js");
@@ -421,22 +420,6 @@ class SideBarComponent extends React.Component {
 				</div>
 			);
 		}
-
-		let lines = Synchronizer.reportToLines(this.props.syncReport);
-		const syncReportText = [];
-		for (let i = 0; i < lines.length; i++) {
-			syncReportText.push(
-				<div key={i} style={{ wordWrap: "break-word", width: "100%" }}>
-					{lines[i]}
-				</div>
-			);
-		}
-		
-		items.push(
-			<div style={this.style().syncReport} key="sync_report">
-				{syncReportText}
-			</div>
-		);
 
 		return (
 			<div className="side-bar" style={style}>

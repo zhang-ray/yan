@@ -15,7 +15,6 @@ const { splitCommandString } = require('lib/string-utils.js');
 const { sprintf } = require('sprintf-js');
 const { reg } = require('lib/registry.js');
 const { time } = require('lib/time-utils.js');
-const BaseSyncTarget = require('lib/BaseSyncTarget.js');
 const { fileExtension } = require('lib/path-utils.js');
 const { shim } = require('lib/shim.js');
 const { _, setLocale, defaultLocale, closestSupportedLocale } = require('lib/locale.js');
@@ -25,17 +24,9 @@ const fs = require('fs-extra');
 const JoplinError = require('lib/JoplinError');
 const EventEmitter = require('events');
 const syswidecas = require('syswide-cas');
-const SyncTargetRegistry = require('lib/SyncTargetRegistry.js');
-const SyncTargetFilesystem = require('lib/SyncTargetFilesystem.js');
-const SyncTargetNextcloud = require('lib/SyncTargetNextcloud.js');
-const SyncTargetWebDAV = require('lib/SyncTargetWebDAV.js');
 const EncryptionService = require('lib/services/EncryptionService');
 const DecryptionWorker = require('lib/services/DecryptionWorker');
 const BaseService = require('lib/services/BaseService');
-
-SyncTargetRegistry.addClass(SyncTargetFilesystem);
-SyncTargetRegistry.addClass(SyncTargetNextcloud);
-SyncTargetRegistry.addClass(SyncTargetWebDAV);
 
 class BaseApplication {
 
@@ -364,7 +355,6 @@ class BaseApplication {
 		BaseModel.dispatch = this.store().dispatch;
 		FoldersScreenUtils.dispatch = this.store().dispatch;
 		reg.dispatch = this.store().dispatch;
-		BaseSyncTarget.dispatch = this.store().dispatch;
 		DecryptionWorker.instance().dispatch = this.store().dispatch;
 	}
 

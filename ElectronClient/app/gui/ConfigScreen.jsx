@@ -7,7 +7,6 @@ const { Header } = require('./Header.min.js');
 const { themeStyle } = require('../theme.js');
 const pathUtils = require('lib/path-utils.js');
 const { _ } = require('lib/locale.js');
-const SyncTargetRegistry = require('lib/SyncTargetRegistry');
 const shared = require('lib/components/shared/config-shared.js');
 
 class ConfigScreenComponent extends React.Component {

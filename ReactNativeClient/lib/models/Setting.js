@@ -1,7 +1,6 @@
 const BaseModel = require('lib/BaseModel.js');
 const { Database } = require('lib/database.js');
 const { Logger } = require('lib/logger.js');
-const SyncTargetRegistry = require('lib/SyncTargetRegistry.js');
 const { time } = require('lib/time-utils.js');
 const { sprintf } = require('sprintf-js');
 const ObjectUtils = require('lib/ObjectUtils');
@@ -101,37 +100,6 @@ class Setting extends BaseModel {
 			'sidebarVisibility': { value: true, type: Setting.TYPE_BOOL, public: false, appTypes: ['desktop'] },
 			'showAdvancedOptions': { value: false, type: Setting.TYPE_BOOL, public: true, appTypes: ['mobile' ], label: () => _('Show advanced options') },
 
-			'sync.2.path': { value: '', type: Setting.TYPE_STRING, show: (settings) => {
-				try {
-					return settings['sync.target'] == SyncTargetRegistry.nameToId('filesystem')
-				} catch (error) {
-					return false;
-				}
-			}, filter: (value) => {
-				return value ? rtrimSlashes(value) : '';
-			}, public: true, label: () => _('Directory to synchronise with (absolute path)'), description: (appType) => { return appType !== 'cli' ? null : _('The path to synchronise with when file system synchronisation is enabled. See `sync.target`.'); } },
-
-			'sync.5.path': { value: '', type: Setting.TYPE_STRING, show: (settings) => { return settings['sync.target'] == SyncTargetRegistry.nameToId('nextcloud') }, public: true, label: () => _('Nextcloud WebDAV URL') },
-			'sync.5.username': { value: '', type: Setting.TYPE_STRING, show: (settings) => { return settings['sync.target'] == SyncTargetRegistry.nameToId('nextcloud') }, public: true, label: () => _('Nextcloud username') },
-			'sync.5.password': { value: '', type: Setting.TYPE_STRING, show: (settings) => { return settings['sync.target'] == SyncTargetRegistry.nameToId('nextcloud') }, public: true, label: () => _('Nextcloud password'), secure: true },
-
-			'sync.6.path': { value: '', type: Setting.TYPE_STRING, show: (settings) => { return settings['sync.target'] == SyncTargetRegistry.nameToId('webdav') }, public: true, label: () => _('WebDAV URL') },
-			'sync.6.username': { value: '', type: Setting.TYPE_STRING, show: (settings) => { return settings['sync.target'] == SyncTargetRegistry.nameToId('webdav') }, public: true, label: () => _('WebDAV username') },
-			'sync.6.password': { value: '', type: Setting.TYPE_STRING, show: (settings) => { return settings['sync.target'] == SyncTargetRegistry.nameToId('webdav') }, public: true, label: () => _('WebDAV password'), secure: true },
-
-			'sync.3.auth': { value: '', type: Setting.TYPE_STRING, public: false },
-			'sync.4.auth': { value: '', type: Setting.TYPE_STRING, public: false },
-			'sync.7.auth': { value: '', type: Setting.TYPE_STRING, public: false },
-			'sync.1.context': { value: '', type: Setting.TYPE_STRING, public: false },
-			'sync.2.context': { value: '', type: Setting.TYPE_STRING, public: false },
-			'sync.3.context': { value: '', type: Setting.TYPE_STRING, public: false },
-			'sync.4.context': { value: '', type: Setting.TYPE_STRING, public: false },
-			'sync.5.context': { value: '', type: Setting.TYPE_STRING, public: false },
-			'sync.6.context': { value: '', type: Setting.TYPE_STRING, public: false },
-			'sync.7.context': { value: '', type: Setting.TYPE_STRING, public: false },
-
-			'net.customCertificates': { value: '', type: Setting.TYPE_STRING, show: (settings) => { return [SyncTargetRegistry.nameToId('nextcloud'), SyncTargetRegistry.nameToId('webdav')].indexOf(settings['sync.target']) >= 0 }, public: true, appTypes: ['desktop', 'cli'], label: () => _('Custom TLS certificates'), description: () => _('Comma-separated list of paths to directories to load the certificates from, or path to individual cert files. For example: /my/cert_dir, /other/custom.pem. Note that if you make changes to the TLS settings, you must save your changes before clicking on "Check synchronisation configuration".') },
-			'net.ignoreTlsErrors': { value: false, type: Setting.TYPE_BOOL, show: (settings) => { return [SyncTargetRegistry.nameToId('nextcloud'), SyncTargetRegistry.nameToId('webdav')].indexOf(settings['sync.target']) >= 0 }, public: true, appTypes: ['desktop', 'cli'], label: () => _('Ignore TLS certificate errors') },
 		};
 
 		return this.metadata_;

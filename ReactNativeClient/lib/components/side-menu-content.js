@@ -7,7 +7,6 @@ const Note = require('lib/models/Note.js');
 const Folder = require('lib/models/Folder.js');
 const Setting = require('lib/models/Setting.js');
 const { FoldersScreenUtils } = require('lib/folders-screen-utils.js');
-const { Synchronizer } = require('lib/synchronizer.js');
 const { reg } = require('lib/registry.js');
 const { _ } = require('lib/locale.js');
 const { globalStyle, themeStyle } = require('lib/components/global-style.js');
@@ -200,17 +199,13 @@ class SideMenuContentComponent extends Component {
 
 			if (tagItems.length) items.push(this.makeDivider('divider_2'));
 		}
-
-		let lines = Synchronizer.reportToLines(this.props.syncReport);
-		const syncReportText = lines.join("\n");
-
+		
 		let decryptionReportText = '';
 		if (this.props.decryptionWorker && this.props.decryptionWorker.state !== 'idle' && this.props.decryptionWorker.itemCount) {
 			decryptionReportText = _('Decrypting items: %d/%d', this.props.decryptionWorker.itemIndex + 1, this.props.decryptionWorker.itemCount);
 		}
 
 		let fullReport = [];
-		if (syncReportText) fullReport.push(syncReportText);
 		if (fullReport.length) fullReport.push('');
 		if (decryptionReportText) fullReport.push(decryptionReportText);
 

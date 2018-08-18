@@ -64,41 +64,4 @@ shared.renderSearches = function(props, renderItem) {
 	return searchItems;
 }
 
-shared.synchronize_press = async function(comp) {
-	const Setting = require('lib/models/Setting.js');
-	const { reg } = require('lib/registry.js');
-
-	const action = comp.props.syncStarted ? 'cancel' : 'start';
-
-	if (!await reg.syncTarget().isAuthenticated()) {
-		if (reg.syncTarget().authRouteName()) {
-			comp.props.dispatch({
-				type: 'NAV_GO',
-				routeName: reg.syncTarget().authRouteName(),
-			});
-			return 'auth';
-		}
-
-		reg.logger().info('Not authentified with sync target - please check your credential.');
-		return 'error';
-	}
-
-	let sync = null;
-	try {
-		sync = await reg.syncTarget().synchronizer();
-	} catch (error) {
-		reg.logger().info('Could not acquire synchroniser:');
-		reg.logger().info(error);
-		return 'error';
-	}
-
-	if (action == 'cancel') {
-		sync.cancel();
-		return 'cancel';
-	} else {
-		reg.scheduleSync(0);
-		return 'sync';
-	}
-}
-
 module.exports = shared;

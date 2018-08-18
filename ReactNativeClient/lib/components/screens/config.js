@@ -8,7 +8,6 @@ const { Dropdown } = require('lib/components/Dropdown.js');
 const { themeStyle } = require('lib/components/global-style.js');
 const Setting = require('lib/models/Setting.js');
 const shared = require('lib/components/shared/config-shared.js');
-const SyncTargetRegistry = require('lib/SyncTargetRegistry');
 
 class ConfigScreenComponent extends BaseScreenComponent {
 	
@@ -185,27 +184,6 @@ class ConfigScreenComponent extends BaseScreenComponent {
 		const settings = this.state.settings;
 
 		const settingComps = shared.settingsToComponents(this, 'mobile', settings);
-
-		const syncTargetMd = SyncTargetRegistry.idToMetadata(settings['sync.target']);
-
-		if (syncTargetMd.supportsConfigCheck) {
-			const messages = shared.checkSyncConfigMessages(this);
-			const statusComp = !messages.length ? null : (
-				<View style={{flex:1, marginTop: 10}}>
-					<Text style={this.styles().descriptionText}>{messages[0]}</Text>
-					{messages.length >= 1 ? (<View style={{marginTop:10}}><Text style={this.styles().descriptionText}>{messages[1]}</Text></View>) : null}
-				</View>);
-
-			settingComps.push(
-				<View key="check_sync_config_button" style={this.styles().settingContainer}>
-					<View style={{flex:1, flexDirection: 'column'}}>
-						<View style={{flex:1}}>
-							<Button title={_('Check synchronisation configuration')} onPress={this.checkSyncConfig_}/>
-						</View>
-						{ statusComp }
-					</View>
-				</View>);
-		}
 
 		if (Platform.OS === 'android' && Platform.Version >= 23) {
 			// Note: `PermissionsAndroid` doesn't work so we have to ask the user to manually
