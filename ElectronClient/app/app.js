@@ -604,6 +604,7 @@ class Application extends BaseApplication {
 
 		ResourceService.runInBackground();
 
+		// backup periodically
 		setInterval(() => {
 			const ioService = new InteropService();
 			const ioModules = ioService.modules();
@@ -615,7 +616,7 @@ class Application extends BaseApplication {
 					InteropServiceHelper.export(this.dispatch.bind(this), module, null, currentBackupDir);
 				}
 			}
-		}, 1000 * 60 * 1);
+		}, 1000 * 60 *   10/*min*/);
 		
 	}
 
