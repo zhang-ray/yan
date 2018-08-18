@@ -4,19 +4,19 @@ const InteropService = require('lib/services/InteropService');
 
 class InteropServiceHelper {
 
-	static async export(dispatch, module, options = null) {
+	static async export(dispatch, module, options = null, path = null) {
 		if (!options) options = {};
 
-		let path = null;
-
-		if (module.target === 'file') {
-			path = bridge().showSaveDialog({
-				filters: [{ name: module.description, extensions: module.fileExtension}]
-			});
-		} else {
-			path = bridge().showOpenDialog({
-				properties: ['openDirectory', 'createDirectory'],
-			});
+		if (!path) {
+			if (module.target === 'file') {
+				path = bridge().showSaveDialog({
+					filters: [{ name: module.description, extensions: module.fileExtension}]
+				});
+			} else {
+				path = bridge().showOpenDialog({
+					properties: ['openDirectory', 'createDirectory'],
+				});
+			}
 		}
 
 		if (!path || (Array.isArray(path) && !path.length)) return;

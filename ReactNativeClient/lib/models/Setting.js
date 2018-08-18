@@ -541,13 +541,14 @@ Setting.TIME_FORMAT_2 = 'h:mm A';
 Setting.constants_ = {
 	env: 'SET_ME',
 	isDemo: false,
-	appName: 'joplin',
+	appName: 'yan',
 	appId: 'SET_ME', // Each app should set this identifier
 	appType: 'SET_ME', // 'cli' or 'mobile'
 	resourceDir: '',
 	profileDir: '',
 	tempDir: '',
 	openDevTools: false,
+	backupDir: '',
 }
 
 Setting.autoSaveEnabled = true;

@@ -392,6 +392,12 @@ class BaseApplication {
 		return os.homedir() + '/.config/' + Setting.value('appName');
 	}
 
+
+	determineBackupDir(initArgs){
+		return os.homedir() + '/.backup/' + Setting.value('appName');
+	}
+
+
 	async testing() {
 		const markdownUtils = require('lib/markdownUtils');
 		const ClipperServer = require('lib/ClipperServer');
@@ -422,25 +428,25 @@ class BaseApplication {
 		argv = startFlags.argv;
 		let initArgs = startFlags.matched;
 		if (argv.length) this.showPromptString_ = false;
-
-		let appName = initArgs.env == 'dev' ? 'joplindev' : 'joplin';
-		if (Setting.value('appId').indexOf('-desktop') >= 0) appName += '-desktop';
-		Setting.setConstant('appName', appName);
-
+		
 		const profileDir = this.determineProfileDir(initArgs);
 		const resourceDir = profileDir + '/resources';
 		const tempDir = profileDir + '/tmp';
+
+		const backupDir = this.determineBackupDir(initArgs);
 
 		Setting.setConstant('env', initArgs.env);
 		Setting.setConstant('profileDir', profileDir);
 		Setting.setConstant('resourceDir', resourceDir);
 		Setting.setConstant('tempDir', tempDir);
+		Setting.setConstant('backupDir', backupDir);
 
 		await shim.fsDriver().remove(tempDir);
 
 		await fs.mkdirp(profileDir, 0o755);
 		await fs.mkdirp(resourceDir, 0o755);
 		await fs.mkdirp(tempDir, 0o755);
+		await fs.mkdirp(backupDir, 0o700);
 
 		const extraFlags = await this.readFlagsFromFile(profileDir + '/flags.txt');
 		initArgs = Object.assign(initArgs, extraFlags);

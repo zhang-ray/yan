@@ -23,6 +23,7 @@ const DecryptionWorker = require('lib/services/DecryptionWorker');
 const InteropService = require('lib/services/InteropService');
 const InteropServiceHelper = require('./InteropServiceHelper.js');
 const ResourceService = require('lib/services/ResourceService');
+const { time } = require('lib/time-utils.js');
 
 const { bridge } = require('electron').remote.require('./bridge');
 const Menu = bridge().Menu;
@@ -540,20 +541,6 @@ class Application extends BaseApplication {
 		}
 	}
 
-	updateEditorFont() {
-		const fontFamilies = [];
-		fontFamilies.push('monospace');
-
-		// The '*' and '!important' parts are necessary to make sure Russian text is displayed properly
-		// https://github.com/laurent22/joplin/issues/155
-
-		const css = '.ace_editor * { font-family: ' + fontFamilies.join(', ') + ' !important; }';
-		const styleTag = document.createElement('style');
-		styleTag.type = 'text/css';
-		styleTag.appendChild(document.createTextNode(css));
-		document.head.appendChild(styleTag);
-	}
-
 	async start(argv) {
 		const electronIsDev = require('electron-is-dev');
 
@@ -617,6 +604,19 @@ class Application extends BaseApplication {
 
 		ResourceService.runInBackground();
 
+		setInterval(() => {
+			const ioService = new InteropService();
+			const ioModules = ioService.modules();
+			for (let i = 0; i < ioModules.length; i++) {
+				const module = ioModules[i];
+				if (module.type === 'exporter') {
+					const currentBackupDir = Setting.value('backupDir')  + '/' + time.unixMs().toString();
+					fs.mkdirp(currentBackupDir, 0o700);
+					InteropServiceHelper.export(this.dispatch.bind(this), module, null, currentBackupDir);
+				}
+			}
+		}, 1000 * 60 * 1);
+		
 	}
 
 }
