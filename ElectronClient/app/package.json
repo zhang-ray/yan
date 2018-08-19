@@ -1,7 +1,7 @@
 {
-  "name": "Joplin",
-  "version": "1.0.104",
-  "description": "Joplin for Desktop",
+  "name": "YAN",
+  "version": "0.0.1",
+  "description": "Yet Another Note taking App",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,15 +13,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/laurent22/joplin.git"
+    "url": "git+https://github.com/zhang-ray/YAN.git"
   },
-  "author": "Laurent Cozic",
+  "author": "Ray Zhang",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/laurent22/joplin/issues"
+    "url": "https://github.com/zhang-ray/YAN/issues"
   },
   "build": {
-    "appId": "net.cozic.joplin-desktop",
+    "appId": "com.github.zhang-ray.yan",
     "extraResources": [
       "build/icons/*"
     ],
@@ -61,7 +61,7 @@
       "target": "AppImage"
     }
   },
-  "homepage": "https://github.com/laurent22/joplin#readme",
+  "homepage": "https://github.com/zhang-ray/YAN#readme",
   "devDependencies": {
     "ajv": "^6.5.0",
     "app-builder-bin": "^1.9.11",

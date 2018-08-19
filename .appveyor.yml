@@ -1,8 +1,9 @@
 image: ubuntu
 
 build_script:
-- chmod +x ./ElectronClient/build_ubuntu_1604_amd64.sh
-- sudo ./ElectronClient/build_ubuntu_1604_amd64.sh
+- cd ElectronClient
+- chmod +x ./build_ubuntu_1604_amd64.sh
+- sudo ./build_ubuntu_1604_amd64.sh
 
 artifacts:
 - path: app.7z
