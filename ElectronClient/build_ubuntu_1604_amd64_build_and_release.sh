@@ -14,4 +14,4 @@ cd ../../
 
 
 # make package
-7z a app.7z ./ElectronClient/app
+tar -zcf app.tar.gz ./ElectronClient/app

@@ -1,5 +1,7 @@
 image: ubuntu
 
+stack: node 8
+
 build_script:
 - cd ElectronClient
 - chmod +x ./build_ubuntu_1604_amd64.sh
