@@ -8,4 +8,4 @@ build_script:
 - ./build_ubuntu_1604_amd64.sh
 
 artifacts:
-- path: app.7z
+- path: app.tar.gz
