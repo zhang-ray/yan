@@ -108,39 +108,6 @@ class NoteScreenComponent extends BaseScreenComponent {
 		this.noteTagDialog_closeRequested = () => {
 			this.setState({ noteTagDialogShown: false });
 		}
-
-		this.onJoplinLinkClick_ = async (msg) => {
-			try {
-				if (msg.indexOf('joplin://') === 0) {
-					const itemId = msg.substr('joplin://'.length);
-					const item = await BaseItem.loadItemById(itemId);
-					if (!item) throw new Error(_('No item with ID %s', itemId));
-
-					if (item.type_ === BaseModel.TYPE_NOTE) {
-						// Easier to just go back, then go to the note since
-						// the Note screen doesn't handle reloading a different note
-
-						this.props.dispatch({
-							type: 'NAV_BACK',
-						});
-
-						setTimeout(() => {
-							this.props.dispatch({
-								type: 'NAV_GO',
-								routeName: 'Note',
-								noteId: item.id,
-							});
-						}, 5);
-					} else {
-						throw new Error(_('The Joplin mobile app does not currently support this type of link: %s', BaseModel.modelTypeToName(item.type_)));
-					}
-				} else {
-					Linking.openURL(msg);
-				}
-			} catch (error) {
-				dialogs.error(this, error.message);
-			}
-		}
 	}
 
 	styles() {
@@ -519,13 +486,6 @@ class NoteScreenComponent extends BaseScreenComponent {
 				this.saveOneProperty('body', newBody);
 			};
 
-			bodyComponent = <NoteBodyViewer
-				onJoplinLinkClick={this.onJoplinLinkClick_}
-				style={this.styles().noteBodyViewer}
-				webViewStyle={theme}
-				note={note}
-				onCheckboxChange={(newBody) => { onCheckboxChange(newBody) }}
-			/>
 		} else {
 			const focusBody = !isNew && !!note.title;
 

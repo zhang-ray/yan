@@ -83,7 +83,6 @@ class RootComponent extends React.Component {
 			Config: { screen: ConfigScreen, title: () => _('Options') },
 			Status: { screen: StatusScreen, title: () => _('Synchronisation Status') },
 			EncryptionConfig: { screen: EncryptionConfigScreen, title: () => _('Encryption Options') },
-			ClipperConfig: { screen: ClipperConfigScreen, title: () => _('Clipper Options') },
 		};
 
 		return (

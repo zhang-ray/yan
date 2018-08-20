@@ -185,45 +185,6 @@ class ConfigScreenComponent extends BaseScreenComponent {
 
 		const settingComps = shared.settingsToComponents(this, 'mobile', settings);
 
-		if (Platform.OS === 'android' && Platform.Version >= 23) {
-			// Note: `PermissionsAndroid` doesn't work so we have to ask the user to manually
-			// set these permissions. https://stackoverflow.com/questions/49771084/permission-always-returns-never-ask-again
-			settingComps.push(
-				<View key="permission_info" style={this.styles().settingContainer}>
-					<View key="permission_info_wrapper">
-						<Text key="perm1a" style={this.styles().settingText}>{_('To work correctly, the app needs the following permissions. Please enable them in your phone settings, in Apps > Joplin > Permissions')}</Text>
-						<Text key="perm2" style={this.styles().permissionText}>{_('- Storage: to allow attaching files to notes and to enable filesystem synchronisation.')}</Text>
-						<Text key="perm3" style={this.styles().permissionText}>{_('- Camera: to allow taking a picture and attaching it to a note.')}</Text>
-						<Text key="perm4" style={this.styles().permissionText}>{_('- Location: to allow attaching geo-location information to a note.')}</Text>
-					</View>
-				</View>
-			);
-		}
-
-		settingComps.push(
-			<View key="donate_link" style={this.styles().settingContainer}>
-				<TouchableOpacity onPress={() => { Linking.openURL('https://joplin.cozic.net/donate/') }}>
-					<Text key="label" style={this.styles().linkText}>{_('Make a donation')}</Text>
-				</TouchableOpacity>
-			</View>
-		);
-		
-		settingComps.push(
-			<View key="website_link" style={this.styles().settingContainer}>
-				<TouchableOpacity onPress={() => { Linking.openURL('https://joplin.cozic.net/') }}>
-					<Text key="label" style={this.styles().linkText}>{_('Joplin website')}</Text>
-				</TouchableOpacity>
-			</View>
-		);
-
-		settingComps.push(
-			<View key="privacy_link" style={this.styles().settingContainer}>
-				<TouchableOpacity onPress={() => { Linking.openURL('https://joplin.cozic.net/privacy/') }}>
-					<Text key="label" style={this.styles().linkText}>Privacy Policy</Text>
-				</TouchableOpacity>
-			</View>
-		);
-
 		return (
 			<View style={this.rootStyle(this.props.theme).root}>
 				<ScreenHeader

@@ -28,7 +28,7 @@ class InteropService {
 			{
 				format: 'raw',
 				sources: ['directory'],
-				description: _('Joplin Export Directory'),
+				description: _('RAW Export Directory'),
 			},
 		];
 
@@ -36,7 +36,7 @@ class InteropService {
 			{
 				format: 'raw',
 				target: 'directory',
-				description: _('Joplin Export Directory'),
+				description: _('RAW Export Directory'),
 			},
 		];
 

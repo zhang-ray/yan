@@ -122,11 +122,6 @@ class Bridge {
 		return require('electron').shell.openItem(fullPath)
 	}
 
-	checkForUpdates(inBackground, window, logFilePath) {
-		const { checkForUpdates } = require('./checkForUpdates.js');
-		checkForUpdates(inBackground, window, logFilePath);
-	}
-
 	powerSaveBlockerStart(type) {
 		if (!this.allowPowerSaveBlockerToggle_) return null;
 		console.info('Enable powerSaveBlockerStart: ' + type);

@@ -350,14 +350,6 @@ class Application extends BaseApplication {
 					submenu: exportItems,
 				}, {
 					type: 'separator',
-					platforms: ['darwin'],
-				}, {
-					label: _('Hide %s', 'Joplin'),
-					platforms: ['darwin'],
-					accelerator: 'CommandOrControl+H',
-					click: () => { bridge().electronApp().hide() }
-				}, {
-					type: 'separator',
 				}, {
 					label: _('Quit'),
 					accelerator: 'CommandOrControl+Q',
