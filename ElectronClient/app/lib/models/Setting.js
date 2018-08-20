@@ -509,7 +509,7 @@ Setting.TIME_FORMAT_2 = 'h:mm A';
 Setting.constants_ = {
 	env: 'SET_ME',
 	isDemo: false,
-	appName: 'yan',
+	appName: 'YAN',
 	appId: 'com.github.zhang-ray.yan', // Each app should set this identifier
 	appType: 'desktop',
 	resourceDir: '',
