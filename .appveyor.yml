@@ -9,3 +9,4 @@ build_script:
 
 artifacts:
 - path: app.tar.gz
+- path: ./ElectronClient/app/dist/YAN-0.0.1-x86_64.AppImage

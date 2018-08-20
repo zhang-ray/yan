@@ -43,9 +43,6 @@ BaseItem.loadClass('Tag', Tag);
 BaseItem.loadClass('NoteTag', NoteTag);
 BaseItem.loadClass('MasterKey', MasterKey);
 
-Setting.setConstant('appId', 'net.cozic.joplin-desktop');
-Setting.setConstant('appType', 'desktop');
-
 shimInit();
 
 // Disable drag and drop of links inside application (which would

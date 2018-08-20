@@ -510,8 +510,8 @@ Setting.constants_ = {
 	env: 'SET_ME',
 	isDemo: false,
 	appName: 'yan',
-	appId: 'SET_ME', // Each app should set this identifier
-	appType: 'SET_ME', // 'cli' or 'mobile'
+	appId: 'com.github.zhang-ray.yan', // Each app should set this identifier
+	appType: 'desktop',
 	resourceDir: '',
 	profileDir: '',
 	tempDir: '',
