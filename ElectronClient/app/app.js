@@ -180,14 +180,6 @@ class Application extends BaseApplication {
 	}
 
 	async generalMiddleware(store, next, action) {
-		if (action.type == 'SETTING_UPDATE_ONE' && action.key == 'locale' || action.type == 'SETTING_UPDATE_ALL') {
-			setLocale(Setting.value('locale'));
-			// The bridge runs within the main process, with its own instance of locale.js
-			// so it needs to be set too here.
-			bridge().setLocale(Setting.value('locale'));
-			this.refreshMenu();
-		}
-
 		if (['EVENT_NOTE_ALARM_FIELD_CHANGE', 'NOTE_DELETE'].indexOf(action.type) >= 0) {
 			await AlarmService.updateNoteNotification(action.id, action.type === 'NOTE_DELETE');
 		}

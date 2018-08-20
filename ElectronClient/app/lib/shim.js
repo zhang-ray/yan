@@ -134,7 +134,6 @@ shim.clearInterval = function(id) {
 	return clearInterval(id);
 }
 shim.stringByteLength = function(string) { throw new Error('Not implemented'); }
-shim.detectAndSetLocale = null;
 shim.attachFileToNote = async (note, filePath) => {}
 shim.imageFromDataUrl = async function(imageDataUrl, filePath, options = null) { throw new Error('Not implemented') }
 shim.Buffer = null;

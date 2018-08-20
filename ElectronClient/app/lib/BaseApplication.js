@@ -467,19 +467,6 @@ class BaseApplication {
 
 		await Setting.load();
 
-		if (Setting.value('firstStart')) {
-			const locale = shim.detectAndSetLocale(Setting);
-			reg.logger().info('First start: detected locale as ' + locale);
-
-			if (Setting.value('env') === 'dev') {
-				Setting.setValue('autoUpdateEnabled', 0);
-			}
-
-			Setting.setValue('firstStart', 0);
-		} else {
-			setLocale(Setting.value('locale'));
-		}
-
 		BaseService.logger_ = this.logger_;
 		EncryptionService.instance().setLogger(this.logger_);
 		BaseItem.encryptionService_ = EncryptionService.instance();

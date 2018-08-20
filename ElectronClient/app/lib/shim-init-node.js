@@ -27,17 +27,6 @@ function shimInit() {
 		return Array.from(buffer);
 	}
 
-	shim.detectAndSetLocale = function (Setting) {
-		let locale = process.env.LANG;
-		if (!locale) locale = defaultLocale();
-		locale = locale.split('.');
-		locale = locale[0];
-		locale = closestSupportedLocale(locale);
-		Setting.setValue('locale', locale);
-		setLocale(locale);
-		return locale;
-	}
-
 	shim.writeImageToFile = async function(nativeImage, mime, targetPath) {
 		if (shim.isElectron()) { // For Electron
 			let buffer = null;
