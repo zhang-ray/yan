@@ -25,35 +25,12 @@
     "extraResources": [
       "build/icons/*"
     ],
-    "win": {
-      "icon": "../../Assets/Joplin.ico",
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ]
-    },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     },
     "portable": {
       "artifactName": "${productName}Portable.${ext}"
-    },
-    "mac": {
-      "icon": "../../Assets/macOs.icns",
-      "asar": false
     },
     "linux": {
       "asar": false,
