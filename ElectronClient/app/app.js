@@ -188,10 +188,6 @@ class Application extends BaseApplication {
 			this.refreshMenu();
 		}
 
-		if (action.type == 'SETTING_UPDATE_ONE' && action.key == 'showTrayIcon' || action.type == 'SETTING_UPDATE_ALL') {
-			this.updateTray();
-		}
-
 		if (['EVENT_NOTE_ALARM_FIELD_CHANGE', 'NOTE_DELETE'].indexOf(action.type) >= 0) {
 			await AlarmService.updateNoteNotification(action.id, action.type === 'NOTE_DELETE');
 		}
@@ -516,23 +512,6 @@ class Application extends BaseApplication {
 		this.lastMenuScreen_ = screen;
 	}
 
-	updateTray() {
-		const app = bridge().electronApp();
-
-		if (app.trayShown() === Setting.value('showTrayIcon')) return;
-
-		if (!Setting.value('showTrayIcon')) {
-			app.destroyTray();
-		} else {
-			const contextMenu = Menu.buildFromTemplate([
-				{ label: _('Open %s', app.electronApp().getName()), click: () => { app.window().show(); } },
-				{ type: 'separator' },
-				{ label: _('Exit'), click: () => { app.quit() } },
-			])
-			app.createTray(contextMenu);
-		}
-	}
-
 	async start(argv) {
 		const electronIsDev = require('electron-is-dev');
 
@@ -587,8 +566,6 @@ class Application extends BaseApplication {
 		});
 
 		if (shim.isLinux()) bridge().setAllowPowerSaveBlockerToggle(true);
-
-		this.updateTray();
 
 		setTimeout(() => {
 			AlarmService.garbageCollect();

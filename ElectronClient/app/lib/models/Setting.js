@@ -82,14 +82,6 @@ class Setting extends BaseModel {
 				};
 			}},
 
-			// Tray icon (called AppIndicator) doesn't work in Ubuntu
-			// http://www.webupd8.org/2017/04/fix-appindicator-not-working-for.html
-			// Might be fixed in Electron 18.x but no non-beta release yet. So for now
-			// by default we disable it on Linux.
-			'showTrayIcon': { value: platform !== 'linux', type: Setting.TYPE_BOOL, public: true, appTypes: ['desktop'], label: () => _('Show tray icon'), description: () => {
-				return platform === 'linux' ? _('Note: Does not work in all desktop environments.') : null;
-			}},
-
 			'collapsedFolderIds': { value: [], type: Setting.TYPE_ARRAY, public: false },
 			
 			'encryption.enabled': { value: false, type: Setting.TYPE_BOOL, public: false },

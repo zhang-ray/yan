@@ -472,7 +472,6 @@ class BaseApplication {
 			reg.logger().info('First start: detected locale as ' + locale);
 
 			if (Setting.value('env') === 'dev') {
-				Setting.setValue('showTrayIcon', 0);
 				Setting.setValue('autoUpdateEnabled', 0);
 			}
 

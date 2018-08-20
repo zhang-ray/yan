@@ -22,9 +22,6 @@
   },
   "build": {
     "appId": "com.github.zhang-ray.yan",
-    "extraResources": [
-      "build/icons/*"
-    ],
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
