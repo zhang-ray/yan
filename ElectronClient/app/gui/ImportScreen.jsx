@@ -7,7 +7,6 @@ const { Header } = require('./Header.min.js');
 const { themeStyle } = require('../theme.js');
 const { _ } = require('lib/locale.js');
 const { filename, basename } = require('lib/path-utils.js');
-const { importEnex } = require('lib/import-enex');
 
 class ImportScreenComponent extends React.Component {
 
@@ -87,8 +86,6 @@ class ImportScreenComponent extends React.Component {
 		}
 
 		const folder = await Folder.save({ title: folderTitle });
-		
-		await importEnex(folder.id, filePath, options);
 
 		this.addMessage('done', _('The notes have been imported: %s', lastProgress));
 		this.setState({ doImport: false });

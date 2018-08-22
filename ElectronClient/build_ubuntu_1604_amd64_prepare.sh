@@ -2,7 +2,7 @@
 
 # apt's node is too old
 #apt -y remove node nvm
-apt -y install curl #p7zip-full
+apt -y install curl tree #p7zip-full
 
 # install node 8
 #wget https://nodejs.org/dist/v8.11.4/node-v8.11.4-linux-x64.tar.xz

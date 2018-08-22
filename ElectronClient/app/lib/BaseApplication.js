@@ -24,7 +24,6 @@ const fs = require('fs-extra');
 const JoplinError = require('lib/JoplinError');
 const EventEmitter = require('events');
 const syswidecas = require('syswide-cas');
-const EncryptionService = require('lib/services/EncryptionService');
 const DecryptionWorker = require('lib/services/DecryptionWorker');
 const BaseService = require('lib/services/BaseService');
 
@@ -307,23 +306,6 @@ class BaseApplication {
 			}
 		}
 
-		if ((action.type == 'SETTING_UPDATE_ONE' && (action.key.indexOf('encryption.') === 0)) || (action.type == 'SETTING_UPDATE_ALL')) {
-			if (this.hasGui()) {
-				await EncryptionService.instance().loadMasterKeysFromSettings();
-				DecryptionWorker.instance().scheduleStart();
-				const loadedMasterKeyIds = EncryptionService.instance().loadedMasterKeyIds();
-
-				this.dispatch({
-					type: 'MASTERKEY_REMOVE_NOT_LOADED',
-					ids: loadedMasterKeyIds,
-				});
-
-				// Schedule a sync operation so that items that need to be encrypted
-				// are sent to sync target.
-				reg.scheduleSync();
-			}
-		}
-
 		if (action.type === 'NOTE_UPDATE_ONE') {
 			// If there is a conflict, we refresh the folders so as to display "Conflicts" folder
 			if (action.note && action.note.is_conflict) {
@@ -388,30 +370,6 @@ class BaseApplication {
 	}
 
 
-	async testing() {
-		const markdownUtils = require('lib/markdownUtils');
-		const ClipperServer = require('lib/ClipperServer');
-		const server = new ClipperServer();
-		const HtmlToMd = require('lib/HtmlToMd');
-		const service = new HtmlToMd();
-		const html = await shim.fsDriver().readFile('/mnt/d/test.html');
-		let markdown = service.parse(html, { baseUrl: 'https://duckduckgo.com/' });
-		console.info(markdown);
-		console.info('--------------------------------------------------');
-
-		const imageUrls = markdownUtils.extractImageUrls(markdown);
-		let result = await server.downloadImages_(imageUrls);
-		result = await server.createResourcesFromPaths_(result);
-		console.info(result);
-		markdown = server.replaceImageUrlsByResources_(markdown, result);
-		console.info('--------------------------------------------------');
-		console.info(markdown);
-		console.info('--------------------------------------------------');
-
-
-	}
-
-
 	async start(argv) {
 		let startFlags = await this.handleStartFlags_(argv);
 
@@ -468,11 +426,7 @@ class BaseApplication {
 		await Setting.load();
 
 		BaseService.logger_ = this.logger_;
-		EncryptionService.instance().setLogger(this.logger_);
-		BaseItem.encryptionService_ = EncryptionService.instance();
 		DecryptionWorker.instance().setLogger(this.logger_);
-		DecryptionWorker.instance().setEncryptionService(EncryptionService.instance());
-		await EncryptionService.instance().loadMasterKeysFromSettings();
 
 		let currentFolderId = Setting.value('activeFolderId');
 		let currentFolder = null;
