@@ -443,18 +443,6 @@ class Application extends BaseApplication {
 						Setting.setValue('notes.sortOrder.reverse', !Setting.value('notes.sortOrder.reverse'));
 					},
 				}],
-			}, {
-				label: _('Tools'),
-				submenu: [{
-					label: _('General Options'),
-					accelerator: 'CommandOrControl+,',
-					click: () => {
-						this.dispatch({
-							type: 'NAV_GO',
-							routeName: 'Config',
-						});
-					}
-				}],
 			},
 		];
 
