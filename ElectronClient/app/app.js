@@ -4,22 +4,15 @@ const { BaseApplication } = require('lib/BaseApplication');
 const { FoldersScreenUtils } = require('lib/folders-screen-utils.js');
 const Setting = require('lib/models/Setting.js');
 const { shim } = require('lib/shim.js');
-const BaseModel = require('lib/BaseModel.js');
 const MasterKey = require('lib/models/MasterKey');
 const { _ } = require('lib/locale.js');
-const os = require('os');
 const fs = require('fs-extra');
 const Tag = require('lib/models/Tag.js');
 const { reg } = require('lib/registry.js');
-const { sprintf } = require('sprintf-js');
-const { JoplinDatabase } = require('lib/joplin-database.js');
-const { DatabaseDriverNode } = require('lib/database-driver-node.js');
-const { ElectronAppWrapper } = require('./ElectronAppWrapper');
 const { defaultState } = require('lib/reducer.js');
 const packageInfo = require('./packageInfo.js');
 const AlarmService = require('lib/services/AlarmService.js');
 const AlarmServiceDriverNode = require('lib/services/AlarmServiceDriverNode');
-const DecryptionWorker = require('lib/services/DecryptionWorker');
 const InteropService = require('lib/services/InteropService');
 const InteropServiceHelper = require('./InteropServiceHelper.js');
 const ResourceService = require('lib/services/ResourceService');
@@ -27,7 +20,6 @@ const { time } = require('lib/time-utils.js');
 
 const { bridge } = require('electron').remote.require('./bridge');
 const Menu = bridge().Menu;
-const MenuItem = bridge().MenuItem;
 
 const appDefaultState = Object.assign({}, defaultState, {
 	route: {

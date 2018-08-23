@@ -1,13 +1,11 @@
 const React = require('react');
 const { render } = require('react-dom');
-const { createStore } = require('redux');
 const { connect, Provider } = require('react-redux');
 
 const { _ } = require('lib/locale.js');
 const Setting = require('lib/models/Setting.js');
 
 const { MainScreen } = require('./MainScreen.min.js');
-const { StatusScreen } = require('./StatusScreen.min.js');
 const { ImportScreen } = require('./ImportScreen.min.js');
 const { Navigator } = require('./Navigator.min.js');
 

@@ -1,9 +1,6 @@
-const { _ } = require('lib/locale.js');
 const { BrowserWindow } = require('electron');
-const { shim } = require('lib/shim');
 const url = require('url')
 const path = require('path')
-const urlUtils = require('lib/urlUtils.js');
 const { dirname, basename } = require('lib/path-utils');
 const fs = require('fs-extra');
 

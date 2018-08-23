@@ -20,7 +20,6 @@ const Note = require('lib/models/Note.js');
 const Tag = require('lib/models/Tag.js');
 const NoteTag = require('lib/models/NoteTag.js');
 const MasterKey = require('lib/models/MasterKey');
-const Setting = require('lib/models/Setting.js');
 const { Logger } = require('lib/logger.js');
 const { FsDriverNode } = require('lib/fs-driver-node.js');
 const { shimInit } = require('lib/shim-init-node.js');

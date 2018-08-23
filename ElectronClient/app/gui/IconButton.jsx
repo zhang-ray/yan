@@ -1,5 +1,4 @@
 const React = require('react');
-const { connect } = require('react-redux');
 const { themeStyle } = require('../theme.js');
 
 class IconButton extends React.Component {

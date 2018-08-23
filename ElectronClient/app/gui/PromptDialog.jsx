@@ -1,5 +1,4 @@
 const React = require('react');
-const { connect } = require('react-redux');
 const { _ } = require('lib/locale.js');
 const moment = require('moment');
 const { themeStyle } = require('../theme.js');

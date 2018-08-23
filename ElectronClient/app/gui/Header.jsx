@@ -1,6 +1,5 @@
 const React = require('react');
 const { connect } = require('react-redux');
-const { reg } = require('lib/registry.js');
 const { themeStyle } = require('../theme.js');
 const { _ } = require('lib/locale.js');
 
