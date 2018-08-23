@@ -7,7 +7,6 @@ npm --version
 # build it
 cd ../Tools
 npm install
-tree
 cd ../ElectronClient/app
 npm install
 yarn dist
