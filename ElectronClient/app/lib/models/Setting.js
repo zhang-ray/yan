@@ -6,7 +6,7 @@ const { sprintf } = require('sprintf-js');
 const ObjectUtils = require('lib/ObjectUtils');
 const { toTitleCase } = require('lib/string-utils.js');
 const { rtrimSlashes } = require('lib/path-utils.js');
-const { _, supportedLocalesToLanguages, defaultLocale } = require('lib/locale.js');
+const { _ } = require('lib/locale.js');
 const { shim } = require('lib/shim');
 
 class Setting extends BaseModel {
