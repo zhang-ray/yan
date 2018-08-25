@@ -328,68 +328,6 @@ class Application extends BaseApplication {
 					click: () => { bridge().electronApp().quit() }
 				}]
 			}, {
-				label: _('Edit'),
-				submenu: [{
-					label: _('Copy'),
-					role: 'copy',
-					accelerator: 'CommandOrControl+C',
-				}, {
-					label: _('Cut'),
-					role: 'cut',
-					accelerator: 'CommandOrControl+X',
-				}, {
-					label: _('Paste'),
-					role: 'paste',
-					accelerator: 'CommandOrControl+V',
-				}, {
-					type: 'separator',
-					screens: ['Main'],
-				}, {
-					label: _('Bold'),
-					screens: ['Main'],
-					accelerator: 'CommandOrControl+B',
-					click: () => {
-						this.dispatch({
-							type: 'WINDOW_COMMAND',
-							name: 'textBold',
-						});
-					},
-				}, {
-					label: _('Italic'),
-					screens: ['Main'],
-					accelerator: 'CommandOrControl+I',
-					click: () => {
-						this.dispatch({
-							type: 'WINDOW_COMMAND',
-							name: 'textItalic',
-						});
-					},
-				}, {
-					label: _('Insert Date Time'),
-					screens: ['Main'],
-					visible: false,
-					accelerator: 'CommandOrControl+Shift+T',
-					click: () => {
-						this.dispatch({
-							type: 'WINDOW_COMMAND',
-							name: 'insertDateTime',
-						});
-					},
-				}, {
-					type: 'separator',
-					screens: ['Main'],
-				}, {
-					label: _('Search in all the notes'),
-					screens: ['Main'],
-					accelerator: 'CommandOrControl+F',
-					click: () => {
-						this.dispatch({
-							type: 'WINDOW_COMMAND',
-							name: 'focus_search',
-						});
-					},
-				}],
-			}, {
 				label: _('View'),
 				submenu: [{
 					label: _('Toggle sidebar'),

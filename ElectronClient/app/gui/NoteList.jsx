@@ -79,15 +79,7 @@ class NoteListComponent extends React.Component {
 
 		const menu = new Menu()
 
-		if (!hasEncrypted) {
-			menu.append(new MenuItem({label: _('Add or remove tags'), enabled: noteIds.length === 1, click: async () => {
-				this.props.dispatch({
-					type: 'WINDOW_COMMAND',
-					name: 'setTags',
-					noteId: noteIds[0],
-				});
-			}}));
-
+		{
 			menu.append(new MenuItem({label: _('Duplicate'), click: async () => {
 				for (let i = 0; i < noteIds.length; i++) {
 					const note = await Note.load(noteIds[i]);
@@ -96,48 +88,6 @@ class NoteListComponent extends React.Component {
 					});
 				}
 			}}));
-
-			menu.append(new MenuItem({label: _('Switch between note and to-do type'), click: async () => {
-				for (let i = 0; i < noteIds.length; i++) {
-					const note = await Note.load(noteIds[i]);
-					await Note.save(Note.toggleIsTodo(note), { userSideValidation: true });
-					eventManager.emit('noteTypeToggle', { noteId: note.id });
-				}
-			}}));
-
-			menu.append(new MenuItem({label: _('Copy Markdown link'), click: async () => {
-				const { clipboard } = require('electron');
-				const links = [];
-				for (let i = 0; i < noteIds.length; i++) {
-					const note = await Note.load(noteIds[i]);
-					links.push(Note.markdownTag(note));
-				}
-				clipboard.writeText(links.join(' '));
-			}}));
-
-			const exportMenu = new Menu();
-
-			const ioService = new InteropService();
-			const ioModules = ioService.modules();
-			for (let i = 0; i < ioModules.length; i++) {
-				const module = ioModules[i];
-				if (module.type !== 'exporter') continue;
-
-				exportMenu.append(new MenuItem({ label: module.fullLabel() , click: async () => {
-					await InteropServiceHelper.export(this.props.dispatch.bind(this), module, { sourceNoteIds: noteIds });
-				}}));
-			}
-
-			exportMenu.append(new MenuItem({ label: 'PDF - ' + _('PDF File') , click: () => {
-				this.props.dispatch({
-					type: 'WINDOW_COMMAND',
-					name: 'exportPdf',
-				});
-			}}));
-
-			const exportMenuItem = new MenuItem({label: _('Export'), submenu: exportMenu});
-
-			menu.append(exportMenuItem);
 		}
 
 		menu.append(new MenuItem({label: _('Delete'), click: async () => {

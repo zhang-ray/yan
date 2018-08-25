@@ -24,7 +24,6 @@ const md5 = require('md5');
 const mimeUtils = require('lib/mime-utils.js').mime;
 const ArrayUtils = require('lib/ArrayUtils');
 const urlUtils = require('lib/urlUtils');
-const dialogs = require('./dialogs');
 const markdownUtils = require('lib/markdownUtils');
 const { toSystemSlashes, safeFilename } = require('lib/path-utils');
 const { clipboard } = require('electron');
@@ -127,36 +126,6 @@ class NoteTextComponent extends React.Component {
 			await this.commandAttachFile(filesToAttach);
 		}
 
-		const updateSelectionRange = () => {
-
-			const ranges = this.rawEditor().getSelection().getAllRanges();
-			if (!ranges || !ranges.length || !this.state.note) {
-				this.selectionRange_ = null;
-			} else {
-				this.selectionRange_ = ranges[0];
-			}
-		}
-
-		this.aceEditor_selectionChange = (selection) => {
-			updateSelectionRange();
-		}
-
-		this.aceEditor_focus = (event) => {
-			updateSelectionRange();
-		}
-
-	}
-
-	// Note:
-	// - What's called "cursor position" is expressed as { row: x, column: y } and is how Ace Editor get/set the cursor position
-	// - A "range" defines a selection with a start and end cusor position, expressed as { start: <CursorPos>, end: <CursorPos> } 
-	// - A "text offset" below is the absolute position of the cursor in the string, as would be used in the indexOf() function.
-	// The functions below are used to convert between the different types.
-	rangeToTextOffsets(range, body) {
-		return {
-			start: this.cursorPositionToTextOffset(range.start, body),
-			end: this.cursorPositionToTextOffset(range.end, body),
-		};
 	}
 
 	currentTextOffset() {
@@ -722,42 +691,6 @@ class NoteTextComponent extends React.Component {
 
 	async doCommand(command) {
 		if (!command || !this.state.note) return;
-
-		let commandProcessed = true;
-
-		if (command.name === 'exportPdf' && this.webview_) {
-			const path = bridge().showSaveDialog({
-				filters: [{ name: _('PDF File'), extensions: ['pdf']}],
-				defaultPath: safeFilename(this.state.note.title),
-			});
-
-			if (path) {
-				this.webview_.printToPDF({}, (error, data) => {
-					if (error) {
-						bridge().showErrorMessageBox(error.message);
-					} else {
-						shim.fsDriver().writeFile(path, data, 'buffer');
-					}
-				});
-			}
-		} else if (command.name === 'print' && this.webview_) {
-			this.webview_.print();
-		} else if (command.name === 'textBold') {
-			this.commandTextBold();
-		} else if (command.name === 'textItalic') {
-			this.commandTextItalic();
-		} else if (command.name === 'insertDateTime' ) {
-			this.commandDateTime();
-		} else {
-			commandProcessed = false;
-		}
-
-		if (commandProcessed) {
-			this.props.dispatch({
-				type: 'WINDOW_COMMAND',
-				name: null,
-			});
-		}
 	}
 
 	async commandAttachFile(filePaths = null) {
@@ -790,158 +723,6 @@ class NoteTextComponent extends React.Component {
 				bridge().showErrorMessageBox(error.message);
 			}
 		}
-	}
-
-	async commandSetTags() {
-		await this.saveIfNeeded(true);
-
-		this.props.dispatch({
-			type: 'WINDOW_COMMAND',
-			name: 'setTags',
-			noteId: this.state.note.id,
-		});
-	}
-
-	// Returns the actual Ace Editor instance (not the React wrapper)
-	rawEditor() {
-		return this.editor_ && this.editor_.editor ? this.editor_.editor : null;
-	}
-
-	updateEditorWithDelay(fn) {
-		setTimeout(() => {
-			if (!this.rawEditor()) return;
-			fn(this.rawEditor());
-		}, 10);
-	}
-
-	lineAtRow(row) {
-		if (!this.state.note) return '';
-		const body = this.state.note.body
-		const lines = body.split('\n');
-		if (row < 0 || row >= lines.length) return '';
-		return lines[row];
-	}
-
-	selectionRangePreviousLine() {
-		if (!this.selectionRange_) return '';
-		const row = this.selectionRange_.start.row;
-		return this.lineAtRow(row - 1);
-	}
-
-	selectionRangeCurrentLine() {
-		if (!this.selectionRange_) return '';
-		const row = this.selectionRange_.start.row;
-		return this.lineAtRow(row);
-	}
-
-	wrapSelectionWithStrings(string1, string2 = '', defaultText = '') {
-		if (!this.rawEditor() || !this.state.note) return;
-
-		const selection = this.selectionRange_ ? this.rangeToTextOffsets(this.selectionRange_, this.state.note.body) : null;
-
-		let newBody = this.state.note.body;
-
-		if (selection && selection.start !== selection.end) {
-			const s1 = this.state.note.body.substr(0, selection.start);
-			const s2 = this.state.note.body.substr(selection.start, selection.end - selection.start);
-			const s3 = this.state.note.body.substr(selection.end);
-			newBody = s1 + string1 + s2 + string2 + s3;
-
-			const r = this.selectionRange_;
-
-			const newRange = {
-				start: { row: r.start.row, column: r.start.column + string1.length},
-				end: { row: r.end.row, column: r.end.column + string1.length},
-			};
-
-			this.updateEditorWithDelay((editor) => {
-				const range = this.selectionRange_;
-				range.setStart(newRange.start.row, newRange.start.column);
-				range.setEnd(newRange.end.row, newRange.end.column);
-				editor.getSession().getSelection().setSelectionRange(range, false);
-				editor.focus();
-			});
-		} else {
-			const textOffset = this.currentTextOffset();
-			const s1 = this.state.note.body.substr(0, textOffset);
-			const s2 = this.state.note.body.substr(textOffset);
-			newBody = s1 + string1 + defaultText + string2 + s2;
-
-			const p = this.textOffsetToCursorPosition(textOffset + string1.length, newBody);
-			const newRange = {
-				start: { row: p.row, column: p.column },
-				end: { row: p.row, column: p.column + defaultText.length },
-			};
-
-			this.updateEditorWithDelay((editor) => {
-				if (defaultText && newRange) {
-					const range = this.selectionRange_;
-					range.setStart(newRange.start.row, newRange.start.column);
-					range.setEnd(newRange.end.row, newRange.end.column);
-					editor.getSession().getSelection().setSelectionRange(range, false);
-				} else {
-					for (let i = 0; i < string1.length; i++) {
-						editor.getSession().getSelection().moveCursorRight();
-					}
-				}
-				editor.focus();
-			}, 10);
-		}
-
-		shared.noteComponent_change(this, 'body', newBody);
-		this.scheduleHtmlUpdate();
-		this.scheduleSave();
-	}
-
-	commandTextBold() {
-		this.wrapSelectionWithStrings('**', '**', _('strong text'));
-	}
-
-	commandTextItalic() {
-		this.wrapSelectionWithStrings('*', '*', _('emphasized text'));
-	}
-
-	commandDateTime() {
-		this.wrapSelectionWithStrings(time.formatMsToLocal(new Date().getTime()));
-	}
-
-	commandTextCode() {
-		this.wrapSelectionWithStrings('`', '`');
-	}
-
-	addListItem(string1, string2 = '', defaultText = '') {
-		const currentLine = this.selectionRangeCurrentLine();
-		let newLine = '\n'
-		if (!currentLine) newLine = '';
-		this.wrapSelectionWithStrings(newLine + string1, string2, defaultText);
-	}
-
-	commandTextCheckbox() {
-		this.addListItem('- [ ] ', '', _('List item'));
-	}
-
-	commandTextListUl() {
-		this.addListItem('- ', '', _('List item'));
-	}
-
-	commandTextListOl() {
-		let bulletNumber = markdownUtils.olLineNumber(this.selectionRangeCurrentLine());
-		if (!bulletNumber) bulletNumber = markdownUtils.olLineNumber(this.selectionRangePreviousLine());
-		if (!bulletNumber) bulletNumber = 0;
-		this.addListItem((bulletNumber + 1) + '. ', '', _('List item'));
-	}
-
-	commandTextHeading() {
-		this.addListItem('## ');
-	}
-
-	commandTextHorizontalRule() {
-		this.addListItem('* * *');
-	}
-
-	async commandTextLink() {
-		const url = await dialogs.prompt(_('Insert Hyperlink'));
-		this.wrapSelectionWithStrings('[', '](' + url + ')');
 	}
 
 	itemContextMenu(event) {
@@ -1228,8 +1009,6 @@ class NoteTextComponent extends React.Component {
 			ref={(elem) => { this.editor_ref(elem); } }
 			onChange={(body) => { this.aceEditor_change(body) }}
 			showPrintMargin={false}
-			onSelectionChange={this.aceEditor_selectionChange}
-			onFocus={this.aceEditor_focus}
 
 			// Disable warning: "Automatically scrolling cursor into view after
 			// selection change this will be disabled in the next version set
