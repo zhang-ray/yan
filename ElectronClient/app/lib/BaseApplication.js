@@ -8,7 +8,6 @@ const Folder = require('lib/models/Folder.js');
 const Note = require('lib/models/Note.js');
 const Setting = require('lib/models/Setting.js');
 const { Logger } = require('lib/logger.js');
-const { splitCommandString } = require('lib/string-utils.js');
 const { reg } = require('lib/registry.js');
 const { time } = require('lib/time-utils.js');
 const { shim } = require('lib/shim.js');
@@ -321,19 +320,7 @@ class BaseApplication {
 	}
 
 	async readFlagsFromFile(flagPath) {
-		if (!fs.existsSync(flagPath)) return {};
-		let flagContent = fs.readFileSync(flagPath, 'utf8');
-		if (!flagContent) return {};
-
-		flagContent = flagContent.trim();
-
-		let flags = splitCommandString(flagContent);
-		flags.splice(0, 0, 'cmd');
-		flags.splice(0, 0, 'node');
-
-		flags = await this.handleStartFlags_(flags, false);
-		
-		return flags.matched;
+		return {};
 	}
 
 	determineProfileDir(initArgs) {
