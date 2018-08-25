@@ -740,86 +740,11 @@ class NoteTextComponent extends React.Component {
 
 	createToolbarItems(note) {
 		const toolbarItems = [];
-		if (note && this.state.folder && ['Search', 'Tag'].includes(this.props.notesParentType)) {
-			toolbarItems.push({
-				title: _('In: %s', this.state.folder.title),
-				iconName: 'fa-folder-o',
-				enabled: false,
-			});
-		}
-
-		toolbarItems.push({
-			tooltip: _('Bold'),
-			iconName: 'fa-bold',
-			onClick: () => { return this.commandTextBold(); },
-		});
-
-		toolbarItems.push({
-			tooltip: _('Italic'),
-			iconName: 'fa-italic',
-			onClick: () => { return this.commandTextItalic(); },
-		});
-
-		toolbarItems.push({
-			type: 'separator',
-		});
-
-		toolbarItems.push({
-			tooltip: _('Hyperlink'),
-			iconName: 'fa-link',
-			onClick: () => { return this.commandTextLink(); },
-		});
-
-		toolbarItems.push({
-			tooltip: _('Code'),
-			iconName: 'fa-code',
-			onClick: () => { return this.commandTextCode(); },
-		});
 
 		toolbarItems.push({
 			tooltip: _('Attach file'),
 			iconName: 'fa-paperclip',
 			onClick: () => { return this.commandAttachFile(); },
-		});
-
-		toolbarItems.push({
-			type: 'separator',
-		});
-
-		toolbarItems.push({
-			tooltip: _('Numbered List'),
-			iconName: 'fa-list-ol',
-			onClick: () => { return this.commandTextListOl(); },
-		});
-
-		toolbarItems.push({
-			tooltip: _('Bulleted List'),
-			iconName: 'fa-list-ul',
-			onClick: () => { return this.commandTextListUl(); },
-		});
-
-		toolbarItems.push({
-			tooltip: _('Checkbox'),
-			iconName: 'fa-check-square',
-			onClick: () => { return this.commandTextCheckbox(); },
-		});
-
-		toolbarItems.push({
-			tooltip: _('Heading'),
-			iconName: 'fa-header',
-			onClick: () => { return this.commandTextHeading(); },
-		});
-
-		toolbarItems.push({
-			tooltip: _('Horizontal Rule'),
-			iconName: 'fa-ellipsis-h',
-			onClick: () => { return this.commandTextHorizontalRule(); },
-		});
-
-		toolbarItems.push({
-			tooltip: _('Insert Date Time'),
-			iconName: 'fa-calendar-plus-o',
-			onClick: () => { return this.commandDateTime(); },
 		});
 
 		toolbarItems.push({
