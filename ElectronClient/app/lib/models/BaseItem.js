@@ -14,10 +14,6 @@ class BaseItem extends BaseModel {
 		return true;
 	}
 
-	static encryptionSupported() {
-		return true;
-	}
-
 	static loadClass(className, classRef) {
 		for (let i = 0; i < BaseItem.syncItemDefinitions_.length; i++) {
 			if (BaseItem.syncItemDefinitions_[i].className == className) {
@@ -65,16 +61,6 @@ class BaseItem extends BaseModel {
 		throw new Error('Invalid item type: ' + itemType);
 	}
 
-	static async syncedCount(syncTarget) {
-		const ItemClass = this.itemClass(this.modelType());
-		const itemType = ItemClass.modelType();
-		// The fact that we don't check if the item_id still exist in the corresponding item table, means
-		// that the returned number might be innaccurate (for example if a sync operation was cancelled)
-		const sql = 'SELECT count(*) as total FROM sync_items WHERE sync_target = ? AND item_type = ?';
-		const r = await this.db().selectOne(sql, [ syncTarget, itemType ]);
-		return r.total;
-	}
-
 	static systemPath(itemOrId) {
 		if (typeof itemOrId === 'string') return itemOrId + '.md';
 		return itemOrId.id + '.md';
@@ -105,25 +91,10 @@ class BaseItem extends BaseModel {
 		}
 	}
 
-	// Returns the IDs of the items that have been synced at least once
-	static async syncedItemIds(syncTarget) {
-		if (!syncTarget) throw new Error('No syncTarget specified');
-		let temp = await this.db().selectAll('SELECT item_id FROM sync_items WHERE sync_time > 0 AND sync_target = ?', [syncTarget]);
-		let output = [];
-		for (let i = 0; i < temp.length; i++) {
-			output.push(temp[i].item_id);
-		}
-		return output;
-	}
-
 	static pathToId(path) {
 		let p = path.split('/');
 		let s = p[p.length - 1].split('.');
 		return s[0];
-	}
-
-	static loadItemByPath(path) {
-		return this.loadItemById(this.pathToId(path));
 	}
 
 	static async loadItemById(id) {
@@ -133,21 +104,6 @@ class BaseItem extends BaseModel {
 			if (item) return item;
 		}
 		return null;
-	}
-
-	static loadItemByField(itemType, field, value) {
-		let ItemClass = this.itemClass(itemType);
-		return ItemClass.loadByField(field, value);
-	}
-
-	static loadItem(itemType, id) {
-		let ItemClass = this.itemClass(itemType);
-		return ItemClass.load(id);
-	}
-
-	static deleteItem(itemType, id) {
-		let ItemClass = this.itemClass(itemType);
-		return ItemClass.delete(id);
 	}
 
 	static async delete(id, options = null) {
@@ -186,28 +142,6 @@ class BaseItem extends BaseModel {
 			}
 			await this.db().transactionExecBatch(queries);
 		}
-	}
-
-	// Note: Currently, once a deleted_items entry has been processed, it is removed from the database. In practice it means that
-	// the following case will not work as expected:
-	// - Client 1 creates a note and sync with target 1 and 2
-	// - Client 2 sync with target 1
-	// - Client 2 deletes note and sync with target 1
-	// - Client 1 syncs with target 1 only (note is deleted from local machine, as expected)
-	// - Client 1 syncs with target 2 only => the note is *not* deleted from target 2 because no information
-	//   that it was previously deleted exist (deleted_items entry has been deleted).
-	// The solution would be to permanently store the list of deleted items on each client.
-	static deletedItems(syncTarget) {
-		return this.db().selectAll('SELECT * FROM deleted_items WHERE sync_target = ?', [syncTarget]);
-	}
-
-	static async deletedItemCount(syncTarget) {
-		let r = await this.db().selectOne('SELECT count(*) as total FROM deleted_items WHERE sync_target = ?', [syncTarget]);
-		return r['total'];
-	}
-
-	static remoteDeletedItem(syncTarget, itemId) {
-		return this.db().exec('DELETE FROM deleted_items WHERE item_id = ? AND sync_target = ?', [itemId, syncTarget]);
 	}
 
 	static serialize_format(propName, propValue) {
@@ -276,11 +210,6 @@ class BaseItem extends BaseModel {
 		return temp.join("\n\n");
 	}
 
-	static encryptionService() {
-		if (!this.encryptionService_) throw new Error('BaseItem.encryptionService_ is not set!!');
-		return this.encryptionService_;
-	}
-
 	static async unserialize(content) {
 		let lines = content.split("\n");
 		let output = {};
@@ -326,61 +255,11 @@ class BaseItem extends BaseModel {
 		return output;
 	}
 	
-	static async hasEncryptedItems() {
-		const classNames = this.encryptableItemClassNames();
-
-		for (let i = 0; i < classNames.length; i++) {
-			const className = classNames[i];
-			const ItemClass = this.getClass(className);
-
-			const count = await ItemClass.count({ where: 'encryption_applied = 1' });
-			if (count) return true;
-		}
-
-		return false;
-	}
 
 	static syncItemClassNames() {
 		return BaseItem.syncItemDefinitions_.map((def) => {
 			return def.className;
 		});
-	}
-
-	static encryptableItemClassNames() {
-		const temp = this.syncItemClassNames();
-		let output = [];
-		for (let i = 0; i < temp.length; i++) {
-			if (temp[i] === 'MasterKey') continue;
-			output.push(temp[i]);
-		}
-		return output;
-	}
-
-	static syncItemTypes() {
-		return BaseItem.syncItemDefinitions_.map((def) => {
-			return def.type;
-		});
-	}
-
-	static modelTypeToClassName(type) {
-		for (let i = 0; i < BaseItem.syncItemDefinitions_.length; i++) {
-			if (BaseItem.syncItemDefinitions_[i].type == type) return BaseItem.syncItemDefinitions_[i].className;
-		}
-		throw new Error('Invalid type: ' + type);
-	}
-
-	static async syncDisabledItems(syncTargetId) {
-		const rows = await this.db().selectAll('SELECT * FROM sync_items WHERE sync_disabled = 1 AND sync_target = ?', [syncTargetId]);
-		let output = [];
-		for (let i = 0; i < rows.length; i++) {
-			const item = await this.loadItem(rows[i].item_type, rows[i].item_id);
-			if (!item) continue; // The referenced item no longer exist
-			output.push({
-				syncInfo: rows[i],
-				item: item,
-			});
-		}
-		return output;
 	}
 
 	static displayTitle(item) {
@@ -408,8 +287,6 @@ class BaseItem extends BaseModel {
 	}
 
 }
-
-BaseItem.encryptionService_ = null;
 
 // Also update:
 // - itemsThatNeedSync()

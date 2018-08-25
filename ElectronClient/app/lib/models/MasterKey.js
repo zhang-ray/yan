@@ -11,10 +11,6 @@ class MasterKey extends BaseItem {
 		return BaseModel.TYPE_MASTER_KEY;
 	}
 
-	static encryptionSupported() {
-		return false;
-	}
-
 	static latest() {
 		return this.modelSelectOne('SELECT * FROM master_keys WHERE created_time >= (SELECT max(created_time) FROM master_keys)');
 	}
