@@ -72,31 +72,6 @@ class ScreenHeaderComponent extends Component {
 				paddingTop: PADDING_V,
 				paddingBottom: PADDING_V,
 			},
-			saveButton: {
-				flex: 0,
-				flexDirection: 'row',
-				alignItems: 'center',
-				padding: 10,
-				borderWidth: 1,
-				borderColor: theme.raisedHighlightedColor,
-				borderRadius: 4,
-				marginRight: 8,
-			},
-			saveButtonText: {
-				textAlignVertical: 'center',
-				color: theme.raisedHighlightedColor,
-				fontWeight: 'bold',
-			},
-			savedButtonIcon: {
-				fontSize: 20,
-				color: theme.raisedHighlightedColor,
-				width: 18,
-				height: 18,
-			},
-			saveButtonIcon: {
-				width: 18,
-				height: 18,
-			},
 			contextMenuTrigger: {
 				fontSize: 30,
 				paddingLeft: 10,
@@ -147,7 +122,6 @@ class ScreenHeaderComponent extends Component {
 		styleObject.backButton.marginRight = 1;
 
 		styleObject.backButtonDisabled = Object.assign({}, styleObject.backButton, { opacity: theme.disabledOpacity });
-		styleObject.saveButtonDisabled = Object.assign({}, styleObject.saveButton, { opacity: theme.disabledOpacity });
 
 		this.styles_[themeId] = StyleSheet.create(styleObject);
 		return this.styles_[themeId];
@@ -241,20 +215,6 @@ class ScreenHeaderComponent extends Component {
 				<TouchableOpacity onPress={onPress} disabled={disabled}>
 					<View style={disabled ? styles.backButtonDisabled : styles.backButton}>
 						<Icon name='md-arrow-back' style={styles.topIcon} />
-					</View>
-				</TouchableOpacity>
-			);
-		}
-
-		function saveButton(styles, onPress, disabled, show) {
-			if (!show) return null;
-
-			const icon = disabled ? <Icon name='md-checkmark' style={styles.savedButtonIcon} /> : <Image style={styles.saveButtonIcon} source={require('./SaveIcon.png')} />;
-
-			return (
-				<TouchableOpacity onPress={onPress} disabled={disabled} style={{ padding:0 }}>
-					<View style={disabled ? styles.saveButtonDisabled : styles.saveButton}>
-						{ icon }
 					</View>
 				</TouchableOpacity>
 			);
@@ -446,7 +406,6 @@ class ScreenHeaderComponent extends Component {
 				<View style={{flexDirection:'row', alignItems: 'center'}}>
 					{ sideMenuComp }
 					{ backButtonComp }
-					{ saveButton(this.styles(), () => { if (this.props.onSaveButtonPress) this.props.onSaveButtonPress() }, this.props.saveButtonDisabled === true, this.props.showSaveButton === true) }
 					{ titleComp }
 					{ searchButtonComp }
 					{ deleteButtonComp }
