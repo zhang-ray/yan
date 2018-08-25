@@ -3,7 +3,6 @@ const BaseItem = require('lib/models/BaseItem.js');
 const BaseModel = require('lib/BaseModel.js');
 const Resource = require('lib/models/Resource.js');
 const Folder = require('lib/models/Folder.js');
-const NoteTag = require('lib/models/NoteTag.js');
 const Note = require('lib/models/Note.js');
 const { sprintf } = require('sprintf-js');
 const { shim } = require('lib/shim');
@@ -16,7 +15,6 @@ class InteropService_Importer_Raw extends InteropService_Importer_Base {
 	async exec(result) {
 		const itemIdMap = {};
 		const createdResources = {};
-		const noteTagsToCreate = [];
 		const destinationFolderId = this.options_.destinationFolderId;
 
 		const replaceLinkedItemIds = async (noteBody) => {
@@ -106,34 +104,9 @@ class InteropService_Importer_Raw extends InteropService_Importer_Base {
 				if (!itemIdMap[item.id]) itemIdMap[item.id] = uuid.create();
 				item.id = itemIdMap[item.id];
 				createdResources[item.id] = item;
-			} else if (itemType === BaseModel.TYPE_NOTE_TAG) {
-				noteTagsToCreate.push(item);
-				continue;
 			}
 
 			await ItemClass.save(item, { isNew: true, autoTimestamp: false });
-		}
-
-		for (let i = 0; i < noteTagsToCreate.length; i++) {
-			const noteTag = noteTagsToCreate[i];
-			const newNoteId = itemIdMap[noteTag.note_id];
-			const newTagId = itemIdMap[noteTag.tag_id];
-
-			if (!newNoteId) {
-				result.warnings.push(sprintf('Non-existent note %s referenced in tag %s', noteTag.note_id, noteTag.tag_id));
-				continue;
-			}
-
-			if (!newTagId) {
-				result.warnings.push(sprintf('Non-existent tag %s for note %s', noteTag.tag_id, noteTag.note_id));
-				continue;
-			}
-
-			noteTag.id = uuid.create();
-			noteTag.note_id = newNoteId;
-			noteTag.tag_id = newTagId;
-
-			await NoteTag.save(noteTag, { isNew: true });
 		}
 
 		if (await shim.fsDriver().isDirectory(this.sourcePath_ + '/resources')) {
