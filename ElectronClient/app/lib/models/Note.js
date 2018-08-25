@@ -97,12 +97,6 @@ class Note extends BaseItem {
 		return _('Untitled');
 	}
 
-	static geolocationUrl(note) {
-		if (!('latitude' in note) || !('longitude' in note)) throw new Error('Latitude or longitude is missing');
-		if (!Number(note.latitude) && !Number(note.longitude)) throw new Error(_('This note does not have geolocation information.'));
-		return sprintf('https://www.openstreetmap.org/?lat=%s&lon=%s&zoom=20', note.latitude, note.longitude)
-	}
-
 	static modelType() {
 		return BaseModel.TYPE_NOTE;
 	}
@@ -271,54 +265,6 @@ class Note extends BaseItem {
 		return this.modelSelectAll('SELECT * FROM notes WHERE is_conflict = 0');
 	}
 
-	static async updateGeolocation(noteId) {
-		if (!Setting.value('trackLocation')) return;
-		if (!Note.updateGeolocationEnabled_) return;
-
-		let startWait = time.unixMs();
-		while (true) {
-			if (!this.geolocationUpdating_) break;
-			this.logger().info('Waiting for geolocation update...');
-			await time.sleep(1);
-			if (startWait + 1000 * 20 < time.unixMs()) {
-				this.logger().warn('Failed to update geolocation for: timeout: ' + noteId);
-				return;
-			}
-		}
-
-		let geoData = null;
-		if (this.geolocationCache_ && this.geolocationCache_.timestamp + 1000 * 60 * 10 > time.unixMs()) {
-			geoData = Object.assign({}, this.geolocationCache_);
-		} else {
-			this.geolocationUpdating_ = true;
-
-			this.logger().info('Fetching geolocation...');
-			try {
-				geoData = await shim.Geolocation.currentPosition();
-			} catch (error) {
-				this.logger().error('Could not get lat/long for note ' + noteId + ': ', error);
-				geoData = null;
-			}
-
-			this.geolocationUpdating_ = false;
-
-			if (!geoData) return;
-
-			this.logger().info('Got lat/long');
-			this.geolocationCache_ = geoData;
-		}
-
-		this.logger().info('Updating lat/long of note ' + noteId);
-
-		let note = await Note.load(noteId);
-		if (!note) return; // Race condition - note has been deleted in the meantime
-
-		note.longitude = geoData.coords.longitude;
-		note.latitude = geoData.coords.latitude;
-		note.altitude = geoData.coords.altitude;
-		return Note.save(note);
-	}
-
 	static filter(note) {
 		if (!note) return note;
 
@@ -451,8 +397,5 @@ class Note extends BaseItem {
 	}
 
 }
-
-Note.updateGeolocationEnabled_ = true;
-Note.geolocationUpdating_ = false;
 
 module.exports = Note;

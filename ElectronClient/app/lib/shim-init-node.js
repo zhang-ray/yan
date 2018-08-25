@@ -1,6 +1,5 @@
 const fs = require('fs-extra');
 const { shim } = require('lib/shim.js');
-const { GeolocationNode } = require('lib/geolocation-node.js');
 const { FileApiDriverLocal } = require('lib/file-api-driver-local.js');
 const { time } = require('lib/time-utils.js');
 const { FsDriverNode } = require('lib/fs-driver-node.js');
@@ -12,7 +11,6 @@ const urlValidator = require('valid-url');
 function shimInit() {
 	shim.fsDriver = () => { throw new Error('Not implemented') }
 	shim.FileApiDriverLocal = FileApiDriverLocal;
-	shim.Geolocation = GeolocationNode;
 	shim.FormData = require('form-data');
 
 	shim.fsDriver = () => {

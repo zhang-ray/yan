@@ -103,12 +103,6 @@ class BaseApplication {
 				continue;
 			}
 
-			if (arg == '--update-geolocation-disabled') {
-				Note.updateGeolocationEnabled_ = false;
-				argv.splice(0, 1);
-				continue;
-			}
-
 			if (arg == '--stack-trace-enabled') {
 				this.showStackTraces_ = true;
 				argv.splice(0, 1);
