@@ -24,7 +24,6 @@ const fs = require('fs-extra');
 const JoplinError = require('lib/JoplinError');
 const EventEmitter = require('events');
 const syswidecas = require('syswide-cas');
-const DecryptionWorker = require('lib/services/DecryptionWorker');
 const BaseService = require('lib/services/BaseService');
 
 class BaseApplication {
@@ -317,10 +316,6 @@ class BaseApplication {
 			reg.setupRecurrentSync();
 		}
 
-		if (this.hasGui() && action.type === 'SYNC_GOT_ENCRYPTED_ITEM') {
-			DecryptionWorker.instance().scheduleStart();
-		}
-
 	  	return result;
 	}
 
@@ -337,7 +332,6 @@ class BaseApplication {
 		BaseModel.dispatch = this.store().dispatch;
 		FoldersScreenUtils.dispatch = this.store().dispatch;
 		reg.dispatch = this.store().dispatch;
-		DecryptionWorker.instance().dispatch = this.store().dispatch;
 	}
 
 	async readFlagsFromFile(flagPath) {
@@ -426,7 +420,6 @@ class BaseApplication {
 		await Setting.load();
 
 		BaseService.logger_ = this.logger_;
-		DecryptionWorker.instance().setLogger(this.logger_);
 
 		let currentFolderId = Setting.value('activeFolderId');
 		let currentFolder = null;
