@@ -130,34 +130,6 @@ class Application extends BaseApplication {
 					newState = Object.assign({}, state);
 					newState.sidebarVisibility = action.visibility;
 					break;
-
-				case 'NOTE_FILE_WATCHER_ADD':
-
-					if (newState.watchedNoteFiles.indexOf(action.id) < 0) {
-						newState = Object.assign({}, state);
-						const watchedNoteFiles = newState.watchedNoteFiles.slice();
-						watchedNoteFiles.push(action.id); 
-						newState.watchedNoteFiles = watchedNoteFiles;
-					}
-					break;
-
-				case 'NOTE_FILE_WATCHER_REMOVE':
-
-					newState = Object.assign({}, state);
-					const idx = newState.watchedNoteFiles.indexOf(action.id);
-					if (idx >= 0) {
-						const watchedNoteFiles = newState.watchedNoteFiles.slice();
-						watchedNoteFiles.splice(idx, 1);
-						newState.watchedNoteFiles = watchedNoteFiles;
-					}
-					break;
-
-				case 'NOTE_FILE_WATCHER_CLEAR':
-
-					newState = Object.assign({}, state);
-					newState.watchedNoteFiles = [];
-					break;
-
 			}
 		} catch (error) {
 			error.message = 'In reducer: ' + error.message + ' Action: ' + JSON.stringify(action);
@@ -181,17 +153,6 @@ class Application extends BaseApplication {
 
 		if (['SIDEBAR_VISIBILITY_TOGGLE', 'SIDEBAR_VISIBILITY_SET'].indexOf(action.type) >= 0) {
 			Setting.setValue('sidebarVisibility', newState.sidebarVisibility);
-		}
-
-		if (action.type === 'SYNC_STARTED') {
-			if (!this.powerSaveBlockerId_) this.powerSaveBlockerId_ = bridge().powerSaveBlockerStart('prevent-app-suspension');
-		}
-
-		if (action.type === 'SYNC_COMPLETED') {
-			if (this.powerSaveBlockerId_) {
-				bridge().powerSaveBlockerStop(this.powerSaveBlockerId_);
-				this.powerSaveBlockerId_ = null;
-			}
 		}
 
 		return result;
@@ -294,38 +255,11 @@ class Application extends BaseApplication {
 			{
 				label: _('File'),
 				submenu: [{
-					label: _('New note'),
-					accelerator: 'CommandOrControl+N',
-					screens: ['Main'],
-					click: () => {
-						this.dispatch({
-							type: 'WINDOW_COMMAND',
-							name: 'newNote',
-						});
-					}
-				}, {
-					label: _('New notebook'),
-					screens: ['Main'],
-					click: () => {
-						this.dispatch({
-							type: 'WINDOW_COMMAND',
-							name: 'newNotebook',
-						});
-					}
-				}, {
-					type: 'separator',
-				}, {
 					label: _('Import'),
 					submenu: importItems,
 				}, {
 					label: _('Export'),
 					submenu: exportItems,
-				}, {
-					type: 'separator',
-				}, {
-					label: _('Quit'),
-					accelerator: 'CommandOrControl+Q',
-					click: () => { bridge().electronApp().quit() }
 				}]
 			}, {
 				label: _('View'),
@@ -337,16 +271,6 @@ class Application extends BaseApplication {
 						this.dispatch({
 							type: 'WINDOW_COMMAND',
 							name: 'toggleSidebar',
-						});
-					}
-				}, {
-					label: _('Toggle editor layout'),
-					screens: ['Main'],
-					accelerator: 'CommandOrControl+L',
-					click: () => {
-						this.dispatch({
-							type: 'WINDOW_COMMAND',
-							name: 'toggleVisiblePanes',
 						});
 					}
 				}, {
