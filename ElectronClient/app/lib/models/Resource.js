@@ -95,40 +95,6 @@ class Resource extends BaseItem {
 		return super.save(decryptedItem, { autoTimestamp: false });
 	}
 
-	// Prepare the resource by encrypting it if needed.
-	// The call returns the path to the physical file AND a representation of the resource object
-	// as it should be uploaded to the sync target. Note that this may be different from what is stored
-	// in the database. In particular, the flag encryption_blob_encrypted might be 1 on the sync target
-	// if the resource is encrypted, but will be 0 locally because the device has the decrypted resource.
-	static async fullPathForSyncUpload(resource) {
-		const plainTextPath = this.fullPath(resource);
-
-		if (!Setting.value('encryption.enabled')) {
-			// Normally not possible since itemsThatNeedSync should only return decrypted items
-			if (!!resource.encryption_blob_encrypted) throw new Error('Trying to access encrypted resource but encryption is currently disabled');
-			return { path: plainTextPath, resource: resource };
-		}
-
-		const encryptedPath = this.fullPath(resource, true);
-		if (resource.encryption_blob_encrypted) return { path: encryptedPath, resource: resource };
-
-		try {
-			// const stat = await this.fsDriver().stat(plainTextPath);
-			await this.encryptionService().encryptFile(plainTextPath, encryptedPath, {
-				// onProgress: (progress) => {
-				// 	console.info(progress.doneSize / stat.size);
-				// },
-			});
-		} catch (error) {
-			if (error.code === 'ENOENT') throw new JoplinError('File not found:' + error.toString(), 'fileNotFound');
-			throw error;
-		}
-
-		const resourceCopy = Object.assign({}, resource);
-		resourceCopy.encryption_blob_encrypted = 1;
-		return { path: encryptedPath, resource: resourceCopy };
-	}
-
 	static markdownTag(resource) {
 		let tagAlt = resource.alt ? resource.alt : resource.title;
 		if (!tagAlt) tagAlt = '';

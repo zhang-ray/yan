@@ -302,10 +302,6 @@ class BaseApplication {
 			}
 		}
 
-		if (this.hasGui() && action.type == 'SETTING_UPDATE_ONE' && action.key == 'sync.interval' || action.type == 'SETTING_UPDATE_ALL') {
-			reg.setupRecurrentSync();
-		}
-
 	  	return result;
 	}
 

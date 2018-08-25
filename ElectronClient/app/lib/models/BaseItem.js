@@ -281,36 +281,6 @@ class BaseItem extends BaseModel {
 		return this.encryptionService_;
 	}
 
-	static async serializeForSync(item) {
-		const ItemClass = this.itemClass(item);
-		let serialized = await ItemClass.serialize(item);
-		if (!Setting.value('encryption.enabled') || !ItemClass.encryptionSupported()) {
-			// Normally not possible since itemsThatNeedSync should only return decrypted items
-			if (!!item.encryption_applied) throw new JoplinError('Item is encrypted but encryption is currently disabled', 'cannotSyncEncrypted');
-			return serialized;
-		}
-
-		if (!!item.encryption_applied) { const e = new Error('Trying to encrypt item that is already encrypted'); e.code = 'cannotEncryptEncrypted'; throw e; }
-
-		const cipherText = await this.encryptionService().encryptString(serialized);
-
-		// List of keys that won't be encrypted - mostly foreign keys required to link items
-		// with each others and timestamp required for synchronisation.
-		const keepKeys = ['id', 'note_id', 'tag_id', 'parent_id', 'updated_time', 'type_'];
-		const reducedItem = {};
-
-		for (let i = 0; i < keepKeys.length; i++) {
-			const n = keepKeys[i];
-			if (!item.hasOwnProperty(n)) continue;
-			reducedItem[n] = item[n];
-		}
-
-		reducedItem.encryption_applied = 1;
-		reducedItem.encryption_cipher_text = cipherText;
-
-		return ItemClass.serialize(reducedItem)
-	}
-
 	static async decrypt(item) {
 		if (!item.encryption_cipher_text) throw new Error('Item is not encrypted: ' + item.id);
 
@@ -448,85 +418,6 @@ class BaseItem extends BaseModel {
 		throw new Error('Unreachable');
 	}
 
-	static async itemsThatNeedSync(syncTarget, limit = 100) {
-		const classNames = this.syncItemClassNames();
-
-		for (let i = 0; i < classNames.length; i++) {
-			const className = classNames[i];
-			const ItemClass = this.getClass(className);
-			let fieldNames = ItemClass.fieldNames('items');			
-
-			// // NEVER SYNCED:
-			// 'SELECT * FROM [ITEMS] WHERE id NOT INT (SELECT item_id FROM sync_items WHERE sync_target = ?)'
-
-			// // CHANGED:
-			// 'SELECT * FROM [ITEMS] items JOIN sync_items s ON s.item_id = items.id WHERE sync_target = ? AND'
-
-			let extraWhere = [];
-			if (className == 'Note') extraWhere.push('is_conflict = 0');
-			if (className == 'Resource') extraWhere.push('encryption_blob_encrypted = 0');
-			if (ItemClass.encryptionSupported()) extraWhere.push('encryption_applied = 0');
-
-			extraWhere = extraWhere.length ? 'AND ' + extraWhere.join(' AND ') : '';
-
-			// First get all the items that have never been synced under this sync target
-
-			let sql = sprintf(`
-				SELECT %s
-				FROM %s items
-				WHERE id NOT IN (
-					SELECT item_id FROM sync_items WHERE sync_target = %d
-				)
-				%s
-				LIMIT %d
-			`,
-			this.db().escapeFields(fieldNames),
-			this.db().escapeField(ItemClass.tableName()),
-			Number(syncTarget),
-			extraWhere,
-			limit);
-
-			let neverSyncedItem = await ItemClass.modelSelectAll(sql);
-
-			// Secondly get the items that have been synced under this sync target but that have been changed since then
-
-			const newLimit = limit - neverSyncedItem.length;
-
-			let changedItems = [];
-
-			if (newLimit > 0) {
-				fieldNames.push('sync_time');
-
-				let sql = sprintf(`
-					SELECT %s FROM %s items
-					JOIN sync_items s ON s.item_id = items.id
-					WHERE sync_target = %d
-					AND (s.sync_time < items.updated_time OR force_sync = 1)
-					AND s.sync_disabled = 0
-					%s
-					LIMIT %d
-				`,
-				this.db().escapeFields(fieldNames),
-				this.db().escapeField(ItemClass.tableName()),
-				Number(syncTarget),
-				extraWhere,
-				newLimit);
-
-				changedItems = await ItemClass.modelSelectAll(sql);
-			}
-
-			const items = neverSyncedItem.concat(changedItems);
-
-			if (i >= classNames.length - 1) {
-				return { hasMore: items.length >= limit, items: items };
-			} else {
-				if (items.length) return { hasMore: true, items: items };
-			}
-		}
-
-		throw new Error('Unreachable');
-	}
-
 	static syncItemClassNames() {
 		return BaseItem.syncItemDefinitions_.map((def) => {
 			return def.className;
@@ -570,89 +461,11 @@ class BaseItem extends BaseModel {
 		return output;
 	}
 
-	static updateSyncTimeQueries(syncTarget, item, syncTime, syncDisabled = false, syncDisabledReason = '') {
-		const itemType = item.type_;
-		const itemId = item.id;
-		if (!itemType || !itemId || syncTime === undefined) throw new Error('Invalid parameters in updateSyncTimeQueries()');
-
-		return [
-			{
-				sql: 'DELETE FROM sync_items WHERE sync_target = ? AND item_type = ? AND item_id = ?',
-				params: [syncTarget, itemType, itemId],
-			},
-			{
-				sql: 'INSERT INTO sync_items (sync_target, item_type, item_id, sync_time, sync_disabled, sync_disabled_reason) VALUES (?, ?, ?, ?, ?, ?)',
-				params: [syncTarget, itemType, itemId, syncTime, syncDisabled ? 1 : 0, syncDisabledReason + ''],
-			}
-		];
-	}
-
-	static async saveSyncTime(syncTarget, item, syncTime) {
-		const queries = this.updateSyncTimeQueries(syncTarget, item, syncTime);
-		return this.db().transactionExecBatch(queries);
-	}
-
-	static async saveSyncDisabled(syncTargetId, item, syncDisabledReason) {
-		const syncTime = 'sync_time' in item ? item.sync_time : 0;
-		const queries = this.updateSyncTimeQueries(syncTargetId, item, syncTime, true, syncDisabledReason);
-		return this.db().transactionExecBatch(queries);
-	}
-
-	// When an item is deleted, its associated sync_items data is not immediately deleted for
-	// performance reason. So this function is used to look for these remaining sync_items and
-	// delete them.
-	static async deleteOrphanSyncItems() {
-		const classNames = this.syncItemClassNames();
-
-		let queries = [];
-		for (let i = 0; i < classNames.length; i++) {
-			const className = classNames[i];
-			const ItemClass = this.getClass(className);
-
-			let selectSql = 'SELECT id FROM ' + ItemClass.tableName();
-			if (ItemClass.modelType() == this.TYPE_NOTE) selectSql += ' WHERE is_conflict = 0';
-
-			queries.push('DELETE FROM sync_items WHERE item_type = ' + ItemClass.modelType() + ' AND item_id NOT IN (' + selectSql + ')');
-		}
-
-		await this.db().transactionExecBatch(queries);
-	}
-
 	static displayTitle(item) {
 		if (!item) return '';
 		return !!item.encryption_applied ? '🔑 ' + _('Encrypted') : item.title + '';
 	}
-
-	static async markAllNonEncryptedForSync() {
-		const classNames = this.encryptableItemClassNames();
-
-		for (let i = 0; i < classNames.length; i++) {
-			const className = classNames[i];
-			const ItemClass = this.getClass(className);
-
-			const sql = sprintf(`
-				SELECT id
-				FROM %s
-				WHERE encryption_applied = 0`,
-				this.db().escapeField(ItemClass.tableName())
-			);
-
-			const items = await ItemClass.modelSelectAll(sql);
-			const ids = items.map((item) => {return item.id});
-			if (!ids.length) continue;
-
-			await this.db().exec('UPDATE sync_items SET force_sync = 1 WHERE item_id IN ("' + ids.join('","') + '")');
-		}
-	}
-
-	static async forceSync(itemId) {
-		await this.db().exec('UPDATE sync_items SET force_sync = 1 WHERE item_id = ?', [itemId]);
-	}
-
-	static async forceSyncAll() {
-		await this.db().exec('UPDATE sync_items SET force_sync = 1');
-	}
-
+	
 	static async save(o, options = null) {
 		if (!options) options = {};
 
