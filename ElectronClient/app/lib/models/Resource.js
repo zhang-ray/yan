@@ -20,11 +20,6 @@ class Resource extends BaseItem {
 		return BaseModel.TYPE_RESOURCE;
 	}
 
-	static encryptionService() {
-		if (!this.encryptionService_) throw new Error('Resource.encryptionService_ is not set!!');
-		return this.encryptionService_;
-	}
-
 	static isSupportedImageMimeType(type) {
 		const imageMimeTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 		return imageMimeTypes.indexOf(type.toLowerCase()) >= 0;
