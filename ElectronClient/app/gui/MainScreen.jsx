@@ -7,7 +7,6 @@ const { NoteText } = require('./NoteText.min.js');
 const { PromptDialog } = require('./PromptDialog.min.js');
 const Setting = require('lib/models/Setting.js');
 const BaseModel = require('lib/BaseModel.js');
-const Tag = require('lib/models/Tag.js');
 const Note = require('lib/models/Note.js');
 const { uuid } = require('lib/uuid.js');
 const Folder = require('lib/models/Folder.js');
@@ -99,24 +98,6 @@ class MainScreenComponent extends React.Component {
 					}
 				},
 			});
-		} else if (command.name === 'setTags') {
-			const tags = await Tag.tagsByNoteId(command.noteId);
-			const tagTitles = tags.map((a) => { return a.title });
-
-			this.setState({
-				promptOptions: {
-					label: _('Add or remove tags:'),
-					description: _('Separate each tag by a comma.'),
-					value: tagTitles.join(', '),
-					onClose: async (answer) => {
-						if (answer !== null) {
-							const tagTitles = answer.split(',').map((a) => { return a.trim() });
-							await Tag.setNoteTagsByTitles(command.noteId, tagTitles);
-						}
-						this.setState({ promptOptions: null });
-					}
-				},
-			});
 		} else if (command.name === 'renameFolder') {
 			const folder = await Folder.load(command.id);
 			if (!folder) return;
@@ -138,28 +119,6 @@ class MainScreenComponent extends React.Component {
 					}
 				},
 			});
-		} else if (command.name === 'renameTag') {
-			const tag = await Tag.load(command.id);			
-			if(!tag) return;
-
-			this.setState({
-				promptOptions: {
-					label: _('Rename tag:'),
-					value: tag.title,
-					onClose: async (answer) => {
-						if (answer !== null) {
-							try {
-								tag.title = answer;
-								await Tag.save(tag, { fields: ['title'], userSideValidation: true });
-							} catch (error) {
-								bridge().showErrorMessageBox(error.message);
-							}
-						}						
-						this.setState({promptOptions: null });
-					}
-				}
-			})
-		
 		} else if (command.name === 'search') {
 
 			if (!this.searchId_) this.searchId_ = uuid.create();

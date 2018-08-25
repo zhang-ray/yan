@@ -7,7 +7,6 @@ const { shim } = require('lib/shim.js');
 const MasterKey = require('lib/models/MasterKey');
 const { _ } = require('lib/locale.js');
 const fs = require('fs-extra');
-const Tag = require('lib/models/Tag.js');
 const { reg } = require('lib/registry.js');
 const { defaultState } = require('lib/reducer.js');
 const packageInfo = require('./packageInfo.js');
@@ -512,13 +511,6 @@ class Application extends BaseApplication {
 		Setting.dispatchUpdateAll();
 
 		await FoldersScreenUtils.refreshFolders();
-
-		const tags = await Tag.allWithNotes();
-
-		this.dispatch({
-			type: 'TAG_UPDATE_ALL',
-			items: tags,
-		});
 
 		const masterKeys = await MasterKey.all();
 

@@ -5,10 +5,6 @@ const Resource = require('lib/models/Resource.js');
 const Folder = require('lib/models/Folder.js');
 const NoteTag = require('lib/models/NoteTag.js');
 const Note = require('lib/models/Note.js');
-const Tag = require('lib/models/Tag.js');
-const { basename, filename } = require('lib/path-utils.js');
-const fs = require('fs-extra');
-const md5 = require('md5');
 const { sprintf } = require('sprintf-js');
 const { shim } = require('lib/shim');
 const { _ } = require('lib/locale');
@@ -110,16 +106,6 @@ class InteropService_Importer_Raw extends InteropService_Importer_Base {
 				if (!itemIdMap[item.id]) itemIdMap[item.id] = uuid.create();
 				item.id = itemIdMap[item.id];
 				createdResources[item.id] = item;
-			} else if (itemType === BaseModel.TYPE_TAG) {
-				const tag = await Tag.loadByTitle(item.title); 
-				if (tag) {
-					itemIdMap[item.id] = tag.id;
-					continue;
-				}
-
-				const tagId = uuid.create();
-				itemIdMap[item.id] = tagId;
-				item.id = tagId;
 			} else if (itemType === BaseModel.TYPE_NOTE_TAG) {
 				noteTagsToCreate.push(item);
 				continue;

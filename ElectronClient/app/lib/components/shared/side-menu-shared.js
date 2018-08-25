@@ -43,17 +43,6 @@ shared.renderFolders = function(props, renderItem) {
 	return renderFoldersRecursive_(props, renderItem, [], '', 0);
 }
 
-shared.renderTags = function(props, renderItem) {
-	let tags = props.tags.slice();
-	tags.sort((a, b) => { return a.title < b.title ? -1 : +1; });
-	let tagItems = [];
-	for (let i = 0; i < tags.length; i++) {
-		const tag = tags[i];
-		tagItems.push(renderItem(tag, props.selectedTagId == tag.id && props.notesParentType == 'Tag'));
-	}
-	return tagItems;
-}
-
 shared.renderSearches = function(props, renderItem) {
 	let searches = props.searches.slice();
 	let searchItems = [];

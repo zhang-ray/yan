@@ -4,9 +4,6 @@ const Resource = require('lib/models/Resource.js');
 const Folder = require('lib/models/Folder.js');
 const NoteTag = require('lib/models/NoteTag.js');
 const Note = require('lib/models/Note.js');
-const Tag = require('lib/models/Tag.js');
-const { basename, filename } = require('lib/path-utils.js');
-const fs = require('fs-extra');
 const ArrayUtils = require('lib/ArrayUtils');
 const { sprintf } = require('sprintf-js');
 const { shim } = require('lib/shim');
@@ -198,10 +195,6 @@ class InteropService {
 			if (exportedNoteIds.indexOf(noteTag.note_id) < 0) continue;
 			await queueExportItem(BaseModel.TYPE_NOTE_TAG, noteTag.id);
 			exportedTagIds.push(noteTag.tag_id);
-		}
-
-		for (let i = 0; i < exportedTagIds.length; i++) {
-			await queueExportItem(BaseModel.TYPE_TAG, exportedTagIds[i]);
 		}
 
 		const exporter = this.newModule_('exporter', exportFormat);

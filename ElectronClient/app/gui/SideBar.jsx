@@ -4,7 +4,6 @@ const shared = require("lib/components/shared/side-menu-shared.js");
 const BaseModel = require("lib/BaseModel.js");
 const Folder = require("lib/models/Folder.js");
 const Note = require("lib/models/Note.js");
-const Tag = require("lib/models/Tag.js");
 const { _ } = require("lib/locale.js");
 const { themeStyle } = require("../theme.js");
 const { bridge } = require("electron").remote.require("./bridge");
@@ -155,10 +154,6 @@ class SideBarComponent extends React.Component {
 			},
 		};
 
-		style.tagItem = Object.assign({}, style.listItem);
-		style.tagItem.paddingLeft = 23;
-		style.tagItem.height = itemHeight;
-
 		return style;
 	}
 
@@ -172,8 +167,6 @@ class SideBarComponent extends React.Component {
 		let deleteMessage = "";
 		if (itemType === BaseModel.TYPE_FOLDER) {
 			deleteMessage = _("Delete notebook? All notes and sub-notebooks within this notebook will also be deleted.");
-		} else if (itemType === BaseModel.TYPE_TAG) {
-			deleteMessage = _("Remove this tag from all the notes?");
 		} else if (itemType === BaseModel.TYPE_SEARCH) {
 			deleteMessage = _("Remove this search from the sidebar?");
 		}
@@ -194,8 +187,6 @@ class SideBarComponent extends React.Component {
 
 					if (itemType === BaseModel.TYPE_FOLDER) {
 						await Folder.delete(itemId);
-					} else if (itemType === BaseModel.TYPE_TAG) {
-						await Tag.untagAll(itemId);
 					} else if (itemType === BaseModel.TYPE_SEARCH) {
 						this.props.dispatch({
 							type: "SEARCH_DELETE",
@@ -249,21 +240,6 @@ class SideBarComponent extends React.Component {
 			);
 		}
 
-		if (itemType === BaseModel.TYPE_TAG) { 
-			menu.append(
-				new MenuItem({
-					label: _('Rename'),
-					click: async () => {
-						this.props.dispatch({
-							type: "WINDOW_COMMAND",
-							name: "renameTag",
-							id: itemId
-						});
-					},
-				})
-			);
-		}
-
 		menu.popup(bridge().window());
 	}
 
@@ -271,13 +247,6 @@ class SideBarComponent extends React.Component {
 		this.props.dispatch({
 			type: "FOLDER_SELECT",
 			id: folder ? folder.id : null,
-		});
-	}
-
-	tagItem_click(tag) {
-		this.props.dispatch({
-			type: "TAG_SELECT",
-			id: tag ? tag.id : null,
 		});
 	}
 
@@ -332,27 +301,6 @@ class SideBarComponent extends React.Component {
 					{itemTitle}
 				</a>
 			</div>
-		);
-	}
-
-	tagItem(tag, selected) {
-		let style = Object.assign({}, this.style().tagItem);
-		if (selected) style = Object.assign(style, this.style().listItemSelected);
-		return (
-			<a
-				className="list-item"
-				href="#"
-				data-id={tag.id}
-				data-type={BaseModel.TYPE_TAG}
-				onContextMenu={event => this.itemContextMenu(event)}
-				key={tag.id}
-				style={style}
-				onClick={() => {
-					this.tagItem_click(tag);
-				}}
-			>
-				{Tag.displayTitle(tag)}
-			</a>
 		);
 	}
 
@@ -411,16 +359,6 @@ class SideBarComponent extends React.Component {
 			items = items.concat(folderItems);
 		}
 		
-		if (this.props.tags.length) {
-			const tagItems = shared.renderTags(this.props, this.tagItem.bind(this));
-
-			items.push(
-				<div className="tags" key="tag_items">
-					{tagItems}
-				</div>
-			);
-		}
-
 		return (
 			<div className="side-bar" style={style}>
 				{items}
@@ -432,12 +370,10 @@ class SideBarComponent extends React.Component {
 const mapStateToProps = state => {
 	return {
 		folders: state.folders,
-		tags: state.tags,
 		searches: state.searches,
 		syncStarted: state.syncStarted,
 		syncReport: state.syncReport,
 		selectedFolderId: state.selectedFolderId,
-		selectedTagId: state.selectedTagId,
 		selectedSearchId: state.selectedSearchId,
 		notesParentType: state.notesParentType,
 		locale: state.settings.locale,

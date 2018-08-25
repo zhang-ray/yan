@@ -1,21 +1,16 @@
 const { createStore, applyMiddleware } = require('redux');
 const { reducer, defaultState, stateUtils } = require('lib/reducer.js');
 const { JoplinDatabase } = require('lib/joplin-database.js');
-const { Database } = require('lib/database.js');
 const { FoldersScreenUtils } = require('lib/folders-screen-utils.js');
 const { DatabaseDriverNode } = require('lib/database-driver-node.js');
 const BaseModel = require('lib/BaseModel.js');
 const Folder = require('lib/models/Folder.js');
-const BaseItem = require('lib/models/BaseItem.js');
 const Note = require('lib/models/Note.js');
-const Tag = require('lib/models/Tag.js');
 const Setting = require('lib/models/Setting.js');
 const { Logger } = require('lib/logger.js');
 const { splitCommandString } = require('lib/string-utils.js');
-const { sprintf } = require('sprintf-js');
 const { reg } = require('lib/registry.js');
 const { time } = require('lib/time-utils.js');
-const { fileExtension } = require('lib/path-utils.js');
 const { shim } = require('lib/shim.js');
 const { _ } = require('lib/locale.js');
 const reduxSharedMiddleware = require('lib/components/shared/reduxSharedMiddleware');
@@ -170,9 +165,6 @@ class BaseApplication {
 		if (parentType === 'Folder') {
 			parentId = state.selectedFolderId;
 			parentType = BaseModel.TYPE_FOLDER;
-		} else if (parentType === 'Tag') {
-			parentId = state.selectedTagId;
-			parentType = BaseModel.TYPE_TAG;
 		} else if (parentType === 'Search') {
 			parentId = state.selectedSearchId;
 			parentType = BaseModel.TYPE_SEARCH;
@@ -195,8 +187,6 @@ class BaseApplication {
 		if (parentId) {
 			if (parentType === Folder.modelType()) {
 				notes = await Note.previews(parentId, options);
-			} else if (parentType === Tag.modelType()) {
-				notes = await Tag.notes(parentId);
 			} else if (parentType === BaseModel.TYPE_SEARCH) {
 				let fields = Note.previewFields();
 				let search = BaseModel.byId(state.searches, parentId);

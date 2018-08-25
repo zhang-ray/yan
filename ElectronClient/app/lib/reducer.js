@@ -154,8 +154,6 @@ function defaultNotesParentType(state, exclusion) {
 
 	if (exclusion !== 'Folder' && state.selectedFolderId) {
 		newNotesParentType = 'Folder';
-	} else if (exclusion !== 'Tag' && state.selectedTagId) {
-		newNotesParentType = 'Tag';
 	} else if (exclusion !== 'Search' && state.selectedSearchId) {
 		newNotesParentType = 'Search';
 	}
@@ -390,19 +388,6 @@ const reducer = (state = defaultState, action) => {
 				newState = Object.assign({}, state);
 				newState.tags = action.items;
 				break;
-
-			case 'TAG_SELECT':
-
-				newState = Object.assign({}, state);
-				newState.selectedTagId = action.id;
-				if (!action.id) {
-					newState.notesParentType = defaultNotesParentType(state, 'Tag');
-				} else {
-					newState.notesParentType = 'Tag';
-				}
-				break;
-
-			case 'TAG_UPDATE_ONE':
 			case 'FOLDER_UPDATE_ONE':
 			case 'MASTERKEY_UPDATE_ONE':
 

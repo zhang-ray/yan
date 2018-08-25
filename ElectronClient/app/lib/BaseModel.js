@@ -487,7 +487,6 @@ BaseModel.typeEnum_ = [
 	['TYPE_FOLDER', 2],
 	['TYPE_SETTING', 3],
 	['TYPE_RESOURCE', 4],
-	['TYPE_TAG', 5],
 	['TYPE_NOTE_TAG', 6],
 	['TYPE_SEARCH', 7],
 	['TYPE_ALARM', 8],

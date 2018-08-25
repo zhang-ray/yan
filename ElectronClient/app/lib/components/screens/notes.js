@@ -2,15 +2,12 @@ const React = require('react'); const Component = React.Component;
 const { View, Button, Text } = require('react-native');
 const { stateUtils } = require('lib/reducer.js');
 const { connect } = require('react-redux');
-const { reg } = require('lib/registry.js');
 const { NoteList } = require('lib/components/note-list.js');
 const Folder = require('lib/models/Folder.js');
-const Tag = require('lib/models/Tag.js');
 const Note = require('lib/models/Note.js');
 const Setting = require('lib/models/Setting.js');
 const { themeStyle } = require('lib/components/global-style.js');
 const { ScreenHeader } = require('lib/components/screen-header.js');
-const { MenuOption } = require('react-native-popup-menu');
 const { _ } = require('lib/locale.js');
 const { ActionButton } = require('lib/components/action-button.js');
 const { dialogs } = require('lib/dialogs.js');
@@ -89,8 +86,6 @@ class NotesScreenComponent extends BaseScreenComponent {
 		let notes = [];
 		if (props.notesParentType == 'Folder') {
 			notes = await Note.previews(props.selectedFolderId, options);
-		} else {
-			notes = await Tag.notes(props.selectedTagId); // TODO: should also return previews
 		}
 
 		this.props.dispatch({
@@ -146,8 +141,6 @@ class NotesScreenComponent extends BaseScreenComponent {
 		let output = null;
 		if (props.notesParentType == 'Folder') {
 			output = Folder.byId(props.folders, props.selectedFolderId);
-		} else if (props.notesParentType == 'Tag') {
-			output = Tag.byId(props.tags, props.selectedTagId);
 		} else {
 			return null;
 			throw new Error('Invalid parent type: ' + props.notesParentType);
