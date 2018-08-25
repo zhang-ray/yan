@@ -31,11 +31,6 @@ const defaultState = {
 		startState: 'idle',
 		port: null,
 	},
-	decryptionWorker: {
-		state: 'idle',
-		itemIndex: 0,
-		itemCount: 0,
-	},
 };
 
 const stateUtils = {};
@@ -527,17 +522,6 @@ const reducer = (state = defaultState, action) => {
 				if ('startState' in action) clipperServer.startState = action.startState;
 				if ('port' in action) clipperServer.port = action.port;
 				newState.clipperServer = clipperServer;
-				break;
-
-			case 'DECRYPTION_WORKER_SET':
-
-				newState = Object.assign({}, state);
-				const decryptionWorker = Object.assign({}, newState.decryptionWorker);
-				for (var n in action) {
-					if (!action.hasOwnProperty(n) || n === 'type') continue;
-					decryptionWorker[n] = action[n];
-				}
-				newState.decryptionWorker = decryptionWorker;
 				break;
 
 		}

@@ -53,48 +53,6 @@ class Resource extends BaseItem {
 		return Setting.value('resourceDir') + '/' + this.filename(resource, encryptedBlob);
 	}
 
-	// For resources, we need to decrypt the item (metadata) and the resource binary blob.
-	static async decrypt(item) {
-		// The item might already be decrypted but not the blob (for instance if it crashes while
-		// decrypting the blob or was otherwise interrupted).
-		const decryptedItem = item.encryption_cipher_text ? await super.decrypt(item) : Object.assign({}, item);
-		if (!decryptedItem.encryption_blob_encrypted) return decryptedItem;
-
-		const plainTextPath = this.fullPath(decryptedItem);
-		const encryptedPath = this.fullPath(decryptedItem, true);
-		const noExtPath = pathUtils.dirname(encryptedPath) + '/' + pathUtils.filename(encryptedPath);
-		
-		// When the resource blob is downloaded by the synchroniser, it's initially a file with no
-		// extension (since it's encrypted, so we don't know its extension). So here rename it
-		// to a file with a ".crypted" extension so that it's better identified, and then decrypt it.
-		// Potentially plainTextPath is also a path with no extension if it's an unknown mime type.
-		if (await this.fsDriver().exists(noExtPath)) {
-			await this.fsDriver().move(noExtPath, encryptedPath);
-		}
-
-		try {
-			// const stat = await this.fsDriver().stat(encryptedPath);
-			await this.encryptionService().decryptFile(encryptedPath, plainTextPath, {
-				// onProgress: (progress) => {
-				// 	console.info('Decryption: ', progress.doneSize / stat.size);
-				// },
-			});
-		} catch (error) {
-			if (error.code === 'invalidIdentifier') {
-				// As the identifier is invalid it most likely means that this is not encrypted data
-				// at all. It can happen for example when there's a crash between the moment the data
-				// is decrypted and the resource item is updated.
-				this.logger().warn('Found a resource that was most likely already decrypted but was marked as encrypted. Marked it as decrypted: ' + item.id)
-				this.fsDriver().move(encryptedPath, plainTextPath);
-			} else {
-				throw error;
-			}
-		}
-
-		decryptedItem.encryption_blob_encrypted = 0;
-		return super.save(decryptedItem, { autoTimestamp: false });
-	}
-
 	static markdownTag(resource) {
 		let tagAlt = resource.alt ? resource.alt : resource.title;
 		if (!tagAlt) tagAlt = '';

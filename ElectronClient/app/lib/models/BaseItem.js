@@ -281,20 +281,6 @@ class BaseItem extends BaseModel {
 		return this.encryptionService_;
 	}
 
-	static async decrypt(item) {
-		if (!item.encryption_cipher_text) throw new Error('Item is not encrypted: ' + item.id);
-
-		const ItemClass = this.itemClass(item);
-		const plainText = await this.encryptionService().decryptString(item.encryption_cipher_text);
-
-		// Note: decryption does not count has a change, so don't update any timestamp
-		const plainItem = await ItemClass.unserialize(plainText);
-		plainItem.updated_time = item.updated_time;
-		plainItem.encryption_cipher_text = '';
-		plainItem.encryption_applied = 0;
-		return ItemClass.save(plainItem, { autoTimestamp: false });
-	}
-
 	static async unserialize(content) {
 		let lines = content.split("\n");
 		let output = {};
@@ -339,38 +325,7 @@ class BaseItem extends BaseModel {
 
 		return output;
 	}
-
-	static async encryptedItemsStats() {
-		const classNames = this.encryptableItemClassNames();
-		let encryptedCount = 0;
-		let totalCount = 0;
-
-		for (let i = 0; i < classNames.length; i++) {
-			const ItemClass = this.getClass(classNames[i]);
-			encryptedCount += await ItemClass.count({ where: 'encryption_applied = 1' });
-			totalCount += await ItemClass.count();
-		}
-
-		return {
-			encrypted: encryptedCount,
-			total: totalCount,
-		};
-	}
-
-	static async encryptedItemsCount() {
-		const classNames = this.encryptableItemClassNames();
-		let output = 0;
-
-		for (let i = 0; i < classNames.length; i++) {
-			const className = classNames[i];
-			const ItemClass = this.getClass(className);
-			const count = await ItemClass.count({ where: 'encryption_applied = 1' });
-			output += count;
-		}
-
-		return output;
-	}
-
+	
 	static async hasEncryptedItems() {
 		const classNames = this.encryptableItemClassNames();
 
@@ -383,39 +338,6 @@ class BaseItem extends BaseModel {
 		}
 
 		return false;
-	}
-
-	static async itemsThatNeedDecryption(exclusions = [], limit = 100) {
-		const classNames = this.encryptableItemClassNames();
-
-		for (let i = 0; i < classNames.length; i++) {
-			const className = classNames[i];
-			const ItemClass = this.getClass(className);
-
-			const whereSql = className === 'Resource' ? ['(encryption_blob_encrypted = 1 OR encryption_applied = 1)'] : ['encryption_applied = 1'];
-			if (exclusions.length) whereSql.push('id NOT IN ("' + exclusions.join('","') + '")');
-
-			const sql = sprintf(`
-				SELECT *
-				FROM %s
-				WHERE %s
-				LIMIT %d
-				`,
-				this.db().escapeField(ItemClass.tableName()),
-				whereSql.join(' AND '),
-				limit
-			);
-
-			const items = await ItemClass.modelSelectAll(sql);
-
-			if (i >= classNames.length - 1) {
-				return { hasMore: items.length >= limit, items: items };
-			} else {
-				if (items.length) return { hasMore: true, items: items };
-			}
-		}
-
-		throw new Error('Unreachable');
 	}
 
 	static syncItemClassNames() {
