@@ -15,7 +15,6 @@ const { _ } = require('lib/locale.js');
 const reduxSharedMiddleware = require('lib/components/shared/reduxSharedMiddleware');
 const os = require('os');
 const fs = require('fs-extra');
-const JoplinError = require('lib/JoplinError');
 const EventEmitter = require('events');
 const syswidecas = require('syswide-cas');
 const BaseService = require('lib/services/BaseService');
@@ -45,102 +44,6 @@ class BaseApplication {
 		return this.currentFolder_;
 	}
 
-	async refreshCurrentFolder() {
-		let newFolder = null;
-		
-		if (this.currentFolder_) newFolder = await Folder.load(this.currentFolder_.id);
-		if (!newFolder) newFolder = await Folder.defaultFolder();
-
-		this.switchCurrentFolder(newFolder);
-	}
-
-	switchCurrentFolder(folder) {
-		if (!this.hasGui()) {
-			this.currentFolder_ = Object.assign({}, folder);
-			Setting.setValue('activeFolderId', folder ? folder.id : '');
-		} else {
-			this.dispatch({
-				type: 'FOLDER_SELECT',
-				id: folder ? folder.id : '',
-			});
-		}
-	}
-
-	// Handles the initial flags passed to main script and
-	// returns the remaining args.
-	async handleStartFlags_(argv, setDefaults = true) {
-		let matched = {};
-		argv = argv.slice(0);
-		argv.splice(0, 2); // First arguments are the node executable, and the node JS file
-
-		while (argv.length) {
-			let arg = argv[0];
-			let nextArg = argv.length >= 2 ? argv[1] : null;
-			
-			if (arg == '--profile') {
-				if (!nextArg) throw new JoplinError(_('Usage: %s', '--profile <dir-path>'), 'flagError');
-				matched.profileDir = nextArg;
-				argv.splice(0, 2);
-				continue;
-			}
-
-			if (arg == '--env') {
-				if (!nextArg) throw new JoplinError(_('Usage: %s', '--env <dev|prod>'), 'flagError');
-				matched.env = nextArg;
-				argv.splice(0, 2);
-				continue;
-			}
-
-			if (arg == '--is-demo') {
-				Setting.setConstant('isDemo', true);
-				argv.splice(0, 1);
-				continue;
-			}
-
-			if (arg == '--open-dev-tools') {
-				Setting.setConstant('openDevTools', true);
-				argv.splice(0, 1);
-				continue;
-			}
-
-			if (arg == '--stack-trace-enabled') {
-				this.showStackTraces_ = true;
-				argv.splice(0, 1);
-				continue;
-			}
-
-			if (arg == '--log-level') {
-				if (!nextArg) throw new JoplinError(_('Usage: %s', '--log-level <none|error|warn|info|debug>'), 'flagError');
-				matched.logLevel = Logger.levelStringToId(nextArg);
-				argv.splice(0, 2);
-				continue;
-			}
-
-			if (arg.indexOf('-psn') === 0) {
-				// Some weird flag passed by macOS - can be ignored.
-				// https://github.com/laurent22/joplin/issues/480
-				// https://stackoverflow.com/questions/10242115
-				argv.splice(0, 1);
-				continue;
-			}
-
-			if (arg.length && arg[0] == '-') {
-				throw new JoplinError(_('Unknown flag: %s', arg), 'flagError');
-			} else {
-				break;
-			}
-		}
-
-		if (setDefaults) {
-			if (!matched.logLevel) matched.logLevel = Logger.LEVEL_INFO;
-			if (!matched.env) matched.env = 'prod';
-		}
-
-		return {
-			matched: matched,
-			argv: argv,
-		};
-	}
 
 	on(eventName, callback) {
 		return this.eventEmitter_.on(eventName, callback);
@@ -317,34 +220,23 @@ class BaseApplication {
 		return {};
 	}
 
-	determineProfileDir(initArgs) {
-		if (initArgs.profileDir) return initArgs.profileDir;
-
-		if (process && process.env && process.env.PORTABLE_EXECUTABLE_DIR) return process.env.PORTABLE_EXECUTABLE_DIR + '/JoplinProfile';
-
+	determineProfileDir() {
 		return os.homedir() + '/.config/' + Setting.value('appName');
 	}
 
 
-	determineBackupDir(initArgs){
+	determineBackupDir(){
 		return os.homedir() + '/.backup/' + Setting.value('appName');
 	}
 
 
 	async start(argv) {
-		let startFlags = await this.handleStartFlags_(argv);
-
-		argv = startFlags.argv;
-		let initArgs = startFlags.matched;
-		if (argv.length) this.showPromptString_ = false;
-		
-		const profileDir = this.determineProfileDir(initArgs);
+		const profileDir = this.determineProfileDir();
 		const resourceDir = profileDir + '/resources';
 		const tempDir = profileDir + '/tmp';
 
-		const backupDir = this.determineBackupDir(initArgs);
+		const backupDir = this.determineBackupDir();
 
-		Setting.setConstant('env', initArgs.env);
 		Setting.setConstant('profileDir', profileDir);
 		Setting.setConstant('resourceDir', resourceDir);
 		Setting.setConstant('tempDir', tempDir);
@@ -357,22 +249,15 @@ class BaseApplication {
 		await fs.mkdirp(tempDir, 0o755);
 		await fs.mkdirp(backupDir, 0o700);
 
-		const extraFlags = await this.readFlagsFromFile(profileDir + '/flags.txt');
-		initArgs = Object.assign(initArgs, extraFlags);
-
 		this.logger_.addTarget('file', { path: profileDir + '/log.txt' });
 		//this.logger_.addTarget('console');
-		this.logger_.setLevel(initArgs.logLevel);
+		this.logger_.setLevel(Logger.LEVEL_DEBUG);
 
 		reg.setLogger(this.logger_);
 		reg.dispatch = (o) => {};
 
 		this.dbLogger_.addTarget('file', { path: profileDir + '/log-database.txt' });
-		this.dbLogger_.setLevel(initArgs.logLevel);
-
-		if (Setting.value('env') === 'dev') {
-			this.dbLogger_.setLevel(Logger.LEVEL_WARN);
-		}
+		this.dbLogger_.setLevel(Logger.LEVEL_DEBUG);
 
 		this.logger_.info('Profile directory: ' + profileDir);
 
