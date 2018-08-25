@@ -125,7 +125,6 @@ shim.fsDriver = () => { throw new Error('Not implemented') }
 shim.FileApiDriverLocal = null;
 shim.readLocalFileBase64 = (path) => { throw new Error('Not implemented'); }
 shim.uploadBlob = () => { throw new Error('Not implemented'); }
-shim.sjclModule = null;
 shim.randomBytes = async (count) => { throw new Error('Not implemented'); }
 shim.setInterval = function(fn, interval) {
 	return setInterval(fn, interval);

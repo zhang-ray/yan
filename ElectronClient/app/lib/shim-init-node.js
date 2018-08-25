@@ -14,7 +14,6 @@ function shimInit() {
 	shim.FileApiDriverLocal = FileApiDriverLocal;
 	shim.Geolocation = GeolocationNode;
 	shim.FormData = require('form-data');
-	shim.sjclModule = require('lib/vendor/sjcl.js');
 
 	shim.fsDriver = () => {
 		if (!shim.fsDriver_) shim.fsDriver_ = new FsDriverNode();
