@@ -4,7 +4,6 @@ const { Platform, View, Text, Button, StyleSheet, TouchableOpacity, Image, Scrol
 const Icon = require('react-native-vector-icons/Ionicons').default;
 const { BackButtonService } = require('lib/services/back-button.js');
 const NavService = require('lib/services/NavService.js');
-const { ReportService } = require('lib/services/report.js');
 const { Menu, MenuOptions, MenuOption, MenuTrigger } = require('react-native-popup-menu');
 const { _ } = require('lib/locale.js');
 const Setting = require('lib/models/Setting.js');
@@ -172,32 +171,6 @@ class ScreenHeaderComponent extends Component {
 		NavService.go('EncryptionConfig');
 	}
 
-	async debugReport_press() {
-		const service = new ReportService();
-
-		const logItems = await reg.logger().lastEntries(null);
-		const logItemRows = [
-			['Date','Level','Message']
-		];
-		for (let i = 0; i < logItems.length; i++) {
-			const item = logItems[i];
-			logItemRows.push([
-				time.formatMsToLocal(item.timestamp, 'MM-DDTHH:mm:ss'),
-				item.level,
-				item.message
-			]);
-		}
-		const logItemCsv = service.csvCreate(logItemRows);
-
-		const itemListCsv = await service.basicItemList({ format: 'csv' });
-		const filePath = RNFS.ExternalDirectoryPath + '/syncReport-' + (new Date()).getTime() + '.txt';
-
-		const finalText = [logItemCsv, itemListCsv].join("\n================================================================================\n");
-
-		await RNFS.writeFile(filePath, finalText);
-		alert('Debug report exported to ' + filePath);
-	}
-
 	render() {
 
 		function sideMenuButton(styles, onPress) {
@@ -282,12 +255,6 @@ class ScreenHeaderComponent extends Component {
 						<Text style={this.styles().contextMenuItemText}>{_('Status')}</Text>
 					</MenuOption>);
 
-				if (Platform.OS === 'android') {
-					menuOptionComponents.push(
-						<MenuOption value={() => this.debugReport_press()} key={'menuOption_debugReport'} style={this.styles().contextMenuItem}>
-							<Text style={this.styles().contextMenuItemText}>{_('Export Debug Report')}</Text>
-						</MenuOption>);
-				} 
 			}
 
 			if (menuOptionComponents.length) {

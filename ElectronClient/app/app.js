@@ -9,9 +9,6 @@ const { _ } = require('lib/locale.js');
 const fs = require('fs-extra');
 const { reg } = require('lib/registry.js');
 const { defaultState } = require('lib/reducer.js');
-const packageInfo = require('./packageInfo.js');
-const AlarmService = require('lib/services/AlarmService.js');
-const AlarmServiceDriverNode = require('lib/services/AlarmServiceDriverNode');
 const InteropService = require('lib/services/InteropService');
 const InteropServiceHelper = require('./InteropServiceHelper.js');
 const ResourceService = require('lib/services/ResourceService');
@@ -171,10 +168,6 @@ class Application extends BaseApplication {
 	}
 
 	async generalMiddleware(store, next, action) {
-		if (['EVENT_NOTE_ALARM_FIELD_CHANGE', 'NOTE_DELETE'].indexOf(action.type) >= 0) {
-			await AlarmService.updateNoteNotification(action.id, action.type === 'NOTE_DELETE');
-		}
-
 		const result = await super.generalMiddleware(store, next, action);
 		const newState = store.getState();
 
@@ -492,9 +485,6 @@ class Application extends BaseApplication {
 
 		argv = await super.start(argv);
 
-		AlarmService.setDriver(new AlarmServiceDriverNode({ appName: packageInfo.build.appId }));
-		AlarmService.setLogger(reg.logger());
-
 		reg.setShowErrorMessageBoxHandler((message) => { bridge().showErrorMessageBox(message) });
 
 		if (Setting.value('openDevTools')) {
@@ -530,10 +520,6 @@ class Application extends BaseApplication {
 		});
 
 		if (shim.isLinux()) bridge().setAllowPowerSaveBlockerToggle(true);
-
-		setTimeout(() => {
-			AlarmService.garbageCollect();
-		}, 1000 * 60 * 60);
 
 		ResourceService.runInBackground();
 

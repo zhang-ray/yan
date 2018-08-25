@@ -83,7 +83,6 @@ class NoteTextComponent extends React.Component {
 			}
 		}
 
-		this.onAlarmChange_ = (event) => { if (event.noteId === this.props.noteId) this.reloadNote(this.props); }
 		this.onNoteTypeToggle_ = (event) => { if (event.noteId === this.props.noteId) this.reloadNote(this.props); }
 		this.onTodoToggle_ = (event) => { if (event.noteId === this.props.noteId) this.reloadNote(this.props); }
 
@@ -239,7 +238,6 @@ class NoteTextComponent extends React.Component {
 
 		this.updateHtml(note && note.body ? note.body : '');
 
-		eventManager.on('alarmChange', this.onAlarmChange_);
 		eventManager.on('noteTypeToggle', this.onNoteTypeToggle_);
 		eventManager.on('todoToggle', this.onTodoToggle_);
 	}
@@ -250,7 +248,6 @@ class NoteTextComponent extends React.Component {
 		this.mdToHtml_ = null;
 		this.destroyWebview();
 
-		eventManager.removeListener('alarmChange', this.onAlarmChange_);
 		eventManager.removeListener('noteTypeToggle', this.onNoteTypeToggle_);
 		eventManager.removeListener('todoToggle', this.onTodoToggle_);
 
@@ -809,16 +806,6 @@ class NoteTextComponent extends React.Component {
 		}
 	}
 
-	async commandSetAlarm() {
-		await this.saveIfNeeded(true);
-
-		this.props.dispatch({
-			type: 'WINDOW_COMMAND',
-			name: 'editAlarm',
-			noteId: this.state.note.id,
-		});
-	}
-
 	externalEditWatcher() {
 		if (!this.externalEditWatcher_) {
 			this.externalEditWatcher_ = new ExternalEditWatcher((action) => { return this.props.dispatch(action) });
@@ -1018,12 +1005,6 @@ class NoteTextComponent extends React.Component {
 		menu.append(new MenuItem({label: _('Attach file'), click: async () => {
 			return this.commandAttachFile();
 		}}));
-
-		if (!!note.is_todo) {
-			menu.append(new MenuItem({label: _('Set alarm'), click: async () => {
-				return this.commandSetAlarm();
-			}}));
-		}
 
 		menu.popup(bridge().window());
 	}

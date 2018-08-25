@@ -149,43 +149,6 @@ class MainScreenComponent extends React.Component {
 			this.setState({ modalLayer: { visible: true, message: command.message } });
 		} else if (command.name === 'hideModalMessage') {
 			this.setState({ modalLayer: { visible: false, message: '' } });
-		} else if (command.name === 'editAlarm') {
-			const note = await Note.load(command.noteId);
-
-			let defaultDate = new Date(Date.now() + 2 * 3600 * 1000);
-			defaultDate.setMinutes(0);
-			defaultDate.setSeconds(0);
-
-			this.setState({
-				promptOptions: {
-					label: _('Set alarm:'),
-					inputType: 'datetime',
-					buttons: ['ok', 'cancel', 'clear'],
-					value: note.todo_due ? new Date(note.todo_due) : defaultDate,
-					onClose: async (answer, buttonType) => {
-						let newNote = null;
-
-						if (buttonType === 'clear') {
-							newNote = {
-								id: note.id,
-								todo_due: 0,
-							};
-						} else if (answer !== null) {
-							newNote = {
-								id: note.id,
-								todo_due: answer.getTime(),
-							};
-						}
-
-						if (newNote) {
-							await Note.save(newNote);
-							eventManager.emit('alarmChange', { noteId: note.id });
-						}
-
-						this.setState({ promptOptions: null });
-					}
-				},
-			});
 		} else {
 			commandProcessed = false;
 		}
