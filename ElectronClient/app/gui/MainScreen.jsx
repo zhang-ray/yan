@@ -184,7 +184,7 @@ class MainScreenComponent extends React.Component {
 			backgroundColor: theme.warningBackgroundColor,
 		}
 
-		const rowHeight = height - theme.headerHeight - (messageBoxVisible ? this.styles_.messageBox.height : 0);
+		const rowHeight = height - theme.headerHeight;
 
 		this.styles_.sideBar = {
 			width: Math.floor(layoutUtils.size(width * .2, 150, 300)),
@@ -237,7 +237,7 @@ class MainScreenComponent extends React.Component {
 		const folders = this.props.folders;
 		const notes = this.props.notes;
 		const sidebarVisibility = this.props.sidebarVisibility;
-		const styles = this.styles(this.props.theme, style.width, style.height, messageBoxVisible, sidebarVisibility);
+		const styles = this.styles(this.props.theme, style.width, style.height, false, sidebarVisibility);
 		const theme = themeStyle(this.props.theme);
 		const selectedFolderId = this.props.selectedFolderId;
 		const onConflictFolder = this.props.selectedFolderId === Folder.conflictFolderId();
@@ -285,18 +285,6 @@ class MainScreenComponent extends React.Component {
 		}
 
 		let messageComp = null;
-
-		if (messageBoxVisible) {
-			let msg = null;
-
-			messageComp = (
-				<div style={styles.messageBox}>
-					<span style={theme.textStyle}>
-						{msg}
-					</span>
-				</div>
-			);
-		}
 
 		const modalLayerStyle = Object.assign({}, styles.modalLayer, { display: this.state.modalLayer.visible ? 'block' : 'none' });
 
