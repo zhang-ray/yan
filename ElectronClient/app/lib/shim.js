@@ -6,10 +6,6 @@ shim.isNode = () => {
 	return process.title == 'node';
 };
 
-shim.isReactNative = () => {
-	return !shim.isNode();
-};
-
 shim.isLinux = () => {
 	return process && process.platform === 'linux';
 }
@@ -23,7 +19,6 @@ shim.isMac = () => {
 }
 
 shim.platformName = function() {
-	if (shim.isReactNative()) return 'mobile';
 	if (shim.isMac()) return 'darwin'; 
 	if (shim.isWindows()) return 'win32'; 
 	if (shim.isLinux()) return 'linux';
@@ -48,10 +43,6 @@ shim.isElectron = () => {
 	}
 
 	return false;
-}
-
-shim.isPortable = function() {
-	return typeof process !== 'undefined' && typeof process.env === 'object' && !!process.env.PORTABLE_EXECUTABLE_DIR;
 }
 
 // Node requests can go wrong is so many different ways and with so

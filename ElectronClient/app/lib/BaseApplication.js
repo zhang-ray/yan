@@ -216,10 +216,6 @@ class BaseApplication {
 		reg.dispatch = this.store().dispatch;
 	}
 
-	async readFlagsFromFile(flagPath) {
-		return {};
-	}
-
 	determineProfileDir() {
 		return os.homedir() + '/.config/' + Setting.value('appName');
 	}

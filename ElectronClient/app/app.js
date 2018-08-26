@@ -44,10 +44,6 @@ class Application extends BaseApplication {
 		return true;
 	}
 
-	checkForUpdateLoggerPath() {
-		return Setting.value('profileDir') + '/log-autoupdater.txt';
-	}
-
 	reducer(state = appDefaultState, action) {
 		let newState = state;
 

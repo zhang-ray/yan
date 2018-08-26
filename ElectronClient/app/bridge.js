@@ -117,19 +117,6 @@ class Bridge {
 	openItem(fullPath) {
 		return require('electron').shell.openItem(fullPath)
 	}
-
-	powerSaveBlockerStart(type) {
-		if (!this.allowPowerSaveBlockerToggle_) return null;
-		console.info('Enable powerSaveBlockerStart: ' + type);
-		return powerSaveBlocker.start(type);
-	}
-
-	powerSaveBlockerStop(id) {
-		if (!this.allowPowerSaveBlockerToggle_) return null;
-		console.info('Disable powerSaveBlocker: ' + id);
-		return powerSaveBlocker.stop(id);
-	}
-
 }
 
 let bridge_ = null;
