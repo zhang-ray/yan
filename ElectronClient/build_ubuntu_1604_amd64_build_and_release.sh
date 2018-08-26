@@ -14,4 +14,4 @@ cd ../../
 
 
 # make package
-tar -zcf app.tar.gz ./ElectronClient/app
+# tar -zcf app.tar.gz ./ElectronClient/app

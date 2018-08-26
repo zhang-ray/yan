@@ -8,5 +8,5 @@ build_script:
 - ./build_ubuntu_1604_amd64.sh
 
 artifacts:
-- path: app.tar.gz
-- path: ./ElectronClient/app/dist/YAN-0.0.1-x86_64.AppImage
+#- path: app.tar.gz
+- path: ./ElectronClient/app/dist/YAN-1.0.0-x86_64.AppImage

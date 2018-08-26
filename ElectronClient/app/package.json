@@ -1,6 +1,6 @@
 {
   "name": "YAN",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Yet Another Note taking App",
   "main": "main.js",
   "scripts": {
