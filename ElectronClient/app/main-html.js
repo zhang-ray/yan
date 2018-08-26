@@ -17,7 +17,6 @@ const Folder = require('lib/models/Folder.js');
 const Resource = require('lib/models/Resource.js');
 const BaseItem = require('lib/models/BaseItem.js');
 const Note = require('lib/models/Note.js');
-const MasterKey = require('lib/models/MasterKey');
 const { Logger } = require('lib/logger.js');
 const { FsDriverNode } = require('lib/fs-driver-node.js');
 const { shimInit } = require('lib/shim-init-node.js');
@@ -34,7 +33,6 @@ FileApiDriverLocal.fsDriver_ = fsDriver;
 BaseItem.loadClass('Note', Note);
 BaseItem.loadClass('Folder', Folder);
 BaseItem.loadClass('Resource', Resource);
-BaseItem.loadClass('MasterKey', MasterKey);
 
 shimInit();
 

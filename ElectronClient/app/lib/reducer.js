@@ -8,8 +8,6 @@ const defaultState = {
 	notesParentType: null,
 	folders: [],
 	tags: [],
-	masterKeys: [],
-	notLoadedMasterKeys: [],
 	searches: [],
 	selectedNoteIds: [],
 	selectedFolderId: null,
@@ -120,7 +118,6 @@ function updateOneItem(state, action) {
 	let itemsKey = null;
 	if (action.type === 'TAG_UPDATE_ONE') itemsKey = 'tags';
 	if (action.type === 'FOLDER_UPDATE_ONE') itemsKey = 'folders';
-	if (action.type === 'MASTERKEY_UPDATE_ONE') itemsKey = 'masterKeys';
 
 	let newItems = state[itemsKey].splice(0);
 	let item = action.item;
@@ -384,45 +381,12 @@ const reducer = (state = defaultState, action) => {
 				newState.tags = action.items;
 				break;
 			case 'FOLDER_UPDATE_ONE':
-			case 'MASTERKEY_UPDATE_ONE':
-
 				newState = updateOneItem(state, action);
 				break;
 
 			case 'FOLDER_DELETE':
 
 				newState = handleItemDelete(state, action);
-				break;
-
-			case 'MASTERKEY_UPDATE_ALL':
-
-				newState = Object.assign({}, state);
-				newState.masterKeys = action.items;
-				break;
-
-			case 'MASTERKEY_ADD_NOT_LOADED':
-
-				if (state.notLoadedMasterKeys.indexOf(action.id) < 0) {
-					newState = Object.assign({}, state);
-					const keys = newState.notLoadedMasterKeys.slice();
-					keys.push(action.id);
-					newState.notLoadedMasterKeys = keys;
-				}
-				break;
-
-			case 'MASTERKEY_REMOVE_NOT_LOADED':
-
-				const ids = action.id ? [action.id] : action.ids;
-				for (let i = 0; i < ids.length; i++) {
-					const id = ids[i];
-					const index = state.notLoadedMasterKeys.indexOf(id);
-					if (index >= 0) {
-						newState = Object.assign({}, state);
-						const keys = newState.notLoadedMasterKeys.slice();
-						keys.splice(index, 1);
-						newState.notLoadedMasterKeys = keys;
-					}
-				}
 				break;
 
 			case 'SYNC_STARTED':

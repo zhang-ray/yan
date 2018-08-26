@@ -337,11 +337,7 @@ class ScreenHeaderComponent extends Component {
 			}
 		}
 
-		const warningComp = this.props.showMissingMasterKeyMessage ? (
-			<TouchableOpacity style={this.styles().warningBox} onPress={() => this.warningBox_press()} activeOpacity={0.8}>
-				<Text style={{flex:1}}>{_('Press to set the decryption password.')}</Text>
-			</TouchableOpacity>
-		) : null;
+		const warningComp = null;
 
 		const showSideMenuButton = this.props.showSideMenuButton !== false && !this.props.noteSelectionEnabled;
 		const showSearchButton = this.props.showSearchButton !== false && !this.props.noteSelectionEnabled;
@@ -401,7 +397,6 @@ const ScreenHeader = connect(
 			showAdvancedOptions: state.settings.showAdvancedOptions,
 			noteSelectionEnabled: state.noteSelectionEnabled,
 			selectedNoteIds: state.selectedNoteIds,
-			showMissingMasterKeyMessage: state.notLoadedMasterKeys.length && state.masterKeys.length,
 		};
 	}
 )(ScreenHeaderComponent)

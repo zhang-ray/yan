@@ -296,7 +296,6 @@ BaseItem.syncItemDefinitions_ = [
 	{ type: BaseModel.TYPE_NOTE, className: 'Note' },
 	{ type: BaseModel.TYPE_FOLDER, className: 'Folder' },
 	{ type: BaseModel.TYPE_RESOURCE, className: 'Resource' },
-	{ type: BaseModel.TYPE_MASTER_KEY, className: 'MasterKey' },
 ];
 
 module.exports = BaseItem;

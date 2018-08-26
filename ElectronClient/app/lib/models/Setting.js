@@ -75,7 +75,6 @@ class Setting extends BaseModel {
 			'collapsedFolderIds': { value: [], type: Setting.TYPE_ARRAY, public: false },
 			
 			'encryption.enabled': { value: false, type: Setting.TYPE_BOOL, public: false },
-			'encryption.activeMasterKeyId': { value: '', type: Setting.TYPE_STRING, public: false },
 			'encryption.passwordCache': { value: {}, type: Setting.TYPE_OBJECT, public: false },
 			'style.zoom': {value: "100", type: Setting.TYPE_INT, public: true, appTypes: ['desktop'], label: () => _('Global zoom percentage'), minimum: "50", maximum: "500", step: "10"},
 			'noteVisiblePanes': { value: ['editor', 'viewer'], type: Setting.TYPE_ARRAY, public: false, appTypes: ['desktop'] },

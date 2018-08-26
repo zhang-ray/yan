@@ -4,7 +4,6 @@ const { BaseApplication } = require('lib/BaseApplication');
 const { FoldersScreenUtils } = require('lib/folders-screen-utils.js');
 const Setting = require('lib/models/Setting.js');
 const { shim } = require('lib/shim.js');
-const MasterKey = require('lib/models/MasterKey');
 const { _ } = require('lib/locale.js');
 const fs = require('fs-extra');
 const { reg } = require('lib/registry.js');
@@ -359,13 +358,6 @@ class Application extends BaseApplication {
 		Setting.dispatchUpdateAll();
 
 		await FoldersScreenUtils.refreshFolders();
-
-		const masterKeys = await MasterKey.all();
-
-		this.dispatch({
-			type: 'MASTERKEY_UPDATE_ALL',
-			items: masterKeys,
-		});
 
 		this.store().dispatch({
 			type: 'FOLDER_SELECT',
