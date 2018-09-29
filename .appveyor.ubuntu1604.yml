@@ -1,0 +1,12 @@
+image: ubuntu
+
+stack: node 8
+
+build_script:
+- cd ElectronClient
+- chmod +x ./build_ubuntu_1604_amd64.sh
+- ./build_ubuntu_1604_amd64.sh
+
+artifacts:
+#- path: app.tar.gz
+- path: ./ElectronClient/app/dist/YAN-1.0.0-x86_64.AppImage
