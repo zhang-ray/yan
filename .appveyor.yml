@@ -13,7 +13,7 @@ build_script:
   - ps: cd ..\ElectronClient\app
   - npm install
   - yarn dist
-  - rmdir /s/q .\ElectronClient\app\dist\win-unpacked\locales
+  - rmdir /s/q .\dist\win-unpacked\locales
   - ps: cd ..\..\
 
 after_build:
