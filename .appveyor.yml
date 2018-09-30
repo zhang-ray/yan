@@ -14,12 +14,13 @@ build_script:
   - npm install
   - yarn dist
   - rmdir /s/q .\dist\win-unpacked\locales
+  - rename .\dist\win-unpacked\ .\dist\YAN-Windows-portable-x86_64\
   - ps: cd ..\..\
 
 after_build:
-  - 7z a YAN-x86_64-Windows-portable.zip .\ElectronClient\app\dist\win-unpacked\
+  - 7z a YAN-Windows-portable-x86_64.zip .\ElectronClient\app\dist\YAN-Windows-portable-x86_64\
   
 test: off
 
 artifacts:
-- path: YAN-x86_64-Windows-portable.zip
+- path: YAN-Windows-portable-x86_64.zip
