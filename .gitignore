@@ -41,3 +41,7 @@ _releases
 ReactNativeClient/lib/csstojs/
 ElectronClient/app/gui/note-viewer/fonts/
 Tools/commit_hook.txt
+
+
+ElectronClient/app/lib/csstojs/katex.css.js
+package-lock.json
